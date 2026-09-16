@@ -1,0 +1,6 @@
+{
+  "name": "NOMAD Tactical Hub",
+  "description": "Sistemas offline, mapas tácticos GPS, cifrado de transmisiones y checklists de supervivencia.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
