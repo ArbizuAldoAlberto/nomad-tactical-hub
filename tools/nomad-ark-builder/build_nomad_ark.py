@@ -85,8 +85,20 @@ CORE_DOCUMENTS = [
             "PASO 1 (FORMATEO EXFAT): Formatee el pendrive dual USB-C/USB-A de 128GB+ en sistema de archivos exFAT (Etiqueta: NOMAD_ARK) para admitir archivos mayores a 4 GB como Wikipedia .zim (13GB a 37GB).",
             "PASO 2 (DESPLIEGUE NUCLEO 00 A 07): Descomprima NOMAD_ARK_USB_v2.0.0_OMEGA.zip en la raiz del pendrive o ejecute DEPLOY_TO_USB_DRIVE.ps1 -DriveLetter E:.",
             "PASO 3 (DESCARGA REANUDABLE DE ACTIVOS PESADOS): Ejecute FETCH_ASSETS.bat --profile=all (o use el script AUTOBUILD_NOMAD_USB_128GB descargado desde nomadhub.aldoarbizu.com) para poblar: (a) Manuales INTA/OMS/MSB/Kearny en 01-03, (b) Wikipedia y WikiMed .zim en 04_01, (c) Mapas OsmAnd Argentina .obf.zip + Reticula GIS Bolivar en 04_02, y (d) Motor IA Local Qwen2.5-1.5B GGUF en 05_04.",
-            "PASO 4 (SINCRONIZACION KINDLE / E-INK): Conecte su lector Kindle o Kobo por USB y copie todos los archivos .epub de 05_SOFTWARE_E_INSTALADORES_OFFLINE/03_FORMATOS_EPUB_PARA_KINDLE/ hacia la carpeta documents/ del lector.",
+            "PASO 4 (SINCRONIZACION KINDLE / E-INK): Conecte su lector Kindle o Kobo por USB y copie todos los 12 archivos .epub de 05_SOFTWARE_E_INSTALADORES_OFFLINE/03_FORMATOS_EPUB_PARA_KINDLE/ hacia la carpeta documents/ del lector.",
             "PASO 5 (BLINDAJE SHA-256 + PAR2 Y JAULA DE FARADAY): Ejecute VERIFY_AND_REPAIR_ARK.bat para verificar las firmas SHA-256 y la paridad Reed-Solomon PAR2. Guarde el pendrive de respaldo con gel de silice, aislante plastico y triple capa de aluminio en contenedor metalico."
+        ]
+    },
+    {
+        "folder": "00_INDICE_MAESTRO_Y_PROTOCOLOS",
+        "stem": "04_Hoja_Ejercicios_Practicos_Campo_App_USB_Kindle_Baofeng",
+        "title": "04. HOJA DE EJERCICIOS PRACTICOS DE CAMPO (FIELD READINESS DRILLS - 30 MINUTOS: APP ANDROID, USB ARK, KINDLE Y BAOFENG UV-5R)",
+        "body": [
+            "[ ] EJERCICIO 1 (00-06 MIN) — APP ANDROID & SENSORES 360 EN MODO AVION: Active Modo Avion total. Abra NOMAD Tactical Hub. 1) Verifique rumbo magnetico en grados y flujo EMF (uT) moviendo el telefono en figura de 8. 2) Verifique presion barometrica hPa y tendencia Delta-P. 3) Active Metronomo RCP 110 BPM + Guia de Voz TTS manos libres. 4) En Calculadoras -> Quemaduras Parkland, seleccione zonas en el Maniqui Wallace (ej. Torso 18% + Brazo 9% = 27% para 70 kg -> 7560 mL/24h). 5) Consulte al Anillo 0 de NAIR ('hemorragia arterial') y confirme respuesta determinista en < 5 ms.",
+            "[ ] EJERCICIO 2 (06-12 MIN) — PENDRIVE NOMAD ARK USB & SIMULACRO DE DANIO PAR2: Conecte el pendrive exFAT en cualquier PC o celular via OTG. 1) Abra START_NOMAD_ARK.html con doble clic (protocolo file:// sin internet). 2) Busque 'cloro' y 'torniquete' en la Lupa Universal (< 60 s). 3) Ejecute START_COMMUNITY_BEACON.py y verifique el Faro Wi-Fi Local en http://localhost:8080. 4) Ejecute VERIFY_AND_REPAIR_ARK.py y valide 100% de integridad SHA-256 + autorreparacion Reed-Solomon PAR2 (0 errores).",
+            "[ ] EJERCICIO 3 (12-18 MIN) — LECTOR KINDLE / KOBO E-INK BAJO LUZ SOLAR DIRECTA: Copie los 12 libros .epub de 05_SOFTWARE_E_INSTALADORES_OFFLINE/03_FORMATOS_EPUB_PARA_KINDLE/ a la carpeta documents/ de su Kindle. 1) Con el Kindle en Modo Avion bajo luz solar directa, abra 'Donde No Hay Doctor ni Dentista' y '02 Guia Visual Conexion Baofeng UV5R'. 2) Pruebe la busqueda por indice alfabetico TOC y la lupa interna ('amoxicilina', 'VOX'). 3) Compruebe lectura sin fatiga visual y drenaje de bateria < 1% por hora.",
+            "[ ] EJERCICIO 4 (18-25 MIN) — ENLACE RADIO VHF/UHF CELULAR <-> BAOFENG UV-5R (60 SEGUNDOS): Encienda el handy Baofeng UV-5R. 1) Pulse [VFO/MR], seleccione banda [A/B] y digite 146520 (146.520 MHz VHF) o 44600625 (PMR446 Canal 1). 2) Configure [MENU]+4 (VOX = Nivel 2), [MENU]+0 (SQL = Nivel 1) y [MENU]+25 (SFT-D = OFF). 3) Ajuste el volumen del celular al 75-85% y acerque el altavoz a 2-5 cm del microfono MIC del Baofeng (o conecte cable K1). 4) Emita y decodifique en bucle una trama AFSK 1200/2200 Hz, una baliza Morse 800 Hz ('SOS') y una imagen SSTV Robot36 observando el Osciloscopio RF.",
+            "[ ] EJERCICIO 5 (25-30 MIN) — SEGURIDAD HUMANA, SILENCIO EMCON Y COLD-SYNC OTG: 1) Active el interruptor EMCON (Control de Emisiones) y verifique que la aplicacion bloquee toda emision acustica, destello LED y consulta de red externa. 2) En el bloqueo de Boveda, ingrese el Duress PIN de Coaccion (9911) y confirme que se despliegue el inventario senuelo inocuo ocultando los nodos reales. 3) Exporte e importe un paquete criptografico firmado (.nomadpkg) en la carpeta nomad-sync/ verificando su firma SHA-256."
         ]
     },
     {
@@ -97,6 +109,16 @@ CORE_DOCUMENTS = [
             "PROTOCOLO MARCH: Massive Bleeding -> Airway -> Respiration -> Circulation -> Hypothermia.",
             "FORMULA DE PARKLAND (QUEMADURAS): Volumen 24h (mL) = 4 mL x Peso(kg) x %SCTQ (50% en primeras 8h, 50% en siguientes 16h).",
             "VADEMECUM ORIENTATIVO: Paracetamol 15 mg/kg/dosis (Max 4000mg/24h adultos) | Ibuprofeno 10 mg/kg (No usar en Dengue) | Amoxicilina 45 mg/kg/dia dividido c/8h."
+        ]
+    },
+    {
+        "folder": "01_INMEDIATO_PRIMERAS_HORAS/01_MEDICINA_TRAUMA_Y_TRIAJE",
+        "stem": "Donde_No_Hay_Doctor_ni_Dentista_Compendio_Clinico_Tactico",
+        "title": "COMPENDIO CLINICO DE CAMPO: DONDE NO HAY DOCTOR NI DENTISTA (DIAGNOSTICO, HERIDAS, INFECCIONES Y ODONTOLOGIA DE EMERGENCIA)",
+        "body": [
+            "INDICE ALFABETICO RAPIDO: Absceso dental | Amoxicilina | Asfixia | Deshidratacion (SRO OMS) | Fracturas abiertas y cerradas | Hemorragia arterial | Infeccion de heridas | Parto de emergencia | Quemaduras (Wallace y Parkland) | Shock hipovolemico.",
+            "DESINFECCION Y CIERRE DE HERIDAS: Lavar a presion con abundante agua hervida/clorada tibia y jabon neutro. Extraer cuerpos extranos visibles con pinzas flameadas en alcohol. Nunca suturar heridas punzantes profundas, mordeduras de animales o heridas sucias de mas de 6 horas (riesgo de gangrena y tetanos); realizar curacion humeda abierta.",
+            "URGENCIA ODONTOLOGICA SIN DENTISTA: Dolor pulpar agudo -> aplicar esencia de clavo de olor (eugenol) solo sobre la cavidad cariada. Absceso con inflamacion facial o fiebre -> buches de agua tibia con sal cada 2 horas + Amoxicilina 500 mg cada 8 horas por 7 dias (o Doxiciclina 100 mg cada 12 horas en alergicos a penicilina)."
         ]
     },
     {
@@ -147,6 +169,16 @@ CORE_DOCUMENTS = [
             "Cultivos prioritarios por densidad calorica: Papa, Batata, Maiz, Poroto, Zapallo (Asociacion Las Tres Hermanas), Amaranto y Girasol.",
             "Coccion termica con Olla Bruja: hervir 10 minutos y aislar en caja con lana/aserrin por 3 horas (ahorra 80% de lena).",
             "Quimica de supervivencia: Lejia de ceniza blanca de madera dura (KOH) probada por flotacion de huevo/papa + grasa derretida para fabricar jabon."
+        ]
+    },
+    {
+        "folder": "03_LARGO_PLAZO_MESES_Y_ANIOS/04_ENERGIA_SOLAR_EOLICA_Y_BATERIAS",
+        "stem": "Manual_Energia_Solar_12V_Mecanica_Periodo_Especial_y_Forja",
+        "title": "INGENIERIA OFF-GRID: BANCOS SOLARES 12V, INVENCIONES DEL PERIODO ESPECIAL CUBANO, GASIFICADOR BIOMASA Y FORJA",
+        "body": [
+            "DIMENSIONAMIENTO SOLAR 12V: Capacidad Bateria (Ah) = (Consumo Wh/dia x 2 dias autonomia) / (0.8 DoD x 12V). Potencia Paneles (Wp) = (Consumo Wh/dia x 1.3) / 4.5 HSP.",
+            "SOLUCIONES DEL PERIODO ESPECIAL: 1) Bicimaquinas con multiplicador por cadena para bombeo de agua de pozo, molienda de grano y alternador automotriz 12V. 2)Destilador solar de agua y horno solar de caja con doble vidrio y reflectores de aluminio.",
+            "MECANICA Y METALURGIA DE CAMPO: Forja con carbon vegetal y soplador manual (12V o fuelle) para templado de herramientas en aceite usado y revenido a color pajizo (220 C)."
         ]
     }
 ]
@@ -428,6 +460,16 @@ def build_ark() -> None:
     (DIST_ARK / "START_COMMUNITY_BEACON.sh").write_text("#!/usr/bin/env bash\npython3 START_COMMUNITY_BEACON.py\n", encoding="utf-8")
     (DIST_ARK / "VERIFY_AND_REPAIR_ARK.bat").write_text("@echo off\npython VERIFY_AND_REPAIR_ARK.py .\npause\n", encoding="utf-8")
     (DIST_ARK / "VERIFY_AND_REPAIR_ARK.sh").write_text("#!/usr/bin/env bash\npython3 VERIFY_AND_REPAIR_ARK.py .\n", encoding="utf-8")
+
+    # Seed Tactical GIS Grid (San Carlos de Bolivar .geojson + .kml), Local AI Launcher (:8081) and 128GB Catalog
+    try:
+        import sys as _sys
+        if str(here_dir) not in _sys.path:
+            _sys.path.insert(0, str(here_dir))
+        import FETCH_HEAVY_OFFLINE_ASSETS as _fetcher
+        _fetcher.seed_tactical_gis_and_ai_launchers(DIST_ARK)
+    except Exception:
+        pass
 
     # Generate MANIFEST.sha256 across all files
     manifest_lines = []

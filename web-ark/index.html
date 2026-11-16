@@ -230,7 +230,7 @@
           <p style="font-size:0.8rem;color:var(--muted);">Integra GNSS sin Google Play, Brújula real + EMF, Barómetro, Sismógrafo, Flash Morse, Módem Radio AFSK/SSTV, Metrónomo RCP 110 BPM y Asesor NAIR.</p>
         </div>
         <div>
-          <div class="sha-tag" id="shaApkTag">SHA-256: Verificado en Release v2.0.0-omega-ark</div> <!-- safe-bypass -->
+          <div class="sha-tag" id="shaApkTag">SHA-256 (8,313,427 B): 0629ae93636ce8ab644a8209d3410b40baed02546af9099a3c7804b85835f115</div> <!-- safe-bypass -->
           <a class="btn primary" style="width:100%;margin-top:6px;" href="https://github.com/ArbizuAldoAlberto/nomad-tactical-hub/releases/download/v2.0.0-omega-ark/nomad-tactical-hub.apk">⬇️ DESCARGAR ANDROID .APK</a> <!-- safe-bypass -->
         </div>
       </div>
@@ -242,20 +242,21 @@
           <p style="font-size:0.8rem;color:var(--muted);">Árbol completo 00 a 07 con manuales en 4 formatos (.PDF, .EPUB, .HTML, .TXT), Retícula GIS Bolívar, Servidor Wi-Fi Faro (:8080) y autorreparación PAR2.</p>
         </div>
         <div>
-          <div class="sha-tag" id="shaZipTag">SHA-256: Certificado en Release v2.0.0-omega-ark</div> <!-- safe-bypass -->
+          <div class="sha-tag" id="shaZipTag">SHA-256 (16,061,169 B): 7747a699a751c5d6b8a30fecdb419e1d5412ee273e0c2234abc98a63f33bd1ef</div> <!-- safe-bypass -->
           <a class="btn cyan" style="width:100%;margin-top:6px;" href="https://github.com/ArbizuAldoAlberto/nomad-tactical-hub/releases/download/v2.0.0-omega-ark/NOMAD_ARK_USB_v2.0.0_OMEGA.zip">⬇️ DESCARGAR SUITE USB ARK (.ZIP)</a> <!-- safe-bypass -->
         </div>
       </div>
 
       <div class="dl-card">
         <div>
-          <span class="badge">LECTORES TINTA ELECTRÓNICA (3 SEMANAS BATERÍA)</span>
+          <span class="badge">LECTORES TINTA ELECTRÓNICA (12 LIBROS EPUB)</span>
           <h3 style="color:var(--amber);margin:6px 0;">📖 Pack Libros Kindle / Kobo (.EPUB)</h3>
-          <p style="font-size:0.8rem;color:var(--muted);">Colección completa de protocolos médicos MARCH/SRO, potabilización OMS, nuclear 7:10, radio Baofeng y huerta INTA en formato EPUB3 reflujable.</p>
+          <p style="font-size:0.8rem;color:var(--muted);">Colección completa de 12 libros EPUB3 reflujables: MARCH/SRO, Donde No Hay Doctor, Cloro OMS, Nuclear 7:10, Baofeng UV-5R, INTA y Ejercicios de Campo.</p>
         </div>
         <div>
-          <div class="sha-tag" id="shaEpubTag">Optimizado para Kindle, Kobo, PocketBook y KOReader</div> <!-- safe-bypass -->
-          <a class="btn amber" style="width:100%;margin-top:6px;" href="https://github.com/ArbizuAldoAlberto/nomad-tactical-hub/releases/download/v2.0.0-omega-ark/NOMAD_KINDLE_EPUB_PACK_v2.0.0.zip">⬇️ DESCARGAR PACK KINDLE (.EPUB)</a> <!-- safe-bypass -->
+          <div class="sha-tag" id="shaEpubTag">SHA-256 (24,515 B): 1fc10625ef9cbbdda5cd3c6a7a9d23114e0fee1a5faf2f8607cf14c3c0467eb1</div> <!-- safe-bypass -->
+          <div class="sha-tag" id="shaWebTag" style="margin-top:4px;">PWA Web Dist (63,264 B): d394ebcf31ba9a00066ff6105d84025989e2075ab51e4e4d3c80a534c85a0b76</div> <!-- safe-bypass -->
+          <a class="btn amber" style="width:100%;margin-top:6px;" href="https://github.com/ArbizuAldoAlberto/nomad-tactical-hub/releases/download/v2.0.0-omega-ark/NOMAD_KINDLE_EPUB_PACK_v2.0.0.zip">⬇️ DESCARGAR PACK KINDLE (12 .EPUB)</a> <!-- safe-bypass -->
         </div>
       </div>
     </div>
@@ -369,6 +370,47 @@
           <button onclick="resetBurnZones()" class="danger">Limpiar Zonas (0%)</button>
         </div>
         <div id="burnVisualSummaryBox" class="result-box">Seleccione las zonas afectadas arriba. Zonas seguras de Torniquete: 5 a 7 cm arriba de la herida en brazo o muslo (NUNCA sobre codo o rodilla).</div>
+      </div>
+
+      <!-- 4. HOJA DE EJERCICIOS DE CAMPO (CHECKLIST INTERACTIVO + DESCARGA .MD/.HTML) -->
+      <div class="card" style="border-color:var(--amber);grid-column:1 / -1;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+          <div>
+            <span class="badge">MÓDULO DE VALIDACIÓN 4 · FIELD READINESS DRILLS (30 MIN)</span>
+            <h3 style="margin-top:4px;">📋 HOJA DE EJERCICIOS DE CAMPO (CHECKLIST INTERACTIVO + DESCARGA .MD/.HTML)</h3>
+          </div>
+          <span class="badge" id="fieldDrillsProgressBadge">ESTADO DE ALISTAMIENTO: 0/5 COMPLETADOS (0%)</span>
+        </div>
+        <p style="font-size:0.84rem;color:var(--muted);">Protocolo estandarizado de 30 minutos para certificar en terreno la App Android, el Pendrive <code>NOMAD Ark USB</code>, el lector <code>Kindle E-Ink</code> (12 libros <code>.epub</code>) y el handy <code>Baofeng UV-5R</code>. Su progreso se guarda automáticamente en este dispositivo (<code>localStorage</code>).</p>
+
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <label style="display:flex;align-items:flex-start;gap:10px;background:var(--bg);padding:10px;border-radius:6px;border:1px solid var(--border);cursor:pointer;">
+            <input type="checkbox" id="chkDrill1" onchange="toggleFieldDrill(1)" style="width:22px;min-height:22px;margin-top:2px;">
+            <span><b>Ejercicio 1 (00–06 min) — App Android &amp; Sensores 360° en Modo Avión:</b> Activar Modo Avión total. Calibrar brújula real y detector EMF (&mu;T), verificar presión barométrica &Delta;P, activar Metrónomo RCP <code>110 BPM</code> + Voz <code>TTS</code>, simular quemadura en el Maniquí Wallace y consultar en <code>&lt; 5 ms</code> al Anillo 0 de <code>NAIR</code>.</span>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:10px;background:var(--bg);padding:10px;border-radius:6px;border:1px solid var(--border);cursor:pointer;">
+            <input type="checkbox" id="chkDrill2" onchange="toggleFieldDrill(2)" style="width:22px;min-height:22px;margin-top:2px;">
+            <span><b>Ejercicio 2 (06–12 min) — Pendrive <code>NOMAD Ark USB</code> &amp; Simulacro de Daño <code>PAR2</code>:</b> Abrir en frío <code>START_NOMAD_ARK.html</code> (<code>file://</code>), buscar en la Lupa Universal, iniciar el Faro Comunitario <code>START_COMMUNITY_BEACON.py</code> (<code>:8080</code>) y ejecutar <code>VERIFY_AND_REPAIR_ARK.py</code> validando 100% <code>SHA-256 + PAR2</code>.</span>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:10px;background:var(--bg);padding:10px;border-radius:6px;border:1px solid var(--border);cursor:pointer;">
+            <input type="checkbox" id="chkDrill3" onchange="toggleFieldDrill(3)" style="width:22px;min-height:22px;margin-top:2px;">
+            <span><b>Ejercicio 3 (12–18 min) — Lector Kindle / E-Ink bajo Luz Solar:</b> Cargar los <b>12 libros <code>.epub</code></b> en <code>documents/</code>, probar búsqueda rápida por índice alfabético y lupa en <i>Donde no hay doctor</i> y <i>Guía Visual Baofeng UV-5R</i>, y verificar drenaje de batería (&lt; 1%/h).</span>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:10px;background:var(--bg);padding:10px;border-radius:6px;border:1px solid var(--border);cursor:pointer;">
+            <input type="checkbox" id="chkDrill4" onchange="toggleFieldDrill(4)" style="width:22px;min-height:22px;margin-top:2px;">
+            <span><b>Ejercicio 4 (18–25 min) — Enlace Radio VHF/UHF Celular &harr; Baofeng UV-5R:</b> Configurar en <code>60 s</code> (<code>146.520 MHz</code> o <code>PMR446 Canal 1</code>, <code>VOX = Nivel 2</code>, <code>SQL = Nivel 1</code>, <code>SFT-D = OFF</code>, volumen celular al <code>75-85%</code>), emitir y decodificar en bucle una trama <code>AFSK 1200</code>, una baliza <code>Morse 800 Hz</code> y una imagen <code>SSTV Robot36</code>.</span>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:10px;background:var(--bg);padding:10px;border-radius:6px;border:1px solid var(--border);cursor:pointer;">
+            <input type="checkbox" id="chkDrill5" onchange="toggleFieldDrill(5)" style="width:22px;min-height:22px;margin-top:2px;">
+            <span><b>Ejercicio 5 (25–30 min) — Seguridad Humana, Silencio <code>EMCON</code> y <code>Cold-Sync OTG</code>:</b> Activar el interruptor <code>EMCON</code> (verificando bloqueo total de emisiones), probar el <code>Duress PIN</code> (<code>9911</code>) y exportar/importar un paquete firmado <code>.nomadpkg</code> en <code>nomad-sync/</code>.</span>
+          </label>
+        </div>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
+          <button class="primary" onclick="downloadFieldDrillsSheet('md')">📄 DESCARGAR HOJA DE EJERCICIOS (.MD)</button>
+          <button class="amber" onclick="downloadFieldDrillsSheet('html')">🖨️ DESCARGAR / IMPRIMIR HOJA (.HTML)</button>
+          <button class="danger" onclick="resetFieldDrillsChecklist()">🔄 REINICIAR CHECKLIST</button>
+        </div>
       </div>
     </div>
   </section>
@@ -732,6 +774,14 @@ const NOMAD_LIBRARY = [
     folder: "03_LARGO_PLAZO_MESES_Y_ANIOS/01_AGRICULTURA_HUERTA_Y_SEMILLAS_INTA",
     keywords: "huerta inta semillas papa maiz poroto zapallo solar bateria 12v jabon ceniza charqui olla bruja",
     action60s: "Priorizar papa, batata, maíz, poroto y zapallo. Cocinar con Olla Bruja (ahorra 80% leña). Saponificación con lejía de ceniza de madera dura y sebo.",
+    formats: ["PDF", "EPUB (Kindle)", "HTML", "TXT"]
+  },
+  {
+    horizon: "60S",
+    title: "06. Hoja de Ejercicios Prácticos de Campo (30 min: App, USB, Kindle y Baofeng UV-5R)",
+    folder: "00_INDICE_MAESTRO_Y_PROTOCOLOS/04_Hoja_Ejercicios_Practicos_Campo_App_USB_Kindle_Baofeng",
+    keywords: "ejercicios simulacro campo drill checklist kindle baofeng par2 emcon duress 9911",
+    action60s: "Ejecutar los 5 ejercicios de 6 min: 1) Sensores 360° en Modo Avión, 2) USB Ark + PAR2, 3) 12 EPUBs en Kindle bajo sol, 4) Enlace Baofeng UV-5R (VOX=2, SQL=1), 5) EMCON + Duress PIN 9911.",
     formats: ["PDF", "EPUB (Kindle)", "HTML", "TXT"]
   }
 ];
@@ -1455,12 +1505,105 @@ function renderPictograms() {
   });
 }
 
+const DRILLS_STORAGE_KEY = "nomad_field_drills_v2";
+const FIELD_DRILLS_SPEC = [
+  {
+    id: 1,
+    title: "Ejercicio 1 (00-06 min) — App Android & Sensores 360° en Modo Avión",
+    desc: "Calibración de brújula real/EMF (uT), lectura barométrica Delta-P, prueba del Metrónomo RCP 110 BPM + Voz TTS, simulacro de quemadura en el Maniquí Wallace y consulta en < 5 ms al Anillo 0 de NAIR."
+  },
+  {
+    id: 2,
+    title: "Ejercicio 2 (06-12 min) — Pendrive NOMAD Ark USB & Simulacro de Daño PAR2",
+    desc: "Ejecución en frío de START_NOMAD_ARK.html (file://), búsqueda en la Lupa Universal, prueba del servidor START_COMMUNITY_BEACON.py (:8080) y ejecución de VERIFY_AND_REPAIR_ARK.py."
+  },
+  {
+    id: 3,
+    title: "Ejercicio 3 (12-18 min) — Lector Kindle / E-Ink bajo Luz Solar",
+    desc: "Carga de los 12 libros .epub en documents/, prueba de búsqueda rápida por índice alfabético y lupa en 'Donde no hay doctor' y 'Guía Visual Baofeng UV-5R', y medición de drenaje de batería."
+  },
+  {
+    id: 4,
+    title: "Ejercicio 4 (18-25 min) — Enlace Radio VHF/UHF Celular <-> Baofeng UV-5R",
+    desc: "Configuración en 60 s (146.520 MHz o PMR446 Canal 1, VOX = Nivel 2, SQL = Nivel 1, SFT-D = OFF, volumen del celular al 75-85%), envío y decodificación en bucle de una trama AFSK 1200, una baliza Morse 800 Hz y una imagen SSTV Robot36."
+  },
+  {
+    id: 5,
+    title: "Ejercicio 5 (25-30 min) — Seguridad Humana, Silencio EMCON y Cold-Sync OTG",
+    desc: "Activación del interruptor EMCON (verificando bloqueo total de emisiones), prueba del Duress PIN (9911) y exportación/importación de un paquete .nomadpkg."
+  }
+];
+
+function getFieldDrillsState() {
+  try {
+    return JSON.parse(localStorage.getItem(DRILLS_STORAGE_KEY) || "{}");
+  } catch (e) {
+    return {};
+  }
+}
+
+function updateFieldDrillsUi() {
+  const st = getFieldDrillsState();
+  let done = 0;
+  for (let i = 1; i <= 5; i++) {
+    const chk = document.getElementById("chkDrill" + i);
+    const isChecked = !!st["d" + i];
+    if (chk) chk.checked = isChecked;
+    if (isChecked) done++;
+  }
+  const badge = document.getElementById("fieldDrillsProgressBadge");
+  if (badge) {
+    const pct = Math.round((done / 5) * 100);
+    badge.textContent = done === 5
+      ? "✅ ALISTAMIENTO DE CAMPO 100% CERTIFICADO (5/5)"
+      : `ESTADO DE ALISTAMIENTO: ${done}/5 COMPLETADOS (${pct}%)`;
+  }
+}
+
+function toggleFieldDrill(id) {
+  const st = getFieldDrillsState();
+  const chk = document.getElementById("chkDrill" + id);
+  st["d" + id] = chk ? chk.checked : !st["d" + id];
+  try { localStorage.setItem(DRILLS_STORAGE_KEY, JSON.stringify(st)); } catch (e) {}
+  updateFieldDrillsUi();
+}
+
+function resetFieldDrillsChecklist() {
+  try { localStorage.removeItem(DRILLS_STORAGE_KEY); } catch (e) {}
+  updateFieldDrillsUi();
+}
+
+function downloadFieldDrillsSheet(fmt) {
+  const st = getFieldDrillsState();
+  const lines = [
+    "# 🛰️ HOJA DE EJERCICIOS PRÁCTICOS DE CAMPO — NOMAD TACTICAL HUB (v2.0.0-omega-ark)",
+    "- **Duración Total Estimada:** 30 minutos (5 bloques de 6 minutos)",
+    "- **Vectores Auditados:** App Android · Pendrive 128GB `NOMAD Ark USB` · Kindle E-Ink (12 `.epub`) · Radio `Baofeng UV-5R`",
+    "- **Documento en Pendrive:** `00_INDICE_MAESTRO_Y_PROTOCOLOS/04_Hoja_Ejercicios_Practicos_Campo_App_USB_Kindle_Baofeng.{pdf,epub,html,txt}`",
+    ""
+  ];
+  FIELD_DRILLS_SPEC.forEach(d => {
+    const mark = st["d" + d.id] ? "[x]" : "[ ]";
+    lines.push(`## ${mark} ${d.title}`);
+    lines.push(`${d.desc}`);
+    lines.push("");
+  });
+  const md = lines.join("\n");
+  if (fmt === "md") {
+    triggerClientDownload("04_Hoja_Ejercicios_Practicos_Campo_NOMAD.md", md, "text/markdown");
+  } else {
+    const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>04. Hoja de Ejercicios Prácticos de Campo — NOMAD OMEGA</title><style>body{font-family:system-ui,monospace;padding:24px;max-width:880px;margin:0 auto;line-height:1.55;color:#000;background:#fff;}h1{border-bottom:2px solid #000;padding-bottom:8px;}.drill{border:1px solid #000;padding:12px;margin:10px 0;border-radius:6px;}@media print{.no-print{display:none;}}</style></head><body><button class="no-print" onclick="window.print()" style="padding:10px 16px;font-weight:bold;cursor:pointer;margin-bottom:16px;">🖨️ IMPRIMIR / GUARDAR PDF</button><h1>🛰️ 04. HOJA DE EJERCICIOS PRÁCTICOS DE CAMPO (30 MIN)</h1>${FIELD_DRILLS_SPEC.map(d => `<div class="drill"><b>${st["d" + d.id] ? "☑️" : "⬜"} ${d.title}</b><p>${d.desc}</p></div>`).join("")}</body></html>`;
+    triggerClientDownload("04_Hoja_Ejercicios_Practicos_Campo_NOMAD.html", html, "text/html");
+  }
+}
+
 filterLibrary();
 runAllCalculators();
 renderPictograms();
 updateUsbProtocolPreview();
 setBaofengWizard(1);
 drawRfOscilloscopeWave(800, "OSCILOSCOPIO RF EN ESPERA (800 / 1200 / 2200 Hz)");
+updateFieldDrillsUi();
 </script>
 </body>
 </html>
