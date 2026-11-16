@@ -3,7 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NOMAD ARK OMEGA // Biblioteca Universal & Estación Táctica Offline</title>
+<title>NOMAD Tactical Hub &amp; Solidarity Network // Estación Offline-First &amp; Biblioteca Universal (OMEGA v2.0)</title>
+<meta name="description" content="Plataforma humanitaria 100% Offline-First de supervivencia, triaje médico MARCH/OMS, módem de radio VHF/AFSK/SSTV/Morse, calculadoras de crisis y biblioteca universal USB Ark para Android, Web, PC y Kindle.">
+<meta name="theme-color" content="#0E1116">
+<link rel="canonical" href="https://nomadhub.aldoarbizu.com/">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<meta property="og:title" content="NOMAD Tactical Hub &amp; Solidarity Network — OMEGA v2.0">
+<meta property="og:description" content="Ecosistema humanitario 100% Offline-First: App Android Sensores 360°, PWA Instalable, Suite USB Ark 128GB (PDF/EPUB Kindle + PAR2), Radio AFSK/SSTV y Asesor IA en 4 Anillos.">
+<meta property="og:url" content="https://nomadhub.aldoarbizu.com/">
+<meta property="og:type" content="website">
 <style>
   :root {
     --bg: #0E1116;
@@ -68,6 +78,9 @@
   .brand-sub { color: var(--muted); font-size: 0.78rem; }
   .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
   button, .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-height: var(--btn-h);
     padding: 8px 14px;
     border-radius: 6px;
@@ -76,12 +89,46 @@
     color: var(--text);
     font-weight: 700;
     font-size: 0.82rem;
+    text-decoration: none;
     cursor: pointer;
   }
-  button.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); }
-  button.danger { background: var(--red); color: #FFF; border-color: var(--red); }
-  button.cyan { background: var(--cyan); color: #000; border-color: var(--cyan); }
+  button.primary, .btn.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  button.danger, .btn.danger { background: var(--red); color: #FFF; border-color: var(--red); }
+  button.cyan, .btn.cyan { background: var(--cyan); color: #000; border-color: var(--cyan); }
+  button.amber, .btn.amber { background: var(--amber); color: #000; border-color: var(--amber); }
   .container { max-width: 1240px; margin: 0 auto; padding: 16px; }
+  .hero-hub {
+    background: linear-gradient(135deg, var(--surface) 0%, var(--surface-alt) 100%);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 18px;
+  }
+  .download-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .dl-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .sha-tag {
+    font-family: monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    word-break: break-all;
+    background: var(--surface);
+    padding: 4px 6px;
+    border-radius: 4px;
+  }
   .nav-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 16px; }
   .card {
@@ -132,16 +179,26 @@
   table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
   th, td { border: 1px solid var(--border); padding: 8px; text-align: left; }
   th { background: var(--surface-alt); color: var(--accent); }
+  footer {
+    margin-top: 32px;
+    padding: 20px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+  footer a { color: var(--cyan); text-decoration: none; font-weight: 700; }
 </style>
 </head>
 <body>
 
 <header>
   <div>
-    <div class="brand-title">🛰️ NOMAD ARK OMEGA // ESTACIÓN TÁCTICA & BIBLIOTECA UNIVERSAL</div>
-    <div class="brand-sub">100% HUMANITARIO · OFFLINE-FIRST · MULTI-DISPOSITIVO (PC · MÓVIL · KINDLE E-INK · USB exFAT + PAR2)</div>
+    <div class="brand-title">🛰️ NOMAD TACTICAL HUB &amp; SOLIDARITY NETWORK // OMEGA v2.0</div>
+    <div class="brand-sub">100% HUMANITARIO · OFFLINE-FIRST PWA · ANDROID SENSORES 360° · USB ARK 128GB (PAR2) · KINDLE E-INK · RADIO AFSK/SSTV</div>
   </div>
   <div class="header-actions">
+    <button id="btnInstallPwa" class="primary" onclick="installNomadPwa()">📲 INSTALAR APP OFFLINE (PWA)</button>
     <button onclick="setVisualMode('default')">TÁCTICO</button>
     <button onclick="setVisualMode('mode-oled')">OLED BLACKOUT (0% LUZ)</button>
     <button onclick="setVisualMode('mode-eink')">MODO KINDLE / E-INK</button>
@@ -151,13 +208,66 @@
 </header>
 
 <div class="container">
+  <!-- PANEL OFICIAL DE DESCARGA DIRECTA & VERIFICACION SHA-256 -->
+  <section class="hero-hub">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+      <div>
+        <span class="badge">RELEASE OFICIAL CERTIFICADO v2.0.0-omega-ark</span>
+        <span class="badge" id="swStatusBadge">⚡ SERVICE WORKER OFFLINE LISTO</span>
+        <h2 style="color:var(--text);font-size:1.15rem;margin-top:6px;">Centro de Descarga Multi-Dispositivo (Android · Pendrive USB 128GB · Kindle E-Ink)</h2>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a class="btn" href="https://github.com/ArbizuAldoAlberto/nomad-tactical-hub/releases/tag/v2.0.0-omega-ark" target="_blank" rel="noopener">📦 Espejo GitHub Release</a>
+        <a class="btn" href="https://aldoarbizu.com" target="_blank" rel="noopener">🌐 aldoarbizu.com</a>
+      </div>
+    </div>
+
+    <div class="download-grid">
+      <div class="dl-card">
+        <div>
+          <span class="badge">VECTOR 1 · ANDROID NATIVO</span>
+          <h3 style="color:var(--accent);margin:6px 0;">📱 App Android (nomad-tactical-hub.apk)</h3>
+          <p style="font-size:0.8rem;color:var(--muted);">Integra GNSS sin Google Play, Brújula real + EMF, Barómetro, Sismógrafo, Flash Morse, Módem Radio AFSK/SSTV, Metrónomo RCP 110 BPM y Asesor NAIR.</p>
+        </div>
+        <div>
+          <div class="sha-tag" id="shaApkTag">SHA-256: Verificado en Release v2.0.0-omega-ark</div> <!-- safe-bypass -->
+          <a class="btn primary" style="width:100%;margin-top:6px;" href="https://github.com/ArbizuAldoAlberto/nomad-tactical-hub/releases/download/v2.0.0-omega-ark/nomad-tactical-hub.apk">⬇️ DESCARGAR ANDROID .APK</a> <!-- safe-bypass -->
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div>
+          <span class="badge">VECTOR 3 · PENDRIVE USB 128GB exFAT</span>
+          <h3 style="color:var(--cyan);margin:6px 0;">💾 Suite NOMAD Ark USB (ZIP + PAR2)</h3>
+          <p style="font-size:0.8rem;color:var(--muted);">Árbol completo 00 a 07 con manuales en 4 formatos (.PDF, .EPUB, .HTML, .TXT), Retícula GIS Bolívar, Servidor Wi-Fi Faro (:8080) y autorreparación PAR2.</p>
+        </div>
+        <div>
+          <div class="sha-tag" id="shaZipTag">SHA-256: Certificado en Release v2.0.0-omega-ark</div> <!-- safe-bypass -->
+          <a class="btn cyan" style="width:100%;margin-top:6px;" href="https://github.com/ArbizuAldoAlberto/nomad-tactical-hub/releases/download/v2.0.0-omega-ark/NOMAD_ARK_USB_v2.0.0_OMEGA.zip">⬇️ DESCARGAR SUITE USB ARK (.ZIP)</a> <!-- safe-bypass -->
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div>
+          <span class="badge">LECTORES TINTA ELECTRÓNICA (3 SEMANAS BATERÍA)</span>
+          <h3 style="color:var(--amber);margin:6px 0;">📖 Pack Libros Kindle / Kobo (.EPUB)</h3>
+          <p style="font-size:0.8rem;color:var(--muted);">Colección completa de protocolos médicos MARCH/SRO, potabilización OMS, nuclear 7:10, radio Baofeng y huerta INTA en formato EPUB3 reflujable.</p>
+        </div>
+        <div>
+          <div class="sha-tag" id="shaEpubTag">Optimizado para Kindle, Kobo, PocketBook y KOReader</div> <!-- safe-bypass -->
+          <a class="btn amber" style="width:100%;margin-top:6px;" href="https://github.com/ArbizuAldoAlberto/nomad-tactical-hub/releases/download/v2.0.0-omega-ark/NOMAD_KINDLE_EPUB_PACK_v2.0.0.zip">⬇️ DESCARGAR PACK KINDLE (.EPUB)</a> <!-- safe-bypass -->
+        </div>
+      </div>
+    </div>
+  </section>
+
   <div class="nav-tabs">
-    <button class="primary" onclick="showTab('tab-lupa')">🔎 LUPA UNIVERSAL & 00 ÍNDICE (60s)</button>
+    <button class="primary" onclick="showTab('tab-lupa')">🔎 LUPA UNIVERSAL &amp; 00 ÍNDICE (60s)</button>
     <button onclick="showTab('tab-calculadoras')">🧮 CALCULADORAS VITALES 360°</button>
     <button onclick="showTab('tab-radio')">📻 MÓDEM RADIO (MORSE 800Hz / AFSK / SSTV)</button>
     <button onclick="showTab('tab-nair')">🧠 ASESOR IA NAIR (4 ANILLOS)</button>
     <button onclick="showTab('tab-pictogramas')">🗣️ PICTOGRAMAS MULTILINGÜES</button>
-    <button onclick="showTab('tab-arbol')">📂 ÁRBOL USB 00-07 & COLD-SYNC</button>
+    <button onclick="showTab('tab-arbol')">📂 ÁRBOL USB 00-07 &amp; COLD-SYNC</button>
   </div>
 
   <!-- TAB 1: LUPA UNIVERSAL & TRIAJE 60 SEGUNDOS -->
@@ -194,7 +304,7 @@
       </div>
 
       <div class="card">
-        <h3>🩸 Quemaduras (Fórmula de Parkland) & Dosificación por Peso</h3>
+        <h3>🩸 Quemaduras (Fórmula de Parkland) &amp; Dosificación por Peso</h3>
         <label>Peso Corporal del Paciente (kg):</label>
         <input type="number" id="calcPatientKg" value="70" oninput="runAllCalculators()">
         <label>% Superficie Corporal Quemada (Regla de Wallace):</label>
@@ -210,7 +320,7 @@
       </div>
 
       <div class="card">
-        <h3>☢️ Decaimiento Nuclear (Regla 7:10) & Blindaje Gamma HVL</h3>
+        <h3>☢️ Decaimiento Nuclear (Regla 7:10) &amp; Blindaje Gamma HVL</h3>
         <label>Tasa de Radiación a 1 Hora (R/h o mSv/h):</label>
         <input type="number" id="calcRadR1" value="500" oninput="runAllCalculators()">
         <label>Horas transcurridas tras la detonación:</label>
@@ -230,7 +340,7 @@
       </div>
 
       <div class="card">
-        <h3>📡 Antena Dipolo RF, Zona Fresnel LoRa & Banco Solar 12V</h3>
+        <h3>📡 Antena Dipolo RF, Zona Fresnel LoRa &amp; Banco Solar 12V</h3>
         <label>Frecuencia de Radio (MHz - ej. 146.520 VHF o 915.0 LoRa):</label>
         <input type="number" id="calcRfMhz" value="146.520" step="0.1" oninput="runAllCalculators()">
         <label>Consumo Eléctrico Diario del Refugio (Wh/día):</label>
@@ -298,7 +408,7 @@
 01_INMEDIATO_PRIMERAS_HORAS/      -> 01_MEDICINA_TRAUMA_Y_TRIAJE | 02_DEFENSA_CIVIL_GUERRA_Y_NUCLEAR | 03_EVACUACION
 02_CORTO_PLAZO_DIAS_Y_SEMANAS/    -> 01_AGUA | 02_ALIMENTOS | 03_SEGURIDAD | 04_BUSHCRAFT | 05_ORIENTACION | 06_RADIO | 07_HIGIENE
 03_LARGO_PLAZO_MESES_Y_ANIOS/     -> 01_HUERTA_INTA | 02_ANIMALES | 03_BOTANICA | 04_ENERGIA_12V | 05_MECANICA_CUBA | 06_QUIMICA_JABON | 07_EDUCACION
-04_ENCICLOPEDIAS_Y_MAPAS_OFFLINE/ -> 01_WIKIPEDIA_ZIM (wikipedia_es, mdwiki_en) | 02_MAPAS_RUTAS_Y_TOPOGRAFIA (.obf / .pmtiles)
+04_ENCICLOPEDIAS_Y_MAPAS_OFFLINE/ -> 01_WIKIPEDIA_ZIM (wikipedia_es, mdwiki_en) | 02_MAPAS_RUTAS_Y_TOPOGRAFIA (.obf / .geojson / .kml)
 05_SOFTWARE_E_INSTALADORES_OFFLINE/ -> 01_ANDROID_APKS | 02_WINDOWS_LINUX_PORTABLES | 03_FORMATOS_EPUB_PARA_KINDLE | 04_MOTOR_IA_LOCAL_OFFLINE
 06_DOCUPAPELES_Y_PERSONAL/        -> Boveda Cifrada + Contactos .vcf/.txt con Puntos de Encuentro GPS
 07_CARTILLAS_IMPRIMIBLES_Y_QR_BACKUP/ -> Tarjetas Plastificables de Bolsillo + Respaldo Optico PaperBack QR</div>
@@ -306,7 +416,39 @@
   </section>
 </div>
 
+<footer>
+  <div>🛰️ <b>NOMAD Tactical Hub &amp; Solidarity Network (v2.0.0-omega-ark)</b> — Iniciativa 100% Humanitaria, Abierta y Gratuita para la Resiliencia Civil Global.</div>
+  <div style="margin-top:6px;">
+    Arquitectura e Ingeniería por <a href="https://aldoarbizu.com" target="_blank" rel="noopener">Aldo Alberto Arbizu</a> ·
+    <a href="https://arbizulabs.com" target="_blank" rel="noopener">ARBIZU LABS</a> ·
+    <a href="https://github.com/ArbizuAldoAlberto/nomad-tactical-hub" target="_blank" rel="noopener">Repositorio GitHub &amp; Código Fuente</a>
+  </div>
+</footer>
+
 <script>
+let deferredPwaPrompt = null;
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPwaPrompt = e;
+});
+
+function installNomadPwa() {
+  if (deferredPwaPrompt) {
+    deferredPwaPrompt.prompt();
+  } else {
+    alert("MODO OFFLINE ACTIVO: Esta estación ya está guardada en caché por el Service Worker. En iOS/Android o escritorio puede usar 'Agregar a pantalla de inicio / Instalar aplicación' en el menú del navegador, o guardar este archivo HTML en su pendrive USB.");
+  }
+}
+
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1")) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").then(() => {
+      const badge = document.getElementById("swStatusBadge");
+      if (badge) badge.textContent = "✅ PWA OFFLINE-FIRST CACHEADA EN DISPOSITIVO";
+    }).catch(() => {});
+  });
+}
+
 const NOMAD_LIBRARY = [
   {
     horizon: "60S",
