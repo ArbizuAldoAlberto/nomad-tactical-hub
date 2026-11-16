@@ -263,12 +263,128 @@
 
   <div class="nav-tabs">
     <button class="primary" onclick="showTab('tab-lupa')">🔎 LUPA UNIVERSAL &amp; 00 ÍNDICE (60s)</button>
+    <button class="amber" onclick="showTab('tab-usb128')">💾 PROTOCOLO USB 128GB &amp; ZIM</button>
     <button onclick="showTab('tab-calculadoras')">🧮 CALCULADORAS VITALES 360°</button>
     <button onclick="showTab('tab-radio')">📻 MÓDEM RADIO (MORSE 800Hz / AFSK / SSTV)</button>
     <button onclick="showTab('tab-nair')">🧠 ASESOR IA NAIR (4 ANILLOS)</button>
     <button onclick="showTab('tab-pictogramas')">🗣️ PICTOGRAMAS MULTILINGÜES</button>
     <button onclick="showTab('tab-arbol')">📂 ÁRBOL USB 00-07 &amp; COLD-SYNC</button>
   </div>
+
+  <!-- TAB NUEVA: GENERADOR Y DESCARGADOR DE PROTOCOLO PERSONALIZADO PENDRIVE 128GB -->
+  <section id="tab-usb128" class="hidden">
+    <div class="card" style="border-color:var(--amber);">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+        <div>
+          <span class="badge">NOMAD ARK CUSTOM PROVISIONER v2.0</span>
+          <h3 style="font-size:1.2rem;margin-top:4px;">💾 Asistente &amp; Descargador de Protocolo Personalizado para Pendrive 128 GB (ZIM · Mapas · IA · Kindle)</h3>
+        </div>
+        <span class="badge" id="usbSpaceSummaryBadge">ESPACIO ESTIMADO: 17.67 GB / 128 GB</span>
+      </div>
+      <p style="font-size:0.86rem;color:var(--muted);">Configure los parámetros de su pendrive físico y su lector Kindle. El navegador generará en memoria (100% offline, sin servidor) su <b>Protocolo Maestro Personalizado (.MD / .HTML)</b> y el <b>Script Autoejecutable 1-Clic (.PS1 / .SH)</b> con reanudación automática para descargar Wikipedia/WikiMed (.zim), Mapas de Argentina (.obf), Manuales INTA/OMS y el Motor IA Local (.gguf).</p>
+
+      <!-- Barra de progreso de espacio en disco -->
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;">
+        <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:6px;">
+          <span id="usbBarLabelLeft">Uso proyectado del Pendrive (Formato exFAT obligatorio)</span>
+          <span id="usbBarLabelRight" style="color:var(--accent);font-weight:bold;">13.8% ocupado (110.33 GB libres para Bóveda 06_DOCUPAPELES)</span>
+        </div>
+        <div style="width:100%;height:14px;background:var(--surface-alt);border-radius:6px;overflow:hidden;">
+          <div id="usbSpaceBarFill" style="width:14%;height:100%;background:linear-gradient(90deg, var(--accent), var(--cyan));transition:width 0.25s;"></div>
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top:6px;">
+        <!-- Columna 1: Parametros de Hardware y Destino -->
+        <div class="card" style="background:var(--bg);">
+          <h3>⚙️ 1. Parámetros Físicos y Unidad Destino</h3>
+          <label>Capacidad del Pendrive USB Objetivo:</label>
+          <select id="cfgUsbSizeGb" onchange="updateUsbProtocolPreview()">
+            <option value="128" selected>128 GB+ (OMEGA Completo: Wikipedia + WikiMed + Mapas + IA Local)</option>
+            <option value="64">64 GB (Táctico: WikiMed + Vikidia + Mapas + Manuales + IA)</option>
+            <option value="32">32 GB (Esencial: Núcleo + Manuales + Mapas + WikiMed)</option>
+          </select>
+
+          <label>Sistema Operativo de Grabación:</label>
+          <select id="cfgTargetOs" onchange="updateUsbProtocolPreview()">
+            <option value="win" selected>Windows 10/11 (PowerShell .ps1 + curl.exe + PAR2)</option>
+            <option value="linux">Linux / macOS / Raspberry Pi (Bash .sh + curl + sha256sum)</option>
+          </select>
+
+          <div style="display:flex;gap:8px;">
+            <div style="flex:1;">
+              <label>Letra / Ruta del Pendrive USB:</label>
+              <input type="text" id="cfgUsbDrive" value="E:" oninput="updateUsbProtocolPreview()">
+            </div>
+            <div style="flex:1;">
+              <label>Letra / Ruta Kindle (Opcional):</label>
+              <input type="text" id="cfgKindleDrive" value="K:" oninput="updateUsbProtocolPreview()">
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <div style="flex:1.4;">
+              <label>Nodo Geográfico Base (Coordenadas):</label>
+              <input type="text" id="cfgBaseCoords" value="San Carlos de Bolívar, AR (-36.2333, -61.1167)" oninput="updateUsbProtocolPreview()">
+            </div>
+            <div style="flex:1;">
+              <label>Callsign del Refugio:</label>
+              <input type="text" id="cfgNodeCallsign" value="LU-BOLIVAR-01" oninput="updateUsbProtocolPreview()">
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna 2: Seleccion de las 7 Capas de Contenido -->
+        <div class="card" style="background:var(--bg);">
+          <h3>📦 2. Capas de Contenido a Incluir en el Pendrive</h3>
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.84rem;">
+            <input type="checkbox" id="layerCore" checked disabled style="width:auto;min-height:auto;">
+            <span><b>Capa 1 — Núcleo Base NOMAD Ark (25 MB):</b> Carpetas 00-07, APK Android, Pack EPUB Kindle, Cartillas QR y PAR2.</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.84rem;">
+            <input type="checkbox" id="layerManuals" checked onchange="updateUsbProtocolPreview()" style="width:auto;min-height:auto;">
+            <span><b>Capa 2 — Manuales Oficiales PDF (85 MB):</b> INTA ProHuerta, OMS Agua/PAP, MSB Suecia y Nuclear War Survival Skills.</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.84rem;">
+            <input type="checkbox" id="layerMaps" checked onchange="updateUsbProtocolPreview()" style="width:auto;min-height:auto;">
+            <span><b>Capa 3 — Cartografía Offline Argentina (800 MB):</b> Mapa nacional OsmAnd (.obf.zip) + Retícula GIS Bolívar (.geojson/.kml).</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.84rem;">
+            <input type="checkbox" id="layerWikimed" checked onchange="updateUsbProtocolPreview()" style="width:auto;min-height:auto;">
+            <span><b>Capa 4 — Enciclopedia Médica WikiMed (2.4 GB):</b> <code>mdwiki_en_all_maxi.zim</code> (Medicina y cirugía offline).</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.84rem;">
+            <input type="checkbox" id="layerWikiEs" checked onchange="updateUsbProtocolPreview()" style="width:auto;min-height:auto;">
+            <span><b>Capa 5 — Wikipedia en Español (.zim):</b></span>
+          </label>
+          <select id="cfgWikiEsEdition" onchange="updateUsbProtocolPreview()">
+            <option value="nopic" selected>Wikipedia Español Completa Sin Imágenes (13.4 GB — Recomendada velocidad/espacio)</option>
+            <option value="maxi">Wikipedia Español Maxi Con Imágenes y Esquemas (37.2 GB — Para 128GB+)</option>
+            <option value="vikidia">Vikidia Español Escolar y Científica Compacta (1.1 GB — Para 32GB/64GB)</option>
+          </select>
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.84rem;">
+            <input type="checkbox" id="layerLocalAi" checked onchange="updateUsbProtocolPreview()" style="width:auto;min-height:auto;">
+            <span><b>Capa 6 — Motor IA Local Anillo 2 (1.1 GB):</b> Modelo <code>Qwen2.5-1.5B-Instruct Q4_K_M.gguf</code> + Lanzador <code>:8081</code>.</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.84rem;">
+            <input type="checkbox" id="layerPortables" checked onchange="updateUsbProtocolPreview()" style="width:auto;min-height:auto;">
+            <span><b>Capa 7 — Lectores Portables PC/Android (120 MB):</b> Kiwix Desktop Portable + SumatraPDF Portable.</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 4 Botones de Descarga Directa Generados en Cliente -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-top:8px;">
+        <button class="primary" onclick="downloadCustomUsbAsset('md')">📄 1. DESCARGAR PROTOCOLO (.MD)</button>
+        <button class="cyan" onclick="downloadCustomUsbAsset('script')">⚡ 2. DESCARGAR SCRIPT 1-CLIC (.PS1 / .SH)</button>
+        <button class="amber" onclick="downloadCustomUsbAsset('html')">🖨️ 3. DESCARGAR / IMPRIMIR GUÍA (.HTML)</button>
+        <button onclick="downloadCustomUsbAsset('urls')">🔗 4. DESCARGAR LISTA URLS (ARIA2 / CURL)</button>
+      </div>
+
+      <label style="margin-top:6px;font-size:0.8rem;color:var(--cyan);">Vista Previa en Vivo del Protocolo y Script Personalizado:</label>
+      <div id="usbProtocolPreviewBox" class="result-box" style="max-height:320px;overflow-y:auto;font-size:0.78rem;"></div>
+    </div>
+  </section>
 
   <!-- TAB 1: LUPA UNIVERSAL & TRIAJE 60 SEGUNDOS -->
   <section id="tab-lupa">
@@ -517,9 +633,287 @@ function toggleTraumaMode() {
 }
 
 function showTab(tabId) {
-  ["tab-lupa", "tab-calculadoras", "tab-radio", "tab-nair", "tab-pictogramas", "tab-arbol"].forEach(id => {
-    document.getElementById(id).classList.toggle("hidden", id !== tabId);
+  ["tab-lupa", "tab-usb128", "tab-calculadoras", "tab-radio", "tab-nair", "tab-pictogramas", "tab-arbol"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle("hidden", id !== tabId);
   });
+}
+
+function getUsbProvisionConfig() {
+  const usbSizeGb = parseFloat(document.getElementById("cfgUsbSizeGb")?.value || "128");
+  const os = document.getElementById("cfgTargetOs")?.value || "win";
+  const usbDrive = (document.getElementById("cfgUsbDrive")?.value || "E:").trim();
+  const kindleDrive = (document.getElementById("cfgKindleDrive")?.value || "K:").trim();
+  const coords = (document.getElementById("cfgBaseCoords")?.value || "San Carlos de Bolívar, AR (-36.2333, -61.1167)").trim();
+  const callsign = (document.getElementById("cfgNodeCallsign")?.value || "LU-BOLIVAR-01").trim();
+
+  const incManuals = document.getElementById("layerManuals")?.checked ?? true;
+  const incMaps = document.getElementById("layerMaps")?.checked ?? true;
+  const incWikimed = document.getElementById("layerWikimed")?.checked ?? true;
+  const incWikiEs = document.getElementById("layerWikiEs")?.checked ?? true;
+  const wikiEdition = document.getElementById("cfgWikiEsEdition")?.value || "nopic";
+  const incLocalAi = document.getElementById("layerLocalAi")?.checked ?? true;
+  const incPortables = document.getElementById("layerPortables")?.checked ?? true;
+
+  const baseReleaseUrl = "https://github.com/ArbizuAldoAlberto/nomad-tactical-hub/releases/download/v2.0.0-omega-ark"; // nosec
+  const downloads = [
+    {
+      layer: "Capa 1 (Nucleo NOMAD Ark)",
+      name: "NOMAD_ARK_USB_v2.0.0_OMEGA.zip",
+      url: baseReleaseUrl + "/NOMAD_ARK_USB_v2.0.0_OMEGA.zip", // nosec
+      dest: "NOMAD_ARK_USB_v2.0.0_OMEGA.zip",
+      gb: 0.03
+    },
+    {
+      layer: "Capa 1 (App Android Release APK)",
+      name: "nomad-tactical-hub.apk",
+      url: baseReleaseUrl + "/nomad-tactical-hub.apk", // nosec
+      dest: "05_SOFTWARE_E_INSTALADORES_OFFLINE/01_ANDROID_APKS/nomad-tactical-hub.apk", // nosec
+      gb: 0.01
+    },
+    {
+      layer: "Capa 1 (Pack Libros Kindle EPUB3)",
+      name: "NOMAD_KINDLE_EPUB_PACK_v2.0.0.zip",
+      url: baseReleaseUrl + "/NOMAD_KINDLE_EPUB_PACK_v2.0.0.zip", // nosec
+      dest: "05_SOFTWARE_E_INSTALADORES_OFFLINE/03_FORMATOS_EPUB_PARA_KINDLE/NOMAD_KINDLE_EPUB_PACK_v2.0.0.zip", // nosec
+      gb: 0.01
+    }
+  ];
+
+  if (incManuals) {
+    downloads.push(
+      { layer: "Capa 2 (Defensa Civil Suecia MSB ES)", name: "MSB_Suecia_Crisis_O_Guerra_ES.pdf", url: "https://rib.msb.se/filer/pdf/30874.pdf", dest: "01_INMEDIATO_PRIMERAS_HORAS/02_DEFENSA_CIVIL_GUERRA_Y_NUCLEAR/MSB_Suecia_Crisis_O_Guerra_ES.pdf", gb: 0.01 }, // nosec
+      { layer: "Capa 2 (Nuclear War Survival Skills)", name: "Nuclear_War_Survival_Skills_Kearny.pdf", url: "https://www.oism.org/nwss/nwss.pdf", dest: "01_INMEDIATO_PRIMERAS_HORAS/02_DEFENSA_CIVIL_GUERRA_Y_NUCLEAR/Nuclear_War_Survival_Skills_Kearny.pdf", gb: 0.02 }, // nosec
+      { layer: "Capa 2 (OMS Primeros Auxilios Psicologicos)", name: "OMS_Primeros_Auxilios_Psicologicos_ES.pdf", url: "https://iris.who.int/bitstream/handle/10665/44837/9789243548203_spa.pdf", dest: "02_CORTO_PLAZO_DIAS_Y_SEMANAS/07_HIGIENE_SANEAMIENTO_Y_PSICOLOGIA/OMS_Primeros_Auxilios_Psicologicos_ES.pdf", gb: 0.01 }, // nosec
+      { layer: "Capa 2 (INTA Manual Huerta ProHuerta)", name: "INTA_Manual_Huerta_Agroecologica.pdf", url: "https://inta.gob.ar/sites/default/files/inta_manual_prohuerta.pdf", dest: "03_LARGO_PLAZO_MESES_Y_ANIOS/01_AGRICULTURA_HUERTA_Y_SEMILLAS_INTA/INTA_Manual_Huerta_Agroecologica.pdf", gb: 0.05 } // nosec
+    );
+  }
+  if (incMaps) {
+    downloads.push({
+      layer: "Capa 3 (Mapa Topografico y Rutas Argentina OsmAnd)",
+      name: "Argentina_southamerica_2.obf.zip",
+      url: "https://download.osmand.net/download?standard=yes&file=Argentina_southamerica_2.obf.zip", // nosec
+      dest: "04_ENCICLOPEDIAS_Y_MAPAS_OFFLINE/02_MAPAS_RUTAS_Y_TOPOGRAFIA/Argentina_southamerica_2.obf.zip", // nosec
+      gb: 0.80
+    });
+  }
+  if (incWikimed) {
+    downloads.push({
+      layer: "Capa 4 (WikiMed Enciclopedia Medica Offline .ZIM)",
+      name: "mdwiki_en_all_maxi.zim",
+      url: "https://download.kiwix.org/zim/other/mdwiki_en_all_maxi_2025-01.zim", // nosec
+      dest: "04_ENCICLOPEDIAS_Y_MAPAS_OFFLINE/01_WIKIPEDIA_ZIM/mdwiki_en_all_maxi.zim", // nosec
+      gb: 2.40
+    });
+  }
+  if (incWikiEs) {
+    if (wikiEdition === "maxi") {
+      downloads.push({
+        layer: "Capa 5 (Wikipedia Espanol Maxi con Imagenes .ZIM)",
+        name: "wikipedia_es_all_maxi.zim",
+        url: "https://download.kiwix.org/zim/wikipedia/wikipedia_es_all_maxi_2025-01.zim", // nosec
+        dest: "04_ENCICLOPEDIAS_Y_MAPAS_OFFLINE/01_WIKIPEDIA_ZIM/wikipedia_es_all_maxi.zim", // nosec
+        gb: 37.20
+      });
+    } else if (wikiEdition === "vikidia") {
+      downloads.push({
+        layer: "Capa 5 (Vikidia Espanol Compacta .ZIM)",
+        name: "vikidia_es_all_maxi.zim",
+        url: "https://download.kiwix.org/zim/vikidia/vikidia_es_all_maxi_2025-01.zim", // nosec
+        dest: "04_ENCICLOPEDIAS_Y_MAPAS_OFFLINE/01_WIKIPEDIA_ZIM/vikidia_es_all_maxi.zim", // nosec
+        gb: 1.10
+      });
+    } else {
+      downloads.push({
+        layer: "Capa 5 (Wikipedia Espanol Completa Sin Imagenes .ZIM)",
+        name: "wikipedia_es_all_nopic.zim",
+        url: "https://download.kiwix.org/zim/wikipedia/wikipedia_es_all_nopic_2025-01.zim", // nosec
+        dest: "04_ENCICLOPEDIAS_Y_MAPAS_OFFLINE/01_WIKIPEDIA_ZIM/wikipedia_es_all_nopic.zim", // nosec
+        gb: 13.40
+      });
+    }
+  }
+  if (incLocalAi) {
+    downloads.push({
+      layer: "Capa 6 (Motor IA Local Anillo 2 Qwen2.5-1.5B GGUF)",
+      name: "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+      url: "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/qwen2.5-1.5b-instruct-q4_k_m.gguf", // nosec
+      dest: "05_SOFTWARE_E_INSTALADORES_OFFLINE/04_MOTOR_IA_LOCAL_OFFLINE/qwen2.5-1.5b-instruct-q4_k_m.gguf", // nosec
+      gb: 1.10
+    });
+  }
+  if (incPortables) {
+    downloads.push(
+      { layer: "Capa 7 (Kiwix Desktop Windows Portable)", name: "kiwix-desktop_windows_x64.zip", url: "https://download.kiwix.org/release/kiwix-desktop/kiwix-desktop_windows_x64.zip", dest: "05_SOFTWARE_E_INSTALADORES_OFFLINE/02_WINDOWS_LINUX_PORTABLES/kiwix-desktop_windows_x64.zip", gb: 0.10 }, // nosec
+      { layer: "Capa 7 (SumatraPDF Lector PDF/EPUB Portable)", name: "SumatraPDF-3.5.2-64.zip", url: "https://www.sumatrapdfreader.org/dl/rel/3.5.2/SumatraPDF-3.5.2-64.zip", dest: "05_SOFTWARE_E_INSTALADORES_OFFLINE/02_WINDOWS_LINUX_PORTABLES/SumatraPDF-3.5.2-64.zip", gb: 0.02 } // nosec
+    );
+  }
+
+  const totalGb = downloads.reduce((acc, it) => acc + it.gb, 0);
+  return { usbSizeGb, os, usbDrive, kindleDrive, coords, callsign, downloads, totalGb };
+}
+
+function buildUsbProtocolMarkdown(cfg) {
+  const freeGb = Math.max(0, cfg.usbSizeGb - cfg.totalGb);
+  const lines = [
+    "# 🛰️ PROTOCOLO MAESTRO PERSONALIZADO — NOMAD ARK USB (" + cfg.usbSizeGb + " GB exFAT)",
+    "- **Nodo / Refugio Base:** `" + cfg.coords + "` | **Callsign:** `" + cfg.callsign + "`",
+    "- **Unidad Pendrive Destino:** `" + cfg.usbDrive + "` | **Unidad Kindle / E-Ink:** `" + cfg.kindleDrive + "`",
+    "- **Espacio Total de Activos Seleccionados:** `" + cfg.totalGb.toFixed(2) + " GB` (`" + freeGb.toFixed(2) + " GB` libres para Bóveda 06_DOCUPAPELES)",
+    "- **Portal Oficial PWA:** https://nomadhub.aldoarbizu.com/",
+    "",
+    "---",
+    "## PASO 1: Formateo Obligatorio en `exFAT` (Rompe el límite de 4 GB de FAT32)",
+    "Los archivos `.zim` de Wikipedia (13.4 GB a 37.2 GB) fallarán si el pendrive viene en `FAT32`. Formatee en `exFAT`:",
+    "```powershell",
+    "# En Windows PowerShell (Administrador) — Reemplace la letra si es necesario:",
+    "Format-Volume -DriveLetter " + cfg.usbDrive.replace(":", "") + " -FileSystem exFAT -NewFileSystemLabel \"NOMAD_ARK\"",
+    "```",
+    "",
+    "## PASO 2: Árbol de Directorios `00` a `07` y Capas Seleccionadas",
+    "| Capa | Archivo | Ruta en Pendrive `" + cfg.usbDrive + "` | Tamaño Est. |",
+    "| :--- | :--- | :--- | :---: |"
+  ];
+  cfg.downloads.forEach(d => {
+    lines.push("| " + d.layer + " | `" + d.name + "` | `" + d.dest + "` | `" + d.gb.toFixed(2) + " GB` |");
+  });
+  lines.push(
+    "",
+    "## PASO 3: Carga Directa de Libros `.EPUB` en Lector Kindle / Kobo (`" + cfg.kindleDrive + "`)",
+    "```powershell",
+    "Copy-Item -Path \"" + cfg.usbDrive + "\\05_SOFTWARE_E_INSTALADORES_OFFLINE\\03_FORMATOS_EPUB_PARA_KINDLE\\*.epub\" -Destination \"" + cfg.kindleDrive + "\\documents\\\" -Force",
+    "```",
+    "",
+    "## PASO 4: Verificación `SHA-256 + PAR2` y Blindaje en Jaula de Faraday",
+    "1. Ejecute `" + cfg.usbDrive + "\\VERIFY_AND_REPAIR_ARK.bat` para validar todas las firmas `SHA-256` y reparar cualquier sector dañado usando los bloques `.par2`.",
+    "2. Guarde el pendrive junto con una bolsita de gel de sílice, envuelto en plástico aislante y 3 capas independientes de papel aluminio grueso dentro de una lata metálica cerrada."
+  );
+  return lines.join("\n");
+}
+
+function buildUsbAutoInstallerScript(cfg) {
+  if (cfg.os === "linux") {
+    const sh = [
+      "#!/usr/bin/env bash",
+      "# NOMAD ARK USB 1-CLICK AUTO-PROVISIONER (LINUX / MACOS)",
+      "set -e",
+      "TARGET_USB=\"" + (cfg.usbDrive.startsWith("/") ? cfg.usbDrive : "/mnt/nomad_ark") + "\"",
+      "echo \"====================================================================\"",
+      "echo \" NOMAD ARK OMEGA // APROVISIONADOR AUTOMATICO EN $TARGET_USB\"",
+      "echo \" Nodo: " + cfg.coords + " (" + cfg.callsign + ")\"",
+      "echo \"====================================================================\"",
+      "mkdir -p \"$TARGET_USB\""
+    ];
+    cfg.downloads.forEach(d => {
+      sh.push("mkdir -p \"$(dirname \"$TARGET_USB/" + d.dest + "\")\"");
+      sh.push("echo \"[DESCARGANDO] " + d.name + " (" + d.gb.toFixed(2) + " GB)...\"");
+      sh.push("curl -L -C - --retry 5 -o \"$TARGET_USB/" + d.dest + "\" \"" + d.url + "\"");
+    });
+    sh.push(
+      "if [ -f \"$TARGET_USB/NOMAD_ARK_USB_v2.0.0_OMEGA.zip\" ]; then",
+      "  unzip -o \"$TARGET_USB/NOMAD_ARK_USB_v2.0.0_OMEGA.zip\" -d \"$TARGET_USB/\"",
+      "fi",
+      "echo \"[OK] Pendrive NOMAD Ark aprovisionado al 100% en $TARGET_USB\""
+    );
+    return sh.join("\n");
+  }
+
+  const cleanLetter = cfg.usbDrive.replace(":", "").replace("\\", "") || "E";
+  const cleanKindle = cfg.kindleDrive.replace(":", "").replace("\\", "") || "K";
+  const ps = [
+    "# ============================================================================",
+    "# NOMAD ARK OMEGA // AUTO-INSTALADOR 1-CLIC PARA PENDRIVE USB (" + cfg.usbSizeGb + " GB exFAT)",
+    "# Nodo: " + cfg.coords + " | Callsign: " + cfg.callsign,
+    "# ============================================================================",
+    "$ErrorActionPreference = 'Continue'",
+    "$UsbRoot = '" + cleanLetter + ":\\'",
+    "$KindleRoot = '" + cleanKindle + ":\\documents\\'",
+    "Write-Host '====================================================================' -ForegroundColor Cyan",
+    "Write-Host ' 🛰️ NOMAD ARK OMEGA // APROVISIONADOR AUTOMÁTICO DE PENDRIVE USB' -ForegroundColor Green",
+    "Write-Host '====================================================================' -ForegroundColor Cyan",
+    "if (-not (Test-Path $UsbRoot)) {",
+    "    Write-Host \"[!] La unidad $UsbRoot no está conectada. Usando carpeta local .\\NOMAD_ARK_USB_LOCAL\\\" -ForegroundColor Yellow",
+    "    $UsbRoot = Join-Path $PSScriptRoot 'NOMAD_ARK_USB_LOCAL\\'",
+    "    New-Item -ItemType Directory -Force -Path $UsbRoot | Out-Null",
+    "}"
+  ];
+  cfg.downloads.forEach(d => {
+    const winRel = d.dest.replace(/\//g, "\\");
+    ps.push("$destFile = Join-Path $UsbRoot '" + winRel + "'");
+    ps.push("$destDir = Split-Path -Parent $destFile");
+    ps.push("if (-not (Test-Path $destDir)) { New-Item -ItemType Directory -Force -Path $destDir | Out-Null }");
+    ps.push("Write-Host '[DESCARGANDO CON REANUDACIÓN] " + d.name + " (" + d.gb.toFixed(2) + " GB)...' -ForegroundColor Yellow");
+    ps.push("curl.exe -L -C - --retry 5 -o \"$destFile\" \"" + d.url + "\"");
+  });
+  ps.push(
+    "$coreZip = Join-Path $UsbRoot 'NOMAD_ARK_USB_v2.0.0_OMEGA.zip'",
+    "if (Test-Path $coreZip) {",
+    "    Write-Host '[EXTRAYENDO NÚCLEO NOMAD ARK 00-07 + PAR2]...' -ForegroundColor Cyan",
+    "    Expand-Archive -Path $coreZip -DestinationPath $UsbRoot -Force",
+    "}",
+    "if (Test-Path $KindleRoot) {",
+    "    Write-Host '[SINCRONIZANDO LIBROS .EPUB EN KINDLE (' + $KindleRoot + ')]...' -ForegroundColor Green",
+    "    $epubSrc = Join-Path $UsbRoot '05_SOFTWARE_E_INSTALADORES_OFFLINE\\03_FORMATOS_EPUB_PARA_KINDLE\\*.epub'",
+    "    Copy-Item -Path $epubSrc -Destination $KindleRoot -Force",
+    "}",
+    "Write-Host '✅ APROVISIONAMIENTO NOMAD ARK COMPLETADO EN: ' $UsbRoot -ForegroundColor Green"
+  );
+  return ps.join("\r\n");
+}
+
+function updateUsbProtocolPreview() {
+  const cfg = getUsbProvisionConfig();
+  const pct = Math.min(100, (cfg.totalGb / cfg.usbSizeGb) * 100);
+  const freeGb = Math.max(0, cfg.usbSizeGb - cfg.totalGb);
+
+  const badge = document.getElementById("usbSpaceSummaryBadge");
+  if (badge) badge.textContent = `ESPACIO ESTIMADO: ${cfg.totalGb.toFixed(2)} GB / ${cfg.usbSizeGb} GB`;
+
+  const rightLbl = document.getElementById("usbBarLabelRight");
+  if (rightLbl) {
+    rightLbl.textContent = `${pct.toFixed(1)}% ocupado (${freeGb.toFixed(2)} GB libres para Bóveda 06_DOCUPAPELES)`;
+    rightLbl.style.color = cfg.totalGb > cfg.usbSizeGb ? "var(--red)" : "var(--accent)";
+  }
+
+  const bar = document.getElementById("usbSpaceBarFill");
+  if (bar) bar.style.width = `${pct.toFixed(1)}%`;
+
+  const preview = document.getElementById("usbProtocolPreviewBox");
+  if (preview) {
+    preview.textContent = buildUsbProtocolMarkdown(cfg) + "\n\n# --- SCRIPT AUTO-INSTALADOR GENERADO ---\n" + buildUsbAutoInstallerScript(cfg);
+  }
+}
+
+function triggerClientDownload(filename, content, mimeType) {
+  const blob = new Blob([content], { type: mimeType + ";charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => {
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, 200);
+}
+
+function downloadCustomUsbAsset(kind) {
+  const cfg = getUsbProvisionConfig();
+  if (kind === "md") {
+    triggerClientDownload("PROTOCOLO_NOMAD_USB_" + cfg.usbSizeGb + "GB_PERSONALIZADO.md", buildUsbProtocolMarkdown(cfg), "text/markdown");
+  } else if (kind === "script") {
+    const ext = cfg.os === "linux" ? "sh" : "ps1";
+    triggerClientDownload("AUTOBUILD_NOMAD_USB_" + cfg.usbSizeGb + "GB." + ext, buildUsbAutoInstallerScript(cfg), "text/plain");
+  } else if (kind === "urls") {
+    const listTxt = cfg.downloads.map(d => d.url + "\n  out=" + d.dest).join("\n");
+    triggerClientDownload("URLS_ARIA2_CURL_" + cfg.usbSizeGb + "GB.txt", listTxt + "\n", "text/plain");
+  } else if (kind === "html") {
+    const mdText = buildUsbProtocolMarkdown(cfg).replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const scriptText = buildUsbAutoInstallerScript(cfg).replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const printableHtml = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Protocolo NOMAD Ark USB ${cfg.usbSizeGb}GB</title><style>body{font-family:system-ui,monospace;padding:24px;max-width:920px;margin:0 auto;line-height:1.5;color:#000;background:#fff;}pre{background:#f4f4f4;border:1px solid #000;padding:12px;white-space:pre-wrap;font-size:12px;}@media print{.no-print{display:none;}}</style></head><body><button class="no-print" onclick="window.print()" style="padding:10px 16px;font-weight:bold;cursor:pointer;">🖨️ IMPRIMIR / GUARDAR COMO PDF</button><h1>🛰️ PROTOCOLO PERSONALIZADO NOMAD ARK USB (${cfg.usbSizeGb} GB)</h1><pre>${mdText}</pre><h2>⚡ SCRIPT AUTO-INSTALADOR 1-CLIC</h2><pre>${scriptText}</pre></body></html>`;
+    triggerClientDownload("PROTOCOLO_NOMAD_USB_" + cfg.usbSizeGb + "GB_PRINT.html", printableHtml, "text/html");
+  }
 }
 
 function filterLibrary() {
@@ -713,6 +1107,7 @@ function renderPictograms() {
 filterLibrary();
 runAllCalculators();
 renderPictograms();
+updateUsbProtocolPreview();
 </script>
 </body>
 </html>
