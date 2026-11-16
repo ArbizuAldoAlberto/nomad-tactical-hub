@@ -46,6 +46,7 @@ import com.example.data.*
 import com.example.ui.theme.*
 import com.example.util.GuideItem
 import com.example.util.RepoAnalysis
+import com.example.util.SurvivalCipher
 import com.example.util.SurvivalKnowledgeBase
 import com.example.util.CrisisCalculators
 import androidx.compose.foundation.rememberScrollState
@@ -1237,9 +1238,9 @@ fun TransmissionsScreen(viewModel: SurvivalViewModel) {
                 ),
                 modifier = Modifier.weight(1f).border(1.dp, DarkBorder)
             ) {
-                Text("CIFRADOR VIGENÈRE", fontWeight = FontWeight.Bold, fontSize = 11.sp)
+                Text("CIFRADOR", fontWeight = FontWeight.Bold, fontSize = 10.sp)
             }
-            Spacer(modifier = Modifier.width(6.dp))
+            Spacer(modifier = Modifier.width(4.dp))
             Button(
                 onClick = { comSubTab = "morse" },
                 colors = ButtonDefaults.buttonColors(
@@ -1248,7 +1249,18 @@ fun TransmissionsScreen(viewModel: SurvivalViewModel) {
                 ),
                 modifier = Modifier.weight(1f).border(1.dp, DarkBorder)
             ) {
-                Text("CÓDIGO MORSE", fontWeight = FontWeight.Bold, fontSize = 11.sp)
+                Text("MORSE 800Hz", fontWeight = FontWeight.Bold, fontSize = 10.sp)
+            }
+            Spacer(modifier = Modifier.width(4.dp))
+            Button(
+                onClick = { comSubTab = "baofeng" },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (comSubTab == "baofeng") BrightCyan else SurfaceDark,
+                    contentColor = if (comSubTab == "baofeng") SlateCharcoal else Color.White
+                ),
+                modifier = Modifier.weight(1f).border(1.dp, DarkBorder)
+            ) {
+                Text("BAOFENG & LAB", fontWeight = FontWeight.Bold, fontSize = 10.sp)
             }
         }
 
@@ -1390,7 +1402,7 @@ fun TransmissionsScreen(viewModel: SurvivalViewModel) {
                     }
                 }
             }
-        } else {
+        } else if (comSubTab == "morse") {
             // Morse Translator Box
             Card(
                 colors = CardDefaults.cardColors(containerColor = SurfaceDark),
@@ -1432,7 +1444,130 @@ fun TransmissionsScreen(viewModel: SurvivalViewModel) {
                         ) {
                             Icon(Icons.Default.PlayArrow, contentDescription = "Flash")
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("EMITIR RÁFAGA LUMINOSA", fontWeight = FontWeight.Bold)
+                            Text("EMITIR RÁFAGA LUMINOSA & AUDIO 800Hz", fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+            }
+        } else {
+            // Baofeng UV-5R Visual Wizard + Live RF Oscilloscope + Interactive Morse Keyer
+            var bfStep by remember { mutableStateOf(1) }
+            var morseDrillInput by remember { mutableStateOf("") }
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.fillMaxSize()) {
+                item {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = SurfaceDark),
+                        modifier = Modifier.fillMaxWidth().border(1.dp, BrightCyan, RoundedCornerShape(12.dp))
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                            Text("ASISTENTE VISUAL RADIO BAOFENG UV-5R & OSCILOSCOPIO RF", style = MaterialTheme.typography.titleMedium, color = BrightCyan)
+                            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                listOf(
+                                    1 to "1. 146.520",
+                                    2 to "2. VOX=2",
+                                    3 to "3. SQL=1",
+                                    4 to "4. Cable K1"
+                                ).forEach { (id, label) ->
+                                    Button(
+                                        onClick = { bfStep = id },
+                                        colors = ButtonDefaults.buttonColors(
+                                            containerColor = if (bfStep == id) CyberGreen else SurfaceMedium,
+                                            contentColor = if (bfStep == id) SlateCharcoal else Color.White
+                                        ),
+                                        modifier = Modifier.weight(1f)
+                                    ) {
+                                        Text(label, fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                                    }
+                                }
+                            }
+                            val stepGuide = when (bfStep) {
+                                1 -> "LCD: [VFO A: 146.520 MHz]\n1. Pulse botón naranja [VFO/MR] y azul [A/B].\n2. Digite en teclado: [1][4][6][5][2][0].\n3. En [MENU] -> [2][5] (SFT-D) elija OFF para Simplex directo."
+                                2 -> "LCD: [MENU 04: VOX -> NIVEL 2]\n1. Pulse [MENU] + [4] -> [MENU] -> elija Nivel [2] -> [MENU] -> [EXIT].\n2. Suba el volumen del celular al 75% y acerque el altavoz a 3 cm del micrófono del Baofeng."
+                                3 -> "LCD: [MENU 00: SQL -> NIVEL 1]\n1. Pulse [MENU] + [0] -> [MENU] -> elija Nivel [1] -> [MENU] -> [EXIT].\n2. Evita que el silenciador corte el inicio de las tramas AFSK 1200 o imágenes SSTV."
+                                else -> "PINOUT CABLE K1 KENWOOD A CELULAR TRRS:\n• Pin superior 3.5mm: Entrada Micrófono / PTT.\n• Pin inferior 2.5mm: Salida Audio RX Speaker hacia el micrófono del celular."
+                            }
+                            Text(stepGuide, color = Color.White, style = MaterialTheme.typography.bodySmall)
+
+                            // Live RF Waveform Oscilloscope Canvas
+                            Canvas(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(64.dp)
+                                    .background(SlateCharcoal, RoundedCornerShape(6.dp))
+                                    .border(1.dp, CyberGreen, RoundedCornerShape(6.dp))
+                            ) {
+                                val midY = size.height / 2f
+                                val cycles = if (bfStep == 2) 14f else 8f
+                                var prevX = 0f
+                                var prevY = midY
+                                val stepPx = 6f
+                                var x = stepPx
+                                while (x <= size.width) {
+                                    val y = midY + (sin((x / size.width) * 2.0 * PI * cycles) * (size.height * 0.35f)).toFloat()
+                                    drawLine(
+                                        color = CyberGreen,
+                                        start = Offset(prevX, prevY),
+                                        end = Offset(x, y),
+                                        strokeWidth = 3f
+                                    )
+                                    prevX = x
+                                    prevY = y
+                                    x += stepPx
+                                }
+                            }
+                            Text("CALIBRACIÓN ACÚSTICA: Volumen 75% (Sin Clipping) | 800Hz CW / 1200-2200Hz AFSK / SSTV Robot36", style = MaterialTheme.typography.labelSmall, color = WarnAmber)
+                        }
+                    }
+                }
+                item {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = SurfaceDark),
+                        modifier = Modifier.fillMaxWidth().border(1.dp, CyberGreen, RoundedCornerShape(12.dp))
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                            Text("ENTRENADOR TELEGRÁFICO MORSE (MISIÓN SOS: ... --- ...)", style = MaterialTheme.typography.titleMedium, color = CyberGreen)
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                Button(
+                                    onClick = {
+                                        morseDrillInput += "."
+                                        viewModel.startMorseFlashing(".")
+                                    },
+                                    colors = ButtonDefaults.buttonColors(containerColor = CyberGreen, contentColor = SlateCharcoal),
+                                    modifier = Modifier.weight(1f).height(48.dp)
+                                ) {
+                                    Text("● PUNTO (.)", fontWeight = FontWeight.Bold)
+                                }
+                                Button(
+                                    onClick = {
+                                        morseDrillInput += "-"
+                                        viewModel.startMorseFlashing("-")
+                                    },
+                                    colors = ButtonDefaults.buttonColors(containerColor = BrightCyan, contentColor = SlateCharcoal),
+                                    modifier = Modifier.weight(1f).height(48.dp)
+                                ) {
+                                    Text("▬ RAYA (-)", fontWeight = FontWeight.Bold)
+                                }
+                                Button(
+                                    onClick = { morseDrillInput += " " },
+                                    colors = ButtonDefaults.buttonColors(containerColor = SurfaceMedium),
+                                    modifier = Modifier.height(48.dp)
+                                ) {
+                                    Text("ESP")
+                                }
+                                Button(
+                                    onClick = { morseDrillInput = "" },
+                                    colors = ButtonDefaults.buttonColors(containerColor = AlertRed),
+                                    modifier = Modifier.height(48.dp)
+                                ) {
+                                    Text("CLR")
+                                }
+                            }
+                            val decoded = SurvivalCipher.morseToText(morseDrillInput)
+                            Text(
+                                text = "Secuencia: $morseDrillInput  -> Decodificado: $decoded ${if (decoded == "SOS") "✅ ¡MISIÓN SOS CUMPLIDA!" else ""}",
+                                color = if (decoded == "SOS") CyberGreen else Color.White,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
                         }
                     }
                 }
@@ -1770,6 +1905,23 @@ fun MedicalAndChlorinationView(viewModel: SurvivalViewModel) {
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     Text("POTABILIZACIÓN EXACTA POR CONCENTRACIÓN (g Cl/L)", style = MaterialTheme.typography.titleMedium, color = CyberGreen)
+                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Button(
+                            onClick = { waterLiters = "20.0"; bleachConc = 55; isTurbid = false },
+                            colors = ButtonDefaults.buttonColors(containerColor = SurfaceMedium),
+                            modifier = Modifier.weight(1f)
+                        ) { Text("Bidón 20L (55g/L)", fontSize = 9.sp, color = CyberGreen) }
+                        Button(
+                            onClick = { waterLiters = "200.0"; bleachConc = 55; isTurbid = true },
+                            colors = ButtonDefaults.buttonColors(containerColor = SurfaceMedium),
+                            modifier = Modifier.weight(1f)
+                        ) { Text("Tambor 200L Turbia", fontSize = 9.sp, color = WarnAmber) }
+                        Button(
+                            onClick = { waterLiters = "1.0"; bleachConc = 25; isTurbid = false },
+                            colors = ButtonDefaults.buttonColors(containerColor = SurfaceMedium),
+                            modifier = Modifier.weight(1f)
+                        ) { Text("Botella 1L (25g/L)", fontSize = 9.sp, color = BrightCyan) }
+                    }
                     OutlinedTextField(
                         value = waterLiters,
                         onValueChange = { waterLiters = it },
@@ -1805,9 +1957,28 @@ fun MedicalAndChlorinationView(viewModel: SurvivalViewModel) {
                 modifier = Modifier.fillMaxWidth().border(1.dp, DarkBorder, RoundedCornerShape(12.dp))
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text("SUERO ORAL OMS & QUEMADURAS PARKLAND", style = MaterialTheme.typography.titleMedium, color = WarnAmber)
+                    Text("SUERO ORAL OMS & QUEMADURAS PARKLAND (REGLA DE WALLACE)", style = MaterialTheme.typography.titleMedium, color = WarnAmber)
                     Text("SRO OMS (por 1 Litro): ${orsResult.saltGrams} g Sal (1/2 cdta rasa) + ${orsResult.sugarGrams} g Azúcar (6 cdtas rasas).", color = Color.White)
                     Text(orsResult.clinicalWarning, color = AlertRed, style = MaterialTheme.typography.bodySmall)
+                    Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                        listOf(
+                            "Cabeza +9%" to 9.0,
+                            "Torso +18%" to 18.0,
+                            "Brazo +9%" to 9.0,
+                            "Pierna +18%" to 18.0
+                        ).forEach { (lbl, addPct) ->
+                            Button(
+                                onClick = {
+                                    val cur = burnTbsa.replace(',', '.').toDoubleOrNull() ?: 0.0
+                                    burnTbsa = String.format(Locale.US, "%.0f", (cur + addPct).coerceAtMost(100.0))
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = SurfaceMedium),
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Text(lbl, fontSize = 8.sp, color = WarnAmber)
+                            }
+                        }
+                    }
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         OutlinedTextField(
                             value = burnWeightKg,

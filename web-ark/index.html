@@ -263,13 +263,115 @@
 
   <div class="nav-tabs">
     <button class="primary" onclick="showTab('tab-lupa')">🔎 LUPA UNIVERSAL &amp; 00 ÍNDICE (60s)</button>
+    <button class="cyan" onclick="showTab('tab-academia')">🎯 ENTRENADOR &amp; BAOFENG VISUAL</button>
     <button class="amber" onclick="showTab('tab-usb128')">💾 PROTOCOLO USB 128GB &amp; ZIM</button>
     <button onclick="showTab('tab-calculadoras')">🧮 CALCULADORAS VITALES 360°</button>
-    <button onclick="showTab('tab-radio')">📻 MÓDEM RADIO (MORSE 800Hz / AFSK / SSTV)</button>
+    <button onclick="showTab('tab-radio')">📻 MÓDEM RADIO &amp; OSCILOSCOPIO</button>
     <button onclick="showTab('tab-nair')">🧠 ASESOR IA NAIR (4 ANILLOS)</button>
     <button onclick="showTab('tab-pictogramas')">🗣️ PICTOGRAMAS MULTILINGÜES</button>
     <button onclick="showTab('tab-arbol')">📂 ÁRBOL USB 00-07 &amp; COLD-SYNC</button>
   </div>
+
+  <!-- TAB ACADEMIA VISUAL: BAOFENG UV-5R SVG + MANIQUI WALLACE/TORNIQUETE + ENTRENADOR MORSE -->
+  <section id="tab-academia" class="hidden">
+    <div class="grid">
+      <!-- 1. SIMULADOR VISUAL INTERACTIVO BAOFENG UV-5R -->
+      <div class="card" style="border-color:var(--cyan);">
+        <div><span class="badge">MÓDULO VISUAL 1 · RADIO VHF/UHF</span></div>
+        <h3>📻 Simulador Visual Baofeng UV-5R &amp; Asistente de Conexión</h3>
+        <p style="font-size:0.82rem;color:var(--muted);">Seleccione qué desea configurar. Los botones que debe presionar en su radio física se iluminarán en verde neón sobre el diagrama.</p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="primary" onclick="setBaofengWizard(1)">1. Sintonizar 146.520 MHz</button>
+          <button class="cyan" onclick="setBaofengWizard(2)">2. Activar VOX Nivel 2 (Sin Cable)</button>
+          <button class="amber" onclick="setBaofengWizard(3)">3. Squelch SQL Nivel 1 (RX)</button>
+          <button onclick="setBaofengWizard(4)">4. Quitar Repetidor (SFT-D OFF)</button>
+        </div>
+
+        <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center;background:var(--bg);padding:12px;border-radius:8px;border:1px solid var(--border);">
+          <svg viewBox="0 0 220 340" width="190" height="295" style="flex-shrink:0;">
+            <!-- Antena y Perilla -->
+            <rect x="42" y="4" width="24" height="42" rx="6" fill="#1F2630" stroke="#00F29D" stroke-width="2"/>
+            <rect x="148" y="20" width="24" height="26" rx="5" fill="#1F2630" stroke="#8B949E" stroke-width="2"/>
+            <!-- Cuerpo del Handy -->
+            <rect x="24" y="44" width="172" height="284" rx="18" fill="#161B22" stroke="#30363D" stroke-width="3"/>
+            <!-- Boton PTT Lateral -->
+            <rect id="bfKeyPtt" x="10" y="95" width="14" height="68" rx="4" fill="#FF2E51" stroke="#FFF" stroke-width="1"/>
+            <text x="17" y="133" fill="#FFF" font-size="8" font-weight="bold" text-anchor="middle" transform="rotate(-90 17,133)">PTT</text>
+            <!-- Pantalla LCD -->
+            <rect x="42" y="64" width="136" height="68" rx="6" fill="#0A2E23" stroke="#00F29D" stroke-width="2"/>
+            <text id="bfLcdLine1" x="50" y="88" fill="#00F29D" font-family="monospace" font-size="13" font-weight="bold">VFO A: 146.520</text>
+            <text id="bfLcdLine2" x="50" y="108" fill="#00E5FF" font-family="monospace" font-size="10">VOX:2  SQL:1  SFT:OFF</text>
+            <text id="bfLcdHint" x="50" y="124" fill="#FFB300" font-family="monospace" font-size="9">MODO SOCORRO VHF</text>
+            <!-- Botones VFO/MR y A/B -->
+            <rect id="bfKeyVfo" x="44" y="142" width="58" height="24" rx="5" fill="#FF6D00" stroke="#FFF" stroke-width="1.5"/>
+            <text x="73" y="158" fill="#000" font-size="10" font-weight="bold" text-anchor="middle">VFO/MR</text>
+            <rect id="bfKeyAb" x="118" y="142" width="58" height="24" rx="5" fill="#0288D1" stroke="#FFF" stroke-width="1.5"/>
+            <text x="147" y="158" fill="#FFF" font-size="10" font-weight="bold" text-anchor="middle">A / B</text>
+            <!-- Fila MENU / UP / DOWN / EXIT -->
+            <rect id="bfKeyMenu" x="44" y="176" width="42" height="24" rx="4" fill="#1F2630" stroke="#8B949E" stroke-width="1.5"/>
+            <text x="65" y="192" fill="#FFF" font-size="9" font-weight="bold" text-anchor="middle">MENU</text>
+            <rect id="bfKeyArrows" x="92" y="176" width="36" height="24" rx="4" fill="#1F2630" stroke="#8B949E" stroke-width="1.5"/>
+            <text x="110" y="192" fill="#00E5FF" font-size="10" font-weight="bold" text-anchor="middle">▲▼</text>
+            <rect id="bfKeyExit" x="134" y="176" width="42" height="24" rx="4" fill="#1F2630" stroke="#8B949E" stroke-width="1.5"/>
+            <text x="155" y="192" fill="#FFF" font-size="9" font-weight="bold" text-anchor="middle">EXIT</text>
+            <!-- Teclado Numerico -->
+            <rect id="bfKeyNum" x="44" y="210" width="132" height="102" rx="6" fill="#0E1116" stroke="#30363D" stroke-width="1.5"/>
+            <text x="110" y="234" fill="#F0F6FC" font-family="monospace" font-size="12" font-weight="bold" text-anchor="middle">[1]   [2]   [3]</text>
+            <text x="110" y="260" fill="#F0F6FC" font-family="monospace" font-size="12" font-weight="bold" text-anchor="middle">[4]   [5]   [6]</text>
+            <text x="110" y="286" fill="#F0F6FC" font-family="monospace" font-size="12" font-weight="bold" text-anchor="middle">[7]   [8]   [9]</text>
+            <text x="110" y="306" fill="#00F29D" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">[*]   [0]   [#]</text>
+          </svg>
+          <div style="flex:1;min-width:210px;">
+            <div id="bfWizardSteps" class="result-box" style="font-size:0.8rem;"></div>
+            <div style="margin-top:8px;font-size:0.78rem;background:var(--surface-alt);padding:8px;border-radius:6px;border-left:3px solid var(--amber);">
+              <b>🔌 Regla de Oro Acústica vs. Cable K1:</b><br>
+              • <b>Sin Cables (Aire):</b> Volumen celular al <b>75%</b>, distancia <b>2 a 5 cm</b> al micrófono del Baofeng, <code>VOX = 2</code>, <code>SQL = 1</code>.<br>
+              • <b>Con Cable K1 Kenwood:</b> Pin superior <code>3.5mm</code> = Micrófono/PTT; Pin inferior <code>2.5mm</code> = Salida Audio RX hacia celular.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. ENTRENADOR LUDICO DE CODIGO MORSE & MISIONES DE CAMPO -->
+      <div class="card" style="border-color:var(--accent);">
+        <div><span class="badge">MÓDULO LÚDICO 2 · ENTRENADOR INTERACTIVO</span> <span class="badge" id="morseMedalBadge">🎖️ RANGO: CADETE RF (0/4)</span></div>
+        <h3>🎮 Entrenador Telegráfico Morse &amp; Simulador de Misiones</h3>
+        <p style="font-size:0.82rem;color:var(--muted);">Practique con los botones táctiles de Punto (<code>.</code>) y Raya (<code>-</code>). Complete las 4 misiones de emergencia con sonido real de 800 Hz.</p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button onclick="selectMorseDrill(0)">Misión 1: SOS (... --- ...)</button>
+          <button onclick="selectMorseDrill(1)">Misión 2: OK (--- -.-)</button>
+          <button onclick="selectMorseDrill(2)">Misión 3: QTH (--.- - ....)</button>
+          <button onclick="selectMorseDrill(3)">Misión 4: AGUA (.- --. ..- .-)</button>
+        </div>
+        <div id="morseDrillTargetBox" class="result-box" style="border-left-color:var(--accent);">OBJETIVO MISIÓN 1: Emita SOS -> ... --- ...</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="primary" style="flex:1;min-height:54px;font-size:1rem;" onclick="tapMorseSymbol('.')">● PUNTO (.)</button>
+          <button class="cyan" style="flex:1;min-height:54px;font-size:1rem;" onclick="tapMorseSymbol('-')">▬ RAYA (-)</button>
+          <button style="min-height:54px;" onclick="tapMorseSymbol(' ')">ESPACIO LETRA</button>
+          <button class="danger" style="min-height:54px;" onclick="clearMorseDrill()">BORRAR</button>
+        </div>
+        <div id="morseUserBufferBox" class="result-box">Su entrada: (vacío)</div>
+      </div>
+
+      <!-- 3. MANIQUI VISUAL INTERACTIVO DE QUEMADURAS (WALLACE) & TORNIQUETE -->
+      <div class="card" style="border-color:var(--red);">
+        <div><span class="badge">MÓDULO CLÍNICO VISUAL 3 · TRAUMA &amp; WALLACE</span></div>
+        <h3>🩸 Mapa Corporal Interactivo (Quemaduras Regla de los 9 &amp; Torniquete)</h3>
+        <p style="font-size:0.82rem;color:var(--muted);">Toque las regiones afectadas para sumar automáticamente el <b>% de Superficie Corporal Quemada (%SCTQ)</b> y calcular el suero de <b>Parkland</b>.</p>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;">
+          <button id="burnZone_head" onclick="toggleBurnZone('head', 9)">Cabeza y Cuello (9%)</button>
+          <button id="burnZone_chest" onclick="toggleBurnZone('chest', 18)">Torso Frontal (18%)</button>
+          <button id="burnZone_back" onclick="toggleBurnZone('back', 18)">Espalda Completa (18%)</button>
+          <button id="burnZone_armL" onclick="toggleBurnZone('armL', 9)">Brazo Izquierdo (9%)</button>
+          <button id="burnZone_armR" onclick="toggleBurnZone('armR', 9)">Brazo Derecho (9%)</button>
+          <button id="burnZone_legL" onclick="toggleBurnZone('legL', 18)">Pierna Izquierda (18%)</button>
+          <button id="burnZone_legR" onclick="toggleBurnZone('legR', 18)">Pierna Derecha (18%)</button>
+          <button onclick="resetBurnZones()" class="danger">Limpiar Zonas (0%)</button>
+        </div>
+        <div id="burnVisualSummaryBox" class="result-box">Seleccione las zonas afectadas arriba. Zonas seguras de Torniquete: 5 a 7 cm arriba de la herida en brazo o muslo (NUNCA sobre codo o rodilla).</div>
+      </div>
+    </div>
+  </section>
 
   <!-- TAB NUEVA: GENERADOR Y DESCARGADOR DE PROTOCOLO PERSONALIZADO PENDRIVE 128GB -->
   <section id="tab-usb128" class="hidden">
@@ -403,6 +505,23 @@
 
   <!-- TAB 2: CALCULADORAS VITALES 360 -->
   <section id="tab-calculadoras" class="hidden">
+    <div class="card" style="margin-bottom:14px;border-color:var(--accent);">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+        <div>
+          <span class="badge">ERGONOMÍA CERO-FRICCIÓN (1 TOQUE)</span>
+          <b style="margin-left:8px;">⚡ Presets Rápidos de Escenario + Cronómetro de Cloración (30 min):</b>
+        </div>
+        <button class="amber" id="btnChlorineTimer" onclick="toggleChlorineTimer30m()">⏱️ INICIAR REPOSO CLORO (30:00)</button>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
+        <button onclick="applyQuickPreset('bidon20')">💧 Bidón 20L (Lavandina 55g/L)</button>
+        <button onclick="applyQuickPreset('tambor200')">🛢️ Tambor 200L Turbia (55g/L)</button>
+        <button onclick="applyQuickPreset('botella1')">🍼 Botella 1L (Lavandina 25g/L)</button>
+        <button onclick="applyQuickPreset('pediatrico20')">👶 Niño 20 kg (Fiebre/Dolor)</button>
+        <button onclick="applyQuickPreset('vhf146')">📡 Dipolo VHF 146.520 MHz</button>
+        <button onclick="applyQuickPreset('lora915')">🛰️ Dipolo LoRa 915.0 MHz</button>
+      </div>
+    </div>
     <div class="grid">
       <div class="card">
         <h3>💧 Potabilización Exacta por g/L de Lavandina + SRO OMS</h3>
@@ -481,7 +600,8 @@
           <button class="cyan" onclick="playWebAfskPacket()">📡 EMITIR RÁFAGA AFSK 1200/2200Hz</button>
           <button onclick="playWebSstvBeacon()">🖼️ EMITIR BALIZA SSTV ROBOT36</button>
         </div>
-        <div id="radioOutBox" class="result-box">Listo para modular en audio PCM 44.1 kHz.</div>
+        <canvas id="rfOscilloscopeCanvas" width="480" height="84" style="width:100%;height:84px;background:#05080B;border:1px solid var(--accent);border-radius:6px;"></canvas>
+        <div id="radioOutBox" class="result-box">Osciloscopio RF listo (44.1 kHz PCM). Ajuste volumen al 75% para acoplar con Baofeng UV-5R.</div>
       </div>
       <div class="card">
         <h3>📋 Tabla de Frecuencias Vitales sin Internet</h3>
@@ -633,10 +753,238 @@ function toggleTraumaMode() {
 }
 
 function showTab(tabId) {
-  ["tab-lupa", "tab-usb128", "tab-calculadoras", "tab-radio", "tab-nair", "tab-pictogramas", "tab-arbol"].forEach(id => {
+  ["tab-lupa", "tab-academia", "tab-usb128", "tab-calculadoras", "tab-radio", "tab-nair", "tab-pictogramas", "tab-arbol"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.toggle("hidden", id !== tabId);
   });
+}
+
+function setBaofengWizard(stepId) {
+  const keys = ["bfKeyVfo", "bfKeyAb", "bfKeyMenu", "bfKeyArrows", "bfKeyExit", "bfKeyNum", "bfKeyPtt"];
+  keys.forEach(k => {
+    const el = document.getElementById(k);
+    if (el) { el.setAttribute("stroke", "#8B949E"); el.setAttribute("stroke-width", "1.5"); }
+  });
+  const highlight = (ids) => ids.forEach(k => {
+    const el = document.getElementById(k);
+    if (el) { el.setAttribute("stroke", "#00F29D"); el.setAttribute("stroke-width", "4"); }
+  });
+  const l1 = document.getElementById("bfLcdLine1");
+  const l2 = document.getElementById("bfLcdLine2");
+  const hint = document.getElementById("bfLcdHint");
+  const box = document.getElementById("bfWizardSteps");
+
+  if (stepId === 1) {
+    highlight(["bfKeyVfo", "bfKeyAb", "bfKeyNum"]);
+    if (l1) l1.textContent = "VFO A: 146.520";
+    if (l2) l2.textContent = "STEP:5K  SQL:1  TXP:HI";
+    if (hint) hint.textContent = "146.520 MHz SOCORRO VHF";
+    if (box) box.textContent =
+      "PASO A PASO — SINTONIZAR 146.520 MHz:\n" +
+      "1. Pulse el botón naranja [VFO/MR] para entrar en modo Frecuencia.\n" +
+      "2. Pulse el botón azul [A/B] para ubicarse en la frecuencia superior (A).\n" +
+      "3. En el teclado numérico digite exactamente: [1] [4] [6] [5] [2] [0].\n" +
+      "4. Escuche 3 minutos cada 3 horas en punto (Regla 3-3-3).";
+  } else if (stepId === 2) {
+    highlight(["bfKeyMenu", "bfKeyArrows", "bfKeyExit", "bfKeyNum"]);
+    if (l1) l1.textContent = "MENU 04: VOX";
+    if (l2) l2.textContent = "NIVEL: 02 (ACTIVO)";
+    if (hint) hint.textContent = "MODEM ACUSTICO SIN CABLE";
+    if (box) box.textContent =
+      "PASO A PASO — ACTIVAR VOX PARA TRANSMITIR DESDE EL CELULAR SIN CABLES:\n" +
+      "1. Pulse [MENU] y luego el número [4] en el teclado.\n" +
+      "2. Pulse [MENU] de nuevo para bajar al valor.\n" +
+      "3. Use las flechas [▲▼] o el número [2] para elegir sensibilidad Nivel 2.\n" +
+      "4. Pulse [MENU] para confirmar y [EXIT] para salir.\n" +
+      "5. Acerque el parlante del teléfono a 3 cm del micrófono del Baofeng al 75% de volumen.";
+  } else if (stepId === 3) {
+    highlight(["bfKeyMenu", "bfKeyArrows", "bfKeyExit"]);
+    if (l1) l1.textContent = "MENU 00: SQL";
+    if (l2) l2.textContent = "NIVEL: 01 (SENSIBLE)";
+    if (hint) hint.textContent = "MAXIMA RECEPCION DE DATOS";
+    if (box) box.textContent =
+      "PASO A PASO — AJUSTAR SQUELCH (SQL) PARA RECIBIR TRAMAS DÉBILES:\n" +
+      "1. Pulse [MENU] y luego el número [0] (SQL).\n" +
+      "2. Pulse [MENU], elija Nivel [1] con las flechas [▲▼].\n" +
+      "3. Confirme con [MENU] y salga con [EXIT]. Esto evita que la radio corte el inicio de las tramas AFSK o imágenes SSTV.";
+  } else {
+    highlight(["bfKeyMenu", "bfKeyNum", "bfKeyExit"]);
+    if (l1) l1.textContent = "MENU 25: SFT-D";
+    if (l2) l2.textContent = "VALOR: OFF (SIMPLEX)";
+    if (hint) hint.textContent = "COMUNICACION DIRECTA P2P";
+    if (box) box.textContent =
+      "PASO A PASO — DESACTIVAR DESPLAZAMIENTO DE REPETIDORA (MODO SIMPLEX DIRECTO):\n" +
+      "1. Pulse [MENU] y digite [2] [5] (SFT-D).\n" +
+      "2. Pulse [MENU], seleccione [OFF] con [▲▼].\n" +
+      "3. Pulse [MENU] y [EXIT]. Así transmitirá y recibirá exactamente en la misma frecuencia.";
+  }
+}
+
+const MORSE_DRILLS = [
+  { name: "Misión 1: Señal Internacional SOS", word: "SOS", target: "... --- ..." },
+  { name: "Misión 2: Confirmación Táctica OK", word: "OK", target: "--- -.-" },
+  { name: "Misión 3: Posición Actual QTH", word: "QTH", target: "--.- - ...." },
+  { name: "Misión 4: Suministro Vital AGUA", word: "AGUA", target: ".- --. ..- .-" }
+];
+let currentMorseDrillIdx = 0;
+let userMorseBuffer = "";
+let completedDrills = new Set();
+
+function selectMorseDrill(idx) {
+  currentMorseDrillIdx = idx;
+  userMorseBuffer = "";
+  const d = MORSE_DRILLS[idx];
+  const box = document.getElementById("morseDrillTargetBox");
+  if (box) box.textContent = `🎯 ${d.name} -> Marque: ${d.target}`;
+  const uBox = document.getElementById("morseUserBufferBox");
+  if (uBox) uBox.textContent = "Su entrada: (vacío)";
+}
+
+function tapMorseSymbol(sym) {
+  if (sym === "." || sym === "-") {
+    const ctx = ensureAudio();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const dur = sym === "." ? 0.09 : 0.26;
+    osc.frequency.value = 800;
+    gain.gain.setValueAtTime(0.35, ctx.currentTime);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + dur);
+    drawRfOscilloscopeWave(800, sym === "." ? "MORSE PUNTO (800 Hz)" : "MORSE RAYA (800 Hz)");
+  }
+  userMorseBuffer += sym;
+  const cleanUser = userMorseBuffer.trim().replace(/\s+/g, " ");
+  const d = MORSE_DRILLS[currentMorseDrillIdx];
+  const uBox = document.getElementById("morseUserBufferBox");
+  if (cleanUser === d.target) {
+    completedDrills.add(currentMorseDrillIdx);
+    if (uBox) uBox.textContent = `✅ ¡MISIÓN CUMPLIDA! (${cleanUser}) == ${d.word}`;
+    const badge = document.getElementById("morseMedalBadge");
+    if (badge) badge.textContent = `🎖️ RANGO: OPERADOR RF (${completedDrills.size}/4 MISIONES)`;
+  } else {
+    if (uBox) uBox.textContent = `Su entrada: ${userMorseBuffer}   (Objetivo: ${d.target})`;
+  }
+}
+
+function clearMorseDrill() {
+  userMorseBuffer = "";
+  const uBox = document.getElementById("morseUserBufferBox");
+  if (uBox) uBox.textContent = "Su entrada: (vacío)";
+}
+
+let activeBurnZones = {};
+function toggleBurnZone(zoneId, pct) {
+  if (activeBurnZones[zoneId]) delete activeBurnZones[zoneId];
+  else activeBurnZones[zoneId] = pct;
+  const btn = document.getElementById("burnZone_" + zoneId);
+  if (btn) btn.classList.toggle("danger", !!activeBurnZones[zoneId]);
+  updateBurnMannequinSummary();
+}
+
+function resetBurnZones() {
+  Object.keys(activeBurnZones).forEach(k => {
+    const btn = document.getElementById("burnZone_" + k);
+    if (btn) btn.classList.remove("danger");
+  });
+  activeBurnZones = {};
+  updateBurnMannequinSummary();
+}
+
+function updateBurnMannequinSummary() {
+  const totalTbsa = Object.values(activeBurnZones).reduce((a, b) => a + b, 0);
+  const burnInput = document.getElementById("calcBurnTbsa");
+  if (burnInput && totalTbsa > 0) {
+    burnInput.value = totalTbsa;
+    runAllCalculators();
+  }
+  const kg = parseFloat(document.getElementById("calcPatientKg")?.value) || 70;
+  const fluid24h = 4 * kg * totalTbsa;
+  const box = document.getElementById("burnVisualSummaryBox");
+  if (box) {
+    box.textContent =
+      `🔥 SUPERFICIE CORPORAL QUEMADA (%SCTQ): ${totalTbsa}% (Paciente ${kg} kg)\n` +
+      `💧 FÓRMULA DE PARKLAND (24h): ${fluid24h.toFixed(0)} mL totales (${(fluid24h / 2).toFixed(0)} mL en primeras 8h | ${(fluid24h / 2).toFixed(0)} mL en siguientes 16h).\n` +
+      `🩸 TORNIQUETE: Aplicar a 5-7 cm sobre herida arterial en brazo/muslo (NUNCA sobre articulación).`;
+  }
+}
+
+let chlorineTimerInterval = null;
+let chlorineRemainingSec = 1800;
+function toggleChlorineTimer30m() {
+  const btn = document.getElementById("btnChlorineTimer");
+  if (chlorineTimerInterval) {
+    clearInterval(chlorineTimerInterval);
+    chlorineTimerInterval = null;
+    chlorineRemainingSec = 1800;
+    if (btn) btn.textContent = "⏱️ INICIAR REPOSO CLORO (30:00)";
+    return;
+  }
+  chlorineRemainingSec = 1800;
+  chlorineTimerInterval = setInterval(() => {
+    chlorineRemainingSec = Math.max(0, chlorineRemainingSec - 1);
+    const m = String(Math.floor(chlorineRemainingSec / 60)).padStart(2, "0");
+    const s = String(chlorineRemainingSec % 60).padStart(2, "0");
+    if (btn) btn.textContent = chlorineRemainingSec > 0 ? `⏳ REPOSANDO AGUA: ${m}:${s}` : "✅ AGUA LISTA PARA BEBER";
+    if (chlorineRemainingSec === 0) {
+      clearInterval(chlorineTimerInterval);
+      chlorineTimerInterval = null;
+    }
+  }, 1000);
+}
+
+function applyQuickPreset(preset) {
+  if (preset === "bidon20") {
+    document.getElementById("calcWaterLiters").value = 20;
+    document.getElementById("calcBleachConc").value = "55";
+    document.getElementById("calcWaterTurbid").checked = false;
+  } else if (preset === "tambor200") {
+    document.getElementById("calcWaterLiters").value = 200;
+    document.getElementById("calcBleachConc").value = "55";
+    document.getElementById("calcWaterTurbid").checked = true;
+  } else if (preset === "botella1") {
+    document.getElementById("calcWaterLiters").value = 1;
+    document.getElementById("calcBleachConc").value = "25";
+    document.getElementById("calcWaterTurbid").checked = false;
+  } else if (preset === "pediatrico20") {
+    document.getElementById("calcPatientKg").value = 20;
+    document.getElementById("calcMedName").value = "paracetamol";
+  } else if (preset === "vhf146") {
+    document.getElementById("calcRfMhz").value = 146.520;
+  } else if (preset === "lora915") {
+    document.getElementById("calcRfMhz").value = 915.0;
+  }
+  runAllCalculators();
+}
+
+function drawRfOscilloscopeWave(freqHz, modeLabel) {
+  const canvas = document.getElementById("rfOscilloscopeCanvas");
+  if (!canvas) return;
+  const ctx2d = canvas.getContext("2d");
+  const w = canvas.width;
+  const h = canvas.height;
+  ctx2d.fillStyle = "#05080B";
+  ctx2d.fillRect(0, 0, w, h);
+  ctx2d.strokeStyle = "#1F4D3A";
+  ctx2d.beginPath();
+  ctx2d.moveTo(0, h / 2);
+  ctx2d.lineTo(w, h / 2);
+  ctx2d.stroke();
+
+  ctx2d.strokeStyle = freqHz > 1500 ? "#00E5FF" : "#00F29D";
+  ctx2d.lineWidth = 2.2;
+  ctx2d.beginPath();
+  const cycles = Math.max(4, Math.min(28, Math.round(freqHz / 100)));
+  for (let x = 0; x < w; x++) {
+    const y = h / 2 + Math.sin((x / w) * Math.PI * 2 * cycles) * (h * 0.34);
+    if (x === 0) ctx2d.moveTo(x, y);
+    else ctx2d.lineTo(x, y);
+  }
+  ctx2d.stroke();
+  ctx2d.fillStyle = "#FFB300";
+  ctx2d.font = "bold 11px monospace";
+  ctx2d.fillText(`${modeLabel} | VOLUMEN ÓPTIMO: 75% (SIN CLIPPING)`, 10, 16);
 }
 
 function getUsbProvisionConfig() {
@@ -1041,6 +1389,7 @@ function playWebMorse800Hz() {
     t += 0.16;
   }
   document.getElementById("radioOutBox").textContent = "Emitiendo CW 800Hz: " + morseStr.join(" ");
+  drawRfOscilloscopeWave(800, "CW MORSE 800 Hz + PREÁMBULO VOX");
 }
 
 function playWebAfskPacket() {
@@ -1060,6 +1409,7 @@ function playWebAfskPacket() {
     }
   }
   document.getElementById("radioOutBox").textContent = `Trama NEPP AFSK Bell 202 (1200/2200Hz) emitida (${msg.length} bytes).`;
+  drawRfOscilloscopeWave(1700, "AFSK BELL 202 (1200 Hz MARCA / 2200 Hz ESPACIO)");
 }
 
 function playWebSstvBeacon() {
@@ -1075,6 +1425,7 @@ function playWebSstvBeacon() {
     t += dur;
   });
   document.getElementById("radioOutBox").textContent = "Baliza de imagen SSTV Robot36 (Cabecera VIS 1900/1200Hz + Barras de Luminancia) emitida.";
+  drawRfOscilloscopeWave(1900, "IMAGEN SSTV ROBOT36 (1200 Hz SYNC / 1500-2300 Hz VIDEO)");
 }
 
 function askNairWeb() {
@@ -1108,6 +1459,8 @@ filterLibrary();
 runAllCalculators();
 renderPictograms();
 updateUsbProtocolPreview();
+setBaofengWizard(1);
+drawRfOscilloscopeWave(800, "OSCILOSCOPIO RF EN ESPERA (800 / 1200 / 2200 Hz)");
 </script>
 </body>
 </html>

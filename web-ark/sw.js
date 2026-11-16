@@ -1,4 +1,4 @@
-const CACHE_NAME = "nomad-ark-omega-v2.0.1";
+const CACHE_NAME = "nomad-ark-omega-v2.1.0";
 const OFFLINE_ASSETS = [
   "./",
   "./index.html",
