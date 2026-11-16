@@ -314,13 +314,18 @@ def build_ark() -> None:
     for rel_dir in ARK_DIRECTORIES:
         (DIST_ARK / rel_dir).mkdir(parents=True, exist_ok=True)
 
-    # Copy Universal Web Launcher
+    # Copy Universal Web Launcher & PWA assets
+    web_ark_dir = ROOT_DIR / "web-ark"
     if WEB_ARK_SRC.exists():
+        shutil.copy2(WEB_ARK_SRC, web_ark_dir / "index.html")
         shutil.copy2(WEB_ARK_SRC, DIST_ARK / "START_NOMAD_ARK.html")
+        shutil.copy2(WEB_ARK_SRC, DIST_ARK / "index.html")
         create_par2_recovery_bundle(DIST_ARK / "START_NOMAD_ARK.html")
 
-    # Copy compiled Android APK into 05_SOFTWARE_E_INSTALADORES_OFFLINE/01_ANDROID_APKS if present
-    apk_src = ROOT_DIR / "app" / "build" / "outputs" / "apk" / "debug" / "app-debug.apk"
+    # Prefer signed Release APK if present, fallback to Debug APK
+    apk_rel = ROOT_DIR / "app" / "build" / "outputs" / "apk" / "release" / "app-release.apk"
+    apk_dbg = ROOT_DIR / "app" / "build" / "outputs" / "apk" / "debug" / "app-debug.apk"
+    apk_src = apk_rel if apk_rel.exists() else apk_dbg
     if apk_src.exists():
         apk_dst = DIST_ARK / "05_SOFTWARE_E_INSTALADORES_OFFLINE" / "01_ANDROID_APKS" / "nomad-tactical-hub.apk"  # nosec
         shutil.copy2(apk_src, apk_dst)

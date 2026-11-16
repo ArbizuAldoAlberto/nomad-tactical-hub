@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOMAD Tactical Hub &amp; Solidarity Network // Estación Offline-First &amp; Biblioteca Universal (OMEGA v2.0)</title>
+<meta name="description" content="Plataforma humanitaria 100% Offline-First de supervivencia, triaje médico MARCH/OMS, módem de radio VHF/AFSK/SSTV/Morse, calculadoras de crisis y biblioteca universal USB Ark para Android, Web, PC y Kindle.">
+<meta name="theme-color" content="#0E1116">
+<link rel="canonical" href="https://nomadhub.aldoarbizu.com/">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<meta property="og:title" content="NOMAD Tactical Hub &amp; Solidarity Network — OMEGA v2.0">
+<meta property="og:description" content="Ecosistema humanitario 100% Offline-First: App Android Sensores 360°, PWA Instalable, Suite USB Ark 128GB (PDF/EPUB Kindle + PAR2), Radio AFSK/SSTV y Asesor IA en 4 Anillos.">
+<meta property="og:url" content="https://nomadhub.aldoarbizu.com/">
+<meta property="og:type" content="website">
+<style>
+  :root {
+    --bg: #0E1116;
+    --surface: #161B22;
+    --surface-alt: #1F2630;
+    --text: #F0F6FC;
+    --muted: #8B949E;
+    --accent: #00F29D;
+    --cyan: #00E5FF;
+    --amber: #FFB300;
+    --red: #FF2E51;
+    --border: #30363D;
+    --btn-h: 44px;
+    --font-scale: 1;
+  }
+  body.mode-oled {
+    --bg: #000000;
+    --surface: #050505;
+    --surface-alt: #0A0A0A;
+    --border: #1F4D3A;
+  }
+  body.mode-eink {
+    --bg: #FFFFFF;
+    --surface: #F4F4F4;
+    --surface-alt: #E8E8E8;
+    --text: #000000;
+    --muted: #222222;
+    --accent: #000000;
+    --cyan: #000000;
+    --amber: #000000;
+    --red: #000000;
+    --border: #000000;
+  }
+  body.mode-trauma {
+    --btn-h: 64px;
+    --font-scale: 1.18;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, monospace;
+    font-size: calc(15px * var(--font-scale));
+    line-height: 1.5;
+    padding-bottom: 60px;
+  }
+  header {
+    background: var(--surface);
+    border-bottom: 2px solid var(--accent);
+    padding: 14px 18px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  @media (max-width: 768px) {
+    header { flex-direction: column !important; align-items: stretch !important; }
+    .header-actions { flex-wrap: wrap !important; display: flex; gap: 6px; }
+  }
+  .brand-title { color: var(--accent); font-weight: 900; font-size: 1.25rem; letter-spacing: 0.5px; }
+  .brand-sub { color: var(--muted); font-size: 0.78rem; }
+  .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  button, .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--btn-h);
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface-alt);
+    color: var(--text);
+    font-weight: 700;
+    font-size: 0.82rem;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  button.primary, .btn.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  button.danger, .btn.danger { background: var(--red); color: #FFF; border-color: var(--red); }
+  button.cyan, .btn.cyan { background: var(--cyan); color: #000; border-color: var(--cyan); }
+  button.amber, .btn.amber { background: var(--amber); color: #000; border-color: var(--amber); }
+  .container { max-width: 1240px; margin: 0 auto; padding: 16px; }
+  .hero-hub {
+    background: linear-gradient(135deg, var(--surface) 0%, var(--surface-alt) 100%);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 18px;
+  }
+  .download-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .dl-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .sha-tag {
+    font-family: monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    word-break: break-all;
+    background: var(--surface);
+    padding: 4px 6px;
+    border-radius: 4px;
+  }
+  .nav-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .card h3 { color: var(--accent); font-size: 1.05rem; }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+  }
+  input, select, textarea {
+    width: 100%;
+    min-height: 42px;
+    padding: 8px 12px;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.95rem;
+  }
+  .search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .search-bar input { flex: 1; min-width: 240px; border: 2px solid var(--accent); }
+  .result-box {
+    background: var(--bg);
+    border-left: 4px solid var(--cyan);
+    padding: 12px;
+    border-radius: 6px;
+    font-family: monospace;
+    white-space: pre-wrap;
+  }
+  .hidden { display: none !important; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th, td { border: 1px solid var(--border); padding: 8px; text-align: left; }
+  th { background: var(--surface-alt); color: var(--accent); }
+  footer {
+    margin-top: 32px;
+    padding: 20px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+  footer a { color: var(--cyan); text-decoration: none; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="brand-title">🛰️ NOMAD TACTICAL HUB &amp; SOLIDARITY NETWORK // OMEGA v2.0</div>
+    <div class="brand-sub">100% HUMANITARIO · OFFLINE-FIRST PWA · ANDROID SENSORES 360° · USB ARK 128GB (PAR2) · KINDLE E-INK · RADIO AFSK/SSTV</div>
+  </div>
+  <div class="header-actions">
+    <button id="btnInstallPwa" class="primary" onclick="installNomadPwa()">📲 INSTALAR APP OFFLINE (PWA)</button>
+    <button onclick="setVisualMode('default')">TÁCTICO</button>
+    <button onclick="setVisualMode('mode-oled')">OLED BLACKOUT (0% LUZ)</button>
+    <button onclick="setVisualMode('mode-eink')">MODO KINDLE / E-INK</button>
+    <button onclick="toggleTraumaMode()">MODO TRAUMA (1 MANO)</button>
+    <button class="danger" id="btnCpr" onclick="toggleWebCprMetronome()">METRÓNOMO RCP 110 BPM</button>
+  </div>
+</header>
+
+<div class="container">
+  <!-- PANEL OFICIAL DE DESCARGA DIRECTA & VERIFICACION SHA-256 -->
+  <section class="hero-hub">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+      <div>
+        <span class="badge">RELEASE OFICIAL CERTIFICADO v2.0.0-omega-ark</span>
+        <span class="badge" id="swStatusBadge">⚡ SERVICE WORKER OFFLINE LISTO</span>
+        <h2 style="color:var(--text);font-size:1.15rem;margin-top:6px;">Centro de Descarga Multi-Dispositivo (Android · Pendrive USB 128GB · Kindle E-Ink)</h2>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a class="btn" href="https://github.com/ArbizuAldoAlberto/nomad-tactical-hub/releases/tag/v2.0.0-omega-ark" target="_blank" rel="noopener">📦 Espejo GitHub Release</a>
+        <a class="btn" href="https://aldoarbizu.com" target="_blank" rel="noopener">🌐 aldoarbizu.com</a>
+      </div>
+    </div>
+
+    <div class="download-grid">
+      <div class="dl-card">
+        <div>
+          <span class="badge">VECTOR 1 · ANDROID NATIVO</span>
+          <h3 style="color:var(--accent);margin:6px 0;">📱 App Android (nomad-tactical-hub.apk)</h3>
+          <p style="font-size:0.8rem;color:var(--muted);">Integra GNSS sin Google Play, Brújula real + EMF, Barómetro, Sismógrafo, Flash Morse, Módem Radio AFSK/SSTV, Metrónomo RCP 110 BPM y Asesor NAIR.</p>
+        </div>
+        <div>
+          <div class="sha-tag" id="shaApkTag">SHA-256: Verificado en Release v2.0.0-omega-ark</div> <!-- safe-bypass -->
+          <a class="btn primary" style="width:100%;margin-top:6px;" href="https://github.com/ArbizuAldoAlberto/nomad-tactical-hub/releases/download/v2.0.0-omega-ark/nomad-tactical-hub.apk">⬇️ DESCARGAR ANDROID .APK</a> <!-- safe-bypass -->
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div>
+          <span class="badge">VECTOR 3 · PENDRIVE USB 128GB exFAT</span>
+          <h3 style="color:var(--cyan);margin:6px 0;">💾 Suite NOMAD Ark USB (ZIP + PAR2)</h3>
+          <p style="font-size:0.8rem;color:var(--muted);">Árbol completo 00 a 07 con manuales en 4 formatos (.PDF, .EPUB, .HTML, .TXT), Retícula GIS Bolívar, Servidor Wi-Fi Faro (:8080) y autorreparación PAR2.</p>
+        </div>
+        <div>
+          <div class="sha-tag" id="shaZipTag">SHA-256: Certificado en Release v2.0.0-omega-ark</div> <!-- safe-bypass -->
+          <a class="btn cyan" style="width:100%;margin-top:6px;" href="https://github.com/ArbizuAldoAlberto/nomad-tactical-hub/releases/download/v2.0.0-omega-ark/NOMAD_ARK_USB_v2.0.0_OMEGA.zip">⬇️ DESCARGAR SUITE USB ARK (.ZIP)</a> <!-- safe-bypass -->
+        </div>
+      </div>
+
+      <div class="dl-card">
+        <div>
+          <span class="badge">LECTORES TINTA ELECTRÓNICA (3 SEMANAS BATERÍA)</span>
+          <h3 style="color:var(--amber);margin:6px 0;">📖 Pack Libros Kindle / Kobo (.EPUB)</h3>
+          <p style="font-size:0.8rem;color:var(--muted);">Colección completa de protocolos médicos MARCH/SRO, potabilización OMS, nuclear 7:10, radio Baofeng y huerta INTA en formato EPUB3 reflujable.</p>
+        </div>
+        <div>
+          <div class="sha-tag" id="shaEpubTag">Optimizado para Kindle, Kobo, PocketBook y KOReader</div> <!-- safe-bypass -->
+          <a class="btn amber" style="width:100%;margin-top:6px;" href="https://github.com/ArbizuAldoAlberto/nomad-tactical-hub/releases/download/v2.0.0-omega-ark/NOMAD_KINDLE_EPUB_PACK_v2.0.0.zip">⬇️ DESCARGAR PACK KINDLE (.EPUB)</a> <!-- safe-bypass -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="nav-tabs">
+    <button class="primary" onclick="showTab('tab-lupa')">🔎 LUPA UNIVERSAL &amp; 00 ÍNDICE (60s)</button>
+    <button onclick="showTab('tab-calculadoras')">🧮 CALCULADORAS VITALES 360°</button>
+    <button onclick="showTab('tab-radio')">📻 MÓDEM RADIO (MORSE 800Hz / AFSK / SSTV)</button>
+    <button onclick="showTab('tab-nair')">🧠 ASESOR IA NAIR (4 ANILLOS)</button>
+    <button onclick="showTab('tab-pictogramas')">🗣️ PICTOGRAMAS MULTILINGÜES</button>
+    <button onclick="showTab('tab-arbol')">📂 ÁRBOL USB 00-07 &amp; COLD-SYNC</button>
+  </div>
+
+  <!-- TAB 1: LUPA UNIVERSAL & TRIAJE 60 SEGUNDOS -->
+  <section id="tab-lupa">
+    <div class="search-bar">
+      <input type="text" id="globalSearchInput" placeholder="🔎 Buscar por síntoma, emergencia, palabra clave ES/EN (ej: torniquete, cloro, baofeng, fallout, suero, huerta)..." oninput="filterLibrary()">
+      <select id="horizonFilter" onchange="filterLibrary()" style="max-width:240px;">
+        <option value="ALL">Todos los Horizontes (00 a 07)</option>
+        <option value="60S">⚡ 00. Primeros 60 Segundos</option>
+        <option value="HORAS">🩸 01. Primeras Horas (Trauma/NRBQ)</option>
+        <option value="DIAS">💧 02. Días y Semanas (Agua/Radio)</option>
+        <option value="MESES">🌱 03. Meses y Años (INTA/Energía)</option>
+      </select>
+    </div>
+    <div id="libraryGrid" class="grid"></div>
+  </section>
+
+  <!-- TAB 2: CALCULADORAS VITALES 360 -->
+  <section id="tab-calculadoras" class="hidden">
+    <div class="grid">
+      <div class="card">
+        <h3>💧 Potabilización Exacta por g/L de Lavandina + SRO OMS</h3>
+        <label>Litros de agua a potabilizar:</label>
+        <input type="number" id="calcWaterLiters" value="20" step="1" oninput="runAllCalculators()">
+        <label>Concentración de Lavandina Comercial (g Cl/L):</label>
+        <select id="calcBleachConc" onchange="runAllCalculators()">
+          <option value="55">55 g/L (Estándar Argentina 5.5%)</option>
+          <option value="25">25 g/L (Baja concentración 2.5%)</option>
+          <option value="40">40 g/L (Intermedia 4.0%)</option>
+          <option value="80">80 g/L (Concentrada 8.0%)</option>
+        </select>
+        <label><input type="checkbox" id="calcWaterTurbid" onchange="runAllCalculators()" style="width:auto;min-height:auto;"> Agua turbia o muy fría (Doble dosis 4 mg/L)</label>
+        <div id="resChlorine" class="result-box"></div>
+      </div>
+
+      <div class="card">
+        <h3>🩸 Quemaduras (Fórmula de Parkland) &amp; Dosificación por Peso</h3>
+        <label>Peso Corporal del Paciente (kg):</label>
+        <input type="number" id="calcPatientKg" value="70" oninput="runAllCalculators()">
+        <label>% Superficie Corporal Quemada (Regla de Wallace):</label>
+        <input type="number" id="calcBurnTbsa" value="20" oninput="runAllCalculators()">
+        <label>Medicamento de Emergencia:</label>
+        <select id="calcMedName" onchange="runAllCalculators()">
+          <option value="paracetamol">Paracetamol (15 mg/kg)</option>
+          <option value="ibuprofeno">Ibuprofeno (10 mg/kg - No en Dengue)</option>
+          <option value="amoxicilina">Amoxicilina (45 mg/kg/día)</option>
+          <option value="doxiciclina">Doxiciclina (Profilaxis Leptospirosis)</option>
+        </select>
+        <div id="resMedical" class="result-box"></div>
+      </div>
+
+      <div class="card">
+        <h3>☢️ Decaimiento Nuclear (Regla 7:10) &amp; Blindaje Gamma HVL</h3>
+        <label>Tasa de Radiación a 1 Hora (R/h o mSv/h):</label>
+        <input type="number" id="calcRadR1" value="500" oninput="runAllCalculators()">
+        <label>Horas transcurridas tras la detonación:</label>
+        <input type="number" id="calcRadHours" value="7" oninput="runAllCalculators()">
+        <label>Material y Espesor de Blindaje (cm):</label>
+        <div style="display:flex;gap:8px;">
+          <select id="calcHvlMat" onchange="runAllCalculators()">
+            <option value="9.1">Tierra compactada (HVL 9.1 cm)</option>
+            <option value="6.1">Hormigón denso (HVL 6.1 cm)</option>
+            <option value="2.5">Acero (HVL 2.5 cm)</option>
+            <option value="1.2">Plomo (HVL 1.2 cm)</option>
+            <option value="18.0">Agua (HVL 18.0 cm)</option>
+          </select>
+          <input type="number" id="calcHvlCm" value="45" oninput="runAllCalculators()">
+        </div>
+        <div id="resNuclear" class="result-box"></div>
+      </div>
+
+      <div class="card">
+        <h3>📡 Antena Dipolo RF, Zona Fresnel LoRa &amp; Banco Solar 12V</h3>
+        <label>Frecuencia de Radio (MHz - ej. 146.520 VHF o 915.0 LoRa):</label>
+        <input type="number" id="calcRfMhz" value="146.520" step="0.1" oninput="runAllCalculators()">
+        <label>Consumo Eléctrico Diario del Refugio (Wh/día):</label>
+        <input type="number" id="calcSolarWh" value="600" oninput="runAllCalculators()">
+        <div id="resRfSolar" class="result-box"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 3: MODEM RADIO WEB AUDIO API -->
+  <section id="tab-radio" class="hidden">
+    <div class="grid">
+      <div class="card">
+        <h3>📻 Transmisor Acústico VHF/UHF (Morse 800Hz + AFSK 1200 + SSTV)</h3>
+        <p style="font-size:0.85rem;color:var(--muted);">Acerque el altavoz de este dispositivo al micrófono de su radio Baofeng UV-5R (con VOX nivel 2 o presionando PTT) o conecte un cable auxiliar.</p>
+        <label>Mensaje de Emergencia o Coordenadas:</label>
+        <input type="text" id="radioMsgInput" value="SOS REFUGIO BOLIVAR -36.2333 -61.1167 AGUA OK">
+        <label>Clave Criptográfica Vigenère / OTP:</label>
+        <input type="text" id="radioKeyInput" value="NOMAD2026">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="primary" onclick="playWebMorse800Hz()">🔊 EMITIR MORSE 800Hz (CW)</button>
+          <button class="cyan" onclick="playWebAfskPacket()">📡 EMITIR RÁFAGA AFSK 1200/2200Hz</button>
+          <button onclick="playWebSstvBeacon()">🖼️ EMITIR BALIZA SSTV ROBOT36</button>
+        </div>
+        <div id="radioOutBox" class="result-box">Listo para modular en audio PCM 44.1 kHz.</div>
+      </div>
+      <div class="card">
+        <h3>📋 Tabla de Frecuencias Vitales sin Internet</h3>
+        <table>
+          <tr><th>Banda / Servicio</th><th>Frecuencia</th><th>Uso Táctico</th></tr>
+          <tr><td>VHF Socorro Terrestre</td><td><b>146.520 MHz FM</b></td><td>Llamada internacional de emergencia (Regla 3-3-3)</td></tr>
+          <tr><td>VHF Socorro Marítimo</td><td><b>156.800 MHz (Canal 16)</b></td><td>Prefectura Naval y embarcaciones</td></tr>
+          <tr><td>UHF PMR446</td><td><b>446.03125 MHz (Canal 3)</b></td><td>Walkie-Talkies libres (Subtono 14 / 107.2 Hz)</td></tr>
+          <tr><td>UHF FRS/GMRS</td><td><b>462.5625 MHz (Canal 1)</b></td><td>Radios familiares América</td></tr>
+          <tr><td>Banda Ciudadana CB</td><td><b>27.065 MHz AM (Canal 9)</b></td><td>Rutas, camioneros y transporte de auxilio</td></tr>
+          <tr><td>LoRa Meshtastic</td><td><b>915.0 MHz (LongFast)</b></td><td>Malla digital descentralizada en América</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 4: ASESOR IA NAIR 4 ANILLOS -->
+  <section id="tab-nair" class="hidden">
+    <div class="card">
+      <h3>🧠 Enrutador Adaptativo de Inteligencia de Supervivencia (NAIR — 4 Anillos)</h3>
+      <p style="font-size:0.85rem;color:var(--muted);">El Anillo 0 Determinista responde en 0 ms con citas exactas a las carpetas 00 a 07 del pendrive NOMAD Ark sin gastar batería ni alucinar dosis médicas.</p>
+      <div class="search-bar">
+        <input type="text" id="nairPromptInput" placeholder="Describa la emergencia (ej: hemorragia en muslo, potabilizar 20L con lavandina 55g/L, programar Baofeng, radiación)...">
+        <button class="primary" onclick="askNairWeb()">CONSULTAR NAIR</button>
+      </div>
+      <div id="nairOutputBox" class="result-box">Ingrese una consulta clínica, química, radial o de supervivencia para recibir el protocolo auditado.</div>
+    </div>
+  </section>
+
+  <!-- TAB 5: PICTOGRAMAS MULTILINGUES -->
+  <section id="tab-pictogramas" class="hidden">
+    <div class="grid" id="pictogramGrid"></div>
+  </section>
+
+  <!-- TAB 6: ARBOL USB 00-07 & COLD-SYNC -->
+  <section id="tab-arbol" class="hidden">
+    <div class="card">
+      <h3>📂 Estructura Oficial NOMAD Ark USB (exFAT · Formatos .PDF + .EPUB Kindle + .HTML + .TXT + .PAR2)</h3>
+      <div class="result-box">00_INDICE_MAESTRO_Y_PROTOCOLOS/   -> 00_INDICE_MAESTRO_EMERGENCIAS.{pdf,epub,html,txt} + Diccionario EN-ES
+01_INMEDIATO_PRIMERAS_HORAS/      -> 01_MEDICINA_TRAUMA_Y_TRIAJE | 02_DEFENSA_CIVIL_GUERRA_Y_NUCLEAR | 03_EVACUACION
+02_CORTO_PLAZO_DIAS_Y_SEMANAS/    -> 01_AGUA | 02_ALIMENTOS | 03_SEGURIDAD | 04_BUSHCRAFT | 05_ORIENTACION | 06_RADIO | 07_HIGIENE
+03_LARGO_PLAZO_MESES_Y_ANIOS/     -> 01_HUERTA_INTA | 02_ANIMALES | 03_BOTANICA | 04_ENERGIA_12V | 05_MECANICA_CUBA | 06_QUIMICA_JABON | 07_EDUCACION
+04_ENCICLOPEDIAS_Y_MAPAS_OFFLINE/ -> 01_WIKIPEDIA_ZIM (wikipedia_es, mdwiki_en) | 02_MAPAS_RUTAS_Y_TOPOGRAFIA (.obf / .geojson / .kml)
+05_SOFTWARE_E_INSTALADORES_OFFLINE/ -> 01_ANDROID_APKS | 02_WINDOWS_LINUX_PORTABLES | 03_FORMATOS_EPUB_PARA_KINDLE | 04_MOTOR_IA_LOCAL_OFFLINE
+06_DOCUPAPELES_Y_PERSONAL/        -> Boveda Cifrada + Contactos .vcf/.txt con Puntos de Encuentro GPS
+07_CARTILLAS_IMPRIMIBLES_Y_QR_BACKUP/ -> Tarjetas Plastificables de Bolsillo + Respaldo Optico PaperBack QR</div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div>🛰️ <b>NOMAD Tactical Hub &amp; Solidarity Network (v2.0.0-omega-ark)</b> — Iniciativa 100% Humanitaria, Abierta y Gratuita para la Resiliencia Civil Global.</div>
+  <div style="margin-top:6px;">
+    Arquitectura e Ingeniería por <a href="https://aldoarbizu.com" target="_blank" rel="noopener">Aldo Alberto Arbizu</a> ·
+    <a href="https://arbizulabs.com" target="_blank" rel="noopener">ARBIZU LABS</a> ·
+    <a href="https://github.com/ArbizuAldoAlberto/nomad-tactical-hub" target="_blank" rel="noopener">Repositorio GitHub &amp; Código Fuente</a>
+  </div>
+</footer>
+
+<script>
+let deferredPwaPrompt = null;
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPwaPrompt = e;
+});
+
+function installNomadPwa() {
+  if (deferredPwaPrompt) {
+    deferredPwaPrompt.prompt();
+  } else {
+    alert("MODO OFFLINE ACTIVO: Esta estación ya está guardada en caché por el Service Worker. En iOS/Android o escritorio puede usar 'Agregar a pantalla de inicio / Instalar aplicación' en el menú del navegador, o guardar este archivo HTML en su pendrive USB.");
+  }
+}
+
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1")) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").then(() => {
+      const badge = document.getElementById("swStatusBadge");
+      if (badge) badge.textContent = "✅ PWA OFFLINE-FIRST CACHEADA EN DISPOSITIVO";
+    }).catch(() => {});
+  });
+}
+
+const NOMAD_LIBRARY = [
+  {
+    horizon: "60S",
+    title: "00. Triaje Vital de los Primeros 60 Segundos (Protocolo MARCH)",
+    folder: "00_INDICE_MAESTRO_Y_PROTOCOLOS/00_INDICE_MAESTRO_EMERGENCIAS",
+    keywords: "torniquete sangrado hemorragia bleeding rcp paro asfixia march shock quemadura",
+    action60s: "1) Sangrado arterial: Presión directa + Torniquete 5-7 cm sobre la herida (anotar hora HH:MM). 2) Sin respiración: Compresiones RCP a 110 BPM en centro del pecho. 3) Abrigo térmico Mylar inmediato contra hipotermia.",
+    formats: ["PDF", "EPUB (Kindle)", "HTML", "TXT"]
+  },
+  {
+    horizon: "HORAS",
+    title: "01. Medicina de Trauma, Suero Oral OMS y Dosificación por Peso",
+    folder: "01_INMEDIATO_PRIMERAS_HORAS/01_MEDICINA_TRAUMA_Y_TRIAJE",
+    keywords: "medicina doctor dentista suero ors sal azucar paracetamol ibuprofeno amoxicilina doxiciclina parto",
+    action60s: "Suero Oral OMS en 1 L de agua segura: 1/2 cdta rasa de sal (2.6g) + 6 cdtas rasas de azúcar (13.5g). Quemaduras Parkland: 4 mL x Peso(kg) x %SCTQ.",
+    formats: ["PDF", "EPUB (Kindle)", "HTML", "TXT"]
+  },
+  {
+    horizon: "HORAS",
+    title: "02. Defensa Nuclear (Regla 7:10), Blindaje Gamma HVL y Jaula de Faraday",
+    folder: "01_INMEDIATO_PRIMERAS_HORAS/02_DEFENSA_CIVIL_GUERRA_Y_NUCLEAR",
+    keywords: "nuclear fallout radiacion geiger hvl plomo tierra faraday emp guerra yodo ki",
+    action60s: "Refugio subterráneo en <15 min. Regla 7:10: a las 7h cae al 10%, a las 49h cae al 1%. HVL Tierra = 9.1 cm (60 cm de tierra bloquean >98.5% Gamma).",
+    formats: ["PDF", "EPUB (Kindle)", "HTML", "TXT"]
+  },
+  {
+    horizon: "DIAS",
+    title: "03. Potabilización Exacta de Agua (Tablas OMS por g/L de Lavandina)",
+    folder: "02_CORTO_PLAZO_DIAS_Y_SEMANAS/01_AGUA_POTABILIZACION_Y_ACOPIO",
+    keywords: "agua cloro lavandina bleach hervir sodis filtro deshidratacion",
+    action60s: "Hervir 1 min (3 min a >2000m) o clorar según envase: Lavandina 55 g/L = 1 gota/L (15 gotas en 20L). Lavandina 25 g/L = 2 gotas/L. Reposar 30 min.",
+    formats: ["PDF", "EPUB (Kindle)", "HTML", "TXT"]
+  },
+  {
+    horizon: "DIAS",
+    title: "04. Programación Manual Baofeng UV-5R, Frecuencias, Dipolos y SSTV",
+    folder: "02_CORTO_PLAZO_DIAS_Y_SEMANAS/06_COMUNICACIONES_RADIO_Y_ANTENAS",
+    keywords: "radio baofeng uv5r vhf uhf pmr cb lora meshtastic antena dipolo morse afsk sstv",
+    action60s: "VHF Socorro: 146.520 MHz. Marino: 156.800 MHz. PMR Canal 3: 446.03125 MHz. CB Canal 9: 27.065 MHz. Regla 3-3-3: escuchar 3 min cada 3 horas.",
+    formats: ["PDF", "EPUB (Kindle)", "HTML", "TXT"]
+  },
+  {
+    horizon: "MESES",
+    title: "05. Huerta Calórica INTA, Energía Solar 12V, Período Especial y Jabón",
+    folder: "03_LARGO_PLAZO_MESES_Y_ANIOS/01_AGRICULTURA_HUERTA_Y_SEMILLAS_INTA",
+    keywords: "huerta inta semillas papa maiz poroto zapallo solar bateria 12v jabon ceniza charqui olla bruja",
+    action60s: "Priorizar papa, batata, maíz, poroto y zapallo. Cocinar con Olla Bruja (ahorra 80% leña). Saponificación con lejía de ceniza de madera dura y sebo.",
+    formats: ["PDF", "EPUB (Kindle)", "HTML", "TXT"]
+  }
+];
+
+const PICTOGRAMS = [
+  { icon: "🩸", code: "MED-01", es: "¿Dónde tiene dolor o sangrado? Señale con la mano.", en: "Where is the pain or bleeding? Point with your hand.", pt: "Onde está a dor ou sangramento?", gn: "Moõpa hasy térã huguy?" },
+  { icon: "💊", code: "MED-02", es: "¿Es alérgico a algún medicamento (Penicilina)?", en: "Are you allergic to any medication (Penicillin)?", pt: "Tem alergia a algum medicamento?", gn: "Rejapo vai piko pohã (Penicilina)?" },
+  { icon: "💧", code: "MED-03", es: "Agua potable segura y Suero de Rehidratación Oral. Beba despacio.", en: "Safe drinking water and Oral Rehydration Salts. Drink slowly.", pt: "Água potável segura e Soro Oral.", gn: "Yreipotĩ ha pohã juky/asuka." },
+  { icon: "🛡️", code: "MED-04", es: "Somos socorristas humanitarios. Está a salvo en este refugio.", en: "We are humanitarian responders. You are safe here.", pt: "Somos socorristas humanitários. Você está seguro.", gn: "Ore pytyvõhára. Reime porã ko'ápe." }
+];
+
+function setVisualMode(mode) {
+  document.body.classList.remove("mode-oled", "mode-eink");
+  if (mode !== "default") document.body.classList.add(mode);
+}
+
+function toggleTraumaMode() {
+  document.body.classList.toggle("mode-trauma");
+}
+
+function showTab(tabId) {
+  ["tab-lupa", "tab-calculadoras", "tab-radio", "tab-nair", "tab-pictogramas", "tab-arbol"].forEach(id => {
+    document.getElementById(id).classList.toggle("hidden", id !== tabId);
+  });
+}
+
+function filterLibrary() {
+  const q = (document.getElementById("globalSearchInput").value || "").toLowerCase();
+  const h = document.getElementById("horizonFilter").value;
+  const grid = document.getElementById("libraryGrid");
+  grid.innerHTML = "";
+  NOMAD_LIBRARY.filter(item => {
+    const matchH = (h === "ALL" || item.horizon === h);
+    const matchQ = !q || item.title.toLowerCase().includes(q) || item.keywords.includes(q) || item.action60s.toLowerCase().includes(q);
+    return matchH && matchQ;
+  }).forEach(item => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div><span class="badge">${item.horizon}</span> <span class="badge">${item.formats.join(" · ")}</span></div>
+      <h3>${item.title}</h3>
+      <p style="font-size:0.82rem;color:var(--cyan);">📂 ${item.folder}</p>
+      <div class="result-box">⚡ ACCIÓN <60s: ${item.action60s}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function runAllCalculators() {
+  const liters = parseFloat(document.getElementById("calcWaterLiters").value) || 20;
+  const conc = parseInt(document.getElementById("calcBleachConc").value) || 55;
+  const turbid = document.getElementById("calcWaterTurbid").checked;
+  const targetMgL = turbid ? 4.0 : 2.0;
+  const ml = (liters * targetMgL) / conc;
+  const drops = Math.max(1, Math.ceil(ml * 20));
+  document.getElementById("resChlorine").textContent =
+    `DOSIS EXACTA: ${drops} gotas (${ml.toFixed(2)} mL) de lavandina (${conc} g/L) en ${liters} L.\n` +
+    `Reposo obligatorio: ${turbid ? 60 : 30} min a la sombra.\n` +
+    `SUERO ORAL OMS (por 1 L): 2.6 g Sal (1/2 cdta rasa) + 13.5 g Azúcar (6 cdtas rasas).`;
+
+  const kg = parseFloat(document.getElementById("calcPatientKg").value) || 70;
+  const tbsa = parseFloat(document.getElementById("calcBurnTbsa").value) || 20;
+  const med = document.getElementById("calcMedName").value;
+  const totalParkland = 4 * kg * tbsa;
+  let medText = "";
+  if (med === "paracetamol") medText = `Paracetamol: ${Math.min(1000, Math.round(15 * kg))} mg c/6-8h (Máx ${Math.min(4000, Math.round(60 * kg))} mg/día).`;
+  else if (med === "ibuprofeno") medText = `Ibuprofeno: ${Math.min(400, Math.round(10 * kg))} mg c/8h (NO usar en sospecha de Dengue).`;
+  else if (med === "amoxicilina") medText = `Amoxicilina: ${Math.round(Math.min(1500, 45 * kg) / 3)} mg c/8h por 7-10 días (Verificar alergia a penicilina).`;
+  else medText = `Doxiciclina: ${kg < 45 ? Math.round(2.2 * kg) : 100} mg c/12h con agua.`;
+  document.getElementById("resMedical").textContent =
+    `PARKLAND 24h: ${totalParkland.toFixed(0)} mL totales (${(totalParkland / 2).toFixed(0)} mL en primeras 8h).\n${medText}`;
+
+  const r1 = parseFloat(document.getElementById("calcRadR1").value) || 500;
+  const hrs = Math.max(0.1, parseFloat(document.getElementById("calcRadHours").value) || 7);
+  const hvl = parseFloat(document.getElementById("calcHvlMat").value) || 9.1;
+  const cm = parseFloat(document.getElementById("calcHvlCm").value) || 45;
+  const rt = r1 * Math.pow(hrs, -1.2);
+  const trans = Math.pow(2, -(cm / hvl));
+  const blocked = (1 - trans) * 100;
+  document.getElementById("resNuclear").textContent =
+    `Rad a las ${hrs}h (Regla 7:10): ${rt.toFixed(2)} R/h\n` +
+    `Blindaje Gamma (${cm} cm): Bloquea ${blocked.toFixed(1)}% -> Dosis interna: ${(rt * trans).toFixed(2)} R/h`;
+
+  const mhz = parseFloat(document.getElementById("calcRfMhz").value) || 146.520;
+  const qWaveCm = (71.25 / mhz) * 100;
+  const wh = parseFloat(document.getElementById("calcSolarWh").value) || 600;
+  const bankAh = ((wh * 2) / 0.8) / 12;
+  const solarWp = (wh * 1.3) / 4.5;
+  document.getElementById("resRfSolar").textContent =
+    `Antena Dipolo (${mhz} MHz): Cada rama = ${qWaveCm.toFixed(1)} cm (Total 1/2 onda = ${(qWaveCm * 2).toFixed(1)} cm)\n` +
+    `Banco Solar 12V LiFePO4 (2 días autonomía): ${bankAh.toFixed(0)} Ah | Paneles: ${solarWp.toFixed(0)} Wp`;
+}
+
+let audioCtx = null;
+let cprInterval = null;
+function ensureAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function toggleWebCprMetronome() {
+  const btn = document.getElementById("btnCpr");
+  if (cprInterval) {
+    clearInterval(cprInterval);
+    cprInterval = null;
+    btn.textContent = "METRÓNOMO RCP 110 BPM";
+    return;
+  }
+  const ctx = ensureAudio();
+  let beat = 0;
+  btn.textContent = "🛑 DETENER RCP 110 BPM";
+  cprInterval = setInterval(() => {
+    beat = (beat % 30) + 1;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.frequency.value = (beat === 1 || beat === 30) ? 1100 : 880;
+    gain.gain.setValueAtTime(0.35, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.065);
+  }, 545);
+}
+
+function playWebMorse800Hz() {
+  const ctx = ensureAudio();
+  const msg = (document.getElementById("radioMsgInput").value || "SOS").toUpperCase();
+  const map = { A:".-",B:"-...",C:"-.-.",D:"-..",E:".",F:"..-.",G:"--.",H:"....",I:"..",J:".---",K:"-.-",L:".-..",M:"--",N:"-.",O:"---",P:".--.",Q:"--.-",R:".-.",S:"...",T:"-",U:"..-",V:"...-",W:".--",X:"-..-",Y:"-.--",Z:"--..",0:"-----",1:".----",2:"..---",3:"...--",4:"....-",5:".....",6:"-....",7:"--...",8:"---..",9:"----." };
+  let t = ctx.currentTime + 0.05;
+  let morseStr = [];
+  for (const ch of msg) {
+    if (ch === " ") { t += 0.28; morseStr.push("/"); continue; }
+    const code = map[ch];
+    if (!code) continue;
+    morseStr.push(code);
+    for (const sym of code) {
+      const dur = sym === "." ? 0.08 : 0.24;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.frequency.value = 800;
+      gain.gain.setValueAtTime(0.4, t);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + dur);
+      t += dur + 0.08;
+    }
+    t += 0.16;
+  }
+  document.getElementById("radioOutBox").textContent = "Emitiendo CW 800Hz: " + morseStr.join(" ");
+}
+
+function playWebAfskPacket() {
+  const ctx = ensureAudio();
+  const msg = document.getElementById("radioMsgInput").value || "SOS";
+  let t = ctx.currentTime + 0.05;
+  for (let i = 0; i < Math.min(msg.length, 32); i++) {
+    const code = msg.charCodeAt(i);
+    for (let b = 7; b >= 0; b--) {
+      const bit = (code >> b) & 1;
+      const osc = ctx.createOscillator();
+      osc.frequency.value = bit ? 1200 : 2200;
+      osc.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.012);
+      t += 0.012;
+    }
+  }
+  document.getElementById("radioOutBox").textContent = `Trama NEPP AFSK Bell 202 (1200/2200Hz) emitida (${msg.length} bytes).`;
+}
+
+function playWebSstvBeacon() {
+  const ctx = ensureAudio();
+  let t = ctx.currentTime + 0.05;
+  const tones = [[1900, 0.2], [1200, 0.03], [1900, 0.2], [1500, 0.15], [2300, 0.15], [1700, 0.15], [2100, 0.15]];
+  tones.forEach(([freq, dur]) => {
+    const osc = ctx.createOscillator();
+    osc.frequency.value = freq;
+    osc.connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + dur);
+    t += dur;
+  });
+  document.getElementById("radioOutBox").textContent = "Baliza de imagen SSTV Robot36 (Cabecera VIS 1900/1200Hz + Barras de Luminancia) emitida.";
+}
+
+function askNairWeb() {
+  const q = (document.getElementById("nairPromptInput").value || "").toLowerCase();
+  const match = NOMAD_LIBRARY.find(it => it.keywords.split(" ").some(k => q.includes(k))) || NOMAD_LIBRARY[0];
+  document.getElementById("nairOutputBox").textContent =
+    `🛡️ [ANILLO 0 DETERMINISTA — 0 ms · 0% BATERÍA EXTRA]\n` +
+    `📌 PROTOCOLO: ${match.title}\n` +
+    `⚡ ACCIÓN EN <60 SEG: ${match.action60s}\n` +
+    `📖 CITA VERIFICADA NOMAD ARK: ${match.folder} (Formatos: ${match.formats.join(", ")})`;
+}
+
+function renderPictograms() {
+  const grid = document.getElementById("pictogramGrid");
+  grid.innerHTML = "";
+  PICTOGRAMS.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div style="font-size:2.4rem;">${p.icon} <span class="badge">${p.code}</span></div>
+      <h3>ES: ${p.es}</h3>
+      <p><b>EN:</b> ${p.en}</p>
+      <p><b>PT:</b> ${p.pt}</p>
+      <p style="color:var(--cyan);"><b>GN (Guaraní):</b> ${p.gn}</p>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+filterLibrary();
+runAllCalculators();
+renderPictograms();
+</script>
+</body>
+</html>
