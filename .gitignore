@@ -10,7 +10,10 @@
 /.idea/assetWizardSettings.xml
 .DS_Store
 /build
+/dist
 /captures
+__pycache__/
+*.pyc
 .externalNativeBuild
 .cxx
 local.properties

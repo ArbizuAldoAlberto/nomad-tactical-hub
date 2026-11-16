@@ -1,0 +1,23 @@
+#!/bin/sh
+# ═══════════════════════════════════════════════════════════════════════════════
+# ARBIZU LABS — Git Pre-Commit Hook
+# Ejecuta el escáner de secretos DefenseClaw antes de permitir un commit
+# ═══════════════════════════════════════════════════════════════════════════════
+
+echo ""
+echo "🛡️  [ARBIZU LABS] Ejecutando Pre-Commit Security Gate..."
+echo ""
+
+# Ejecutar el escáner de secretos
+node "$(git rev-parse --show-toplevel)/scripts/security/pre-commit-gate.mjs"
+EXIT_CODE=$?
+
+if [ $EXIT_CODE -ne 0 ]; then
+  echo ""
+  echo "🛑 Commit ABORTADO por el Security Gate de ARBIZU LABS."
+  echo "   Revisa los hallazgos anteriores y corrígelos antes de commitear."
+  echo ""
+  exit 1
+fi
+
+exit 0
