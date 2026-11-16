@@ -87,10 +87,10 @@ Built automatically by [`tools/nomad-ark-builder/build_nomad_ark.py`](file:///e:
 
 | Production Artifact | Official Package | Exact Size | Frozen `SHA-256` Checksum |
 | :--- | :--- | :---: | :--- |
-| **Android Release APK** | `nomad-tactical-hub.apk` | `8,313,427 bytes` (`7.93 MB`) | `0629ae93636ce8ab644a8209d3410b40baed02546af9099a3c7804b85835f115` <!-- safe-bypass --> |
-| **USB Ark 128GB Core Suite** | `NOMAD_ARK_USB_v2.0.0_OMEGA.zip` | `16,061,169 bytes` (`15.32 MB`) | `7747a699a751c5d6b8a30fecdb419e1d5412ee273e0c2234abc98a63f33bd1ef` <!-- safe-bypass --> |
-| **Kindle / Kobo E-Ink Pack (12 EPUBs)** | `NOMAD_KINDLE_EPUB_PACK_v2.0.0.zip` | `24,515 bytes` (`23.94 KB`) | `1fc10625ef9cbbdda5cd3c6a7a9d23114e0fee1a5faf2f8607cf14c3c0467eb1` <!-- safe-bypass --> |
-| **Portal PWA (`nomadhub.aldoarbizu.com`)** | `nomadhub-aldoarbizu-web-dist.zip` | `63,264 bytes` (`61.78 KB`) | `d394ebcf31ba9a00066ff6105d84025989e2075ab51e4e4d3c80a534c85a0b76` <!-- safe-bypass --> |
+| **Android Release APK** | `nomad-tactical-hub.apk` | `8,313,427 bytes` (`7.93 MB`) | `2485ec097303b673fdf720da1cdc3c9e87e203542b899358556571d1f1755c2c` <!-- safe-bypass --> |
+| **USB Ark 128GB Core Suite** | `NOMAD_ARK_USB_v2.0.0_OMEGA.zip` | `16,144,766 bytes` (`15.39 MB`) | `92fe9be2ac29e9865fdca357079d404d5432da362f23f50e507fda04d0b4a90e` <!-- safe-bypass --> |
+| **Kindle / Kobo E-Ink Pack (12 EPUBs)** | `NOMAD_KINDLE_EPUB_PACK_v2.0.0.zip` | `30,410 bytes` (`29.70 KB`) | `b35baa37561b6a22cf53453e36db1d80126cbc07e6bef7751e5f5281a1119948` <!-- safe-bypass --> |
+| **Portal PWA (`nomadhub.aldoarbizu.com`)** | `nomadhub-aldoarbizu-web-dist.zip` | `83,384 bytes` (`81.43 KB`) | `7619c1aba2aec3619652bf52ffcc6c23b9efd7db3b96baf26b7d72a50ec5ba39` <!-- safe-bypass --> | `nomadhub-aldoarbizu-web-dist.zip` | `63,264 bytes` (`61.78 KB`) | `d394ebcf31ba9a00066ff6105d84025989e2075ab51e4e4d3c80a534c85a0b76` <!-- safe-bypass --> |
 
 ```powershell
 # 1. Run the full JVM + Robolectric Unit Test Suite & Assemble the Debug APK

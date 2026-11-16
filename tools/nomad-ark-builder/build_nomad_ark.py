@@ -242,7 +242,8 @@ def build_valid_epub_file(target_path: Path, title: str, lines: list[str]) -> No
     <dc:identifier id="BookId">urn:nomad:ark:{target_path.stem}</dc:identifier>
     <dc:title>{title}</dc:title>
     <dc:language>es</dc:language>
-    <dc:creator>NOMAD Tactical Hub &amp; Solidarity Network</dc:creator>
+    <dc:creator>Aldo Alberto Arbizu (https://aldoarbizu.com | https://arbizulabs.com) — NOMAD Tactical Hub</dc:creator>
+    <dc:publisher>Arbizu Labs · Antigravity Studio</dc:publisher>
   </metadata>
   <manifest>
     <item id="chapter1" href="chapter1.xhtml" media-type="application/xhtml+xml" properties="nav"/>
@@ -389,26 +390,40 @@ def build_ark() -> None:
     epub_mirror_dir = DIST_ARK / "05_SOFTWARE_E_INSTALADORES_OFFLINE/03_FORMATOS_EPUB_PARA_KINDLE"
 
     # Generate all 4 synchronized formats (.pdf, .epub, .html, .txt) + .par2 parity for each core document
+    colophon_lines = [
+        "---",
+        "AUTORÍA E INGENIERÍA SOBERANA // BIEN PÚBLICO HUMANITARIO 100% LIBRE",
+        "Diseñado y programado por Aldo Alberto Arbizu (https://aldoarbizu.com)",
+        "División Enterprise: Arbizu Labs · Antigravity Studio (https://arbizulabs.com)",
+        "San Carlos de Bolívar, Prov. de Buenos Aires, Argentina (-36.2333, -61.1167)",
+        "Mecenazgo Humanitario Voluntario (Cero Paywalls):",
+        "- Alias Mercado Pago: aldoarbizu",
+        "- Alias Banco Galicia: ALDO.ARBIZU.GALICIA (CBU: 0070149130004016919618)",
+        "- Web3 EVM (Base L2 / Polygon): 0xb73ca1C37e9aA57F3051A0E8381Ca9CBA772A718",
+        "- GitHub Sponsors: https://github.com/ArbizuAldoAlberto"
+    ]
+
     for doc in CORE_DOCUMENTS:
         folder = DIST_ARK / doc["folder"]
         stem = doc["stem"]
         title = doc["title"]
         body = doc["body"]
+        full_body = body + [""] + colophon_lines
 
         txt_path = folder / f"{stem}.txt"
-        txt_path.write_text(f"{title}\n{'=' * len(title)}\n\n" + "\n\n".join(body) + "\n", encoding="utf-8")
+        txt_path.write_text(f"{title}\n{'=' * len(title)}\n\n" + "\n\n".join(full_body) + "\n", encoding="utf-8")
         create_par2_recovery_bundle(txt_path)
 
         html_path = folder / f"{stem}.html"
-        html_path.write_text(build_adaptive_html(title, body), encoding="utf-8")
+        html_path.write_text(build_adaptive_html(title, full_body), encoding="utf-8")
         create_par2_recovery_bundle(html_path)
 
         pdf_path = folder / f"{stem}.pdf"
-        pdf_path.write_bytes(build_valid_pdf_bytes(title, body))
+        pdf_path.write_bytes(build_valid_pdf_bytes(title, full_body))
         create_par2_recovery_bundle(pdf_path)
 
         epub_path = folder / f"{stem}.epub"
-        build_valid_epub_file(epub_path, title, body)
+        build_valid_epub_file(epub_path, title, full_body)
         create_par2_recovery_bundle(epub_path)
 
         # Mirror EPUB into 05_03_FORMATOS_EPUB_PARA_KINDLE

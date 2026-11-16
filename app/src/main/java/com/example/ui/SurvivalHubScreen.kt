@@ -55,6 +55,9 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 import java.util.Locale
+import android.content.Context
+import android.content.ClipboardManager
+import android.content.ClipData
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -96,7 +99,7 @@ fun SurvivalHubScreen(
                                 color = CyberGreen
                             )
                             Text(
-                                text = "SISTEMA SEGURO FUERA DE LÍNEA // V4.1",
+                                text = "OMEGA v2.3 // ALDO ARBIZU · ARBIZU LABS",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = GrayText
                             )
@@ -262,6 +265,7 @@ fun SurvivalHubScreen(
 
 @Composable
 fun DashboardScreen(viewModel: SurvivalViewModel) {
+    val context = LocalContext.current
     val compassDegree by viewModel.compassDegree.collectAsStateWithLifecycle()
     val isFlashingCurrently by viewModel.isFlashingCurrently.collectAsStateWithLifecycle()
     val rawTransmissions by viewModel.transmissions.collectAsStateWithLifecycle()
@@ -628,6 +632,76 @@ fun DashboardScreen(viewModel: SurvivalViewModel) {
                         val total = rawInventory.size
                         val packed = rawInventory.filter { it.isPacked }.size
                         Text("$packed / $total EMP", style = MaterialTheme.typography.titleLarge, color = BrightCyan)
+                    }
+                }
+            }
+        }
+
+        // Fase 12 (OMEGA v2.3): Sello de Autoría Soberana y Mecenazgo Humanitario Voluntario
+        item {
+            Card(
+                colors = CardDefaults.cardColors(containerColor = SurfaceDark),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(1.dp, WarnAmber.copy(alpha = 0.5f), RoundedCornerShape(12.dp))
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "🏛️ AUTORÍA & INGENIERÍA SOBERANA",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = WarnAmber,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "100% LIBRE",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = CyberGreen
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Arquitectura Principal: Aldo Alberto Arbizu (aldoarbizu.com)\nDivisión Soberana: Arbizu Labs · Antigravity Studio (arbizulabs.com)\nSan Carlos de Bolívar, Bs. As., Argentina (-36.2333, -61.1167)",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = GrayText
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(
+                        text = "🤝 Mecenazgo Humanitario Voluntario (Cero Paywalls):\n• Alias Mercado Pago: aldoarbizu\n• Alias Banco Galicia: ALDO.ARBIZU.GALICIA\n• CBU Galicia: 0070149130004016919618\n• EVM Base L2 / Polygon: 0xb73ca1C37e9aA57F3051A0E8381Ca9CBA772A718",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.White
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Button(
+                            onClick = {
+                                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                val clip = ClipData.newPlainText("Alias MP", "aldoarbizu")
+                                clipboard.setPrimaryClip(clip)
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = SurfaceMedium),
+                            modifier = Modifier.weight(1f).height(38.dp)
+                        ) {
+                            Text("COPIAR ALIAS MP", fontSize = 9.sp, color = CyberGreen, fontWeight = FontWeight.Bold)
+                        }
+                        Button(
+                            onClick = {
+                                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                val clip = ClipData.newPlainText("CBU Galicia", "0070149130004016919618")
+                                clipboard.setPrimaryClip(clip)
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = SurfaceMedium),
+                            modifier = Modifier.weight(1f).height(38.dp)
+                        ) {
+                            Text("COPIAR CBU", fontSize = 9.sp, color = BrightCyan, fontWeight = FontWeight.Bold)
+                        }
                     }
                 }
             }
