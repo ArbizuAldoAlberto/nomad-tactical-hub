@@ -1,4 +1,4 @@
-﻿param(
+param(
     [string]$DriveLetter = "",
     [switch]$DryRun = $false
 )

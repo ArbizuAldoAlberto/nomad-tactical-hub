@@ -386,10 +386,16 @@ def build_ark() -> None:
     here_dir = Path(__file__).resolve().parent
     beacon_src = here_dir / "START_COMMUNITY_BEACON.py"
     verify_src = here_dir / "VERIFY_AND_REPAIR_ARK.py"
+    fetch_src = here_dir / "FETCH_HEAVY_OFFLINE_ASSETS.py"
+    fetch_bat_src = here_dir / "FETCH_ASSETS.bat"
     if beacon_src.exists():
         shutil.copy2(beacon_src, DIST_ARK / "START_COMMUNITY_BEACON.py")
     if verify_src.exists():
         shutil.copy2(verify_src, DIST_ARK / "VERIFY_AND_REPAIR_ARK.py")
+    if fetch_src.exists():
+        shutil.copy2(fetch_src, DIST_ARK / "FETCH_HEAVY_OFFLINE_ASSETS.py")
+    if fetch_bat_src.exists():
+        shutil.copy2(fetch_bat_src, DIST_ARK / "FETCH_ASSETS.bat")
     (DIST_ARK / "START_COMMUNITY_BEACON.bat").write_text("@echo off\npython START_COMMUNITY_BEACON.py\npause\n", encoding="utf-8")
     (DIST_ARK / "START_COMMUNITY_BEACON.sh").write_text("#!/usr/bin/env bash\npython3 START_COMMUNITY_BEACON.py\n", encoding="utf-8")
     (DIST_ARK / "VERIFY_AND_REPAIR_ARK.bat").write_text("@echo off\npython VERIFY_AND_REPAIR_ARK.py .\npause\n", encoding="utf-8")
