@@ -1,6 +1,7 @@
 package com.example.ui
 
 import androidx.compose.animation.*
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,6 +23,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.zIndex
+import kotlinx.coroutines.delay
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
@@ -171,8 +174,8 @@ fun SurvivalHubScreen(
             // Tactical Toast Banner Overlay
             AnimatedVisibility(
                 visible = showSosToast,
-                enter = slideInVertically(initialOffset = { -it }) + fadeIn(),
-                exit = slideOutVertically(targetOffset = { -it }) + fadeOut(),
+                enter = slideInVertically(initialOffsetY = { -it }) + fadeIn(),
+                exit = slideOutVertically(targetOffsetY = { -it }) + fadeOut(),
                 modifier = Modifier
                     .align(Alignment.TopCenter)
                     .padding(16.dp)
@@ -188,7 +191,7 @@ fun SurvivalHubScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            imageVector = Icons.Default.VerifiedUser,
+                            imageVector = Icons.Default.CheckCircle,
                             contentDescription = "OK",
                             tint = CyberGreen,
                             modifier = Modifier.size(24.dp)
@@ -262,6 +265,13 @@ fun DashboardScreen(viewModel: SurvivalViewModel) {
     val isFlashingCurrently by viewModel.isFlashingCurrently.collectAsStateWithLifecycle()
     val rawTransmissions by viewModel.transmissions.collectAsStateWithLifecycle()
     val rawInventory by viewModel.inventoryItems.collectAsStateWithLifecycle()
+    val barometerHpa by viewModel.barometerHpa.collectAsStateWithLifecycle()
+    val magneticUt by viewModel.magneticFieldUt.collectAsStateWithLifecycle()
+    val batteryPct by viewModel.batteryLevelPercent.collectAsStateWithLifecycle()
+    val emconActive by viewModel.emconSilentMode.collectAsStateWithLifecycle()
+    val cprRunning by viewModel.isCprMetronomeRunning.collectAsStateWithLifecycle()
+    val cprBeat by viewModel.cprBeatCounter.collectAsStateWithLifecycle()
+    val activeRingLabel by viewModel.activeNairRingLabel.collectAsStateWithLifecycle()
 
     LazyColumn(
         modifier = Modifier
@@ -279,7 +289,7 @@ fun DashboardScreen(viewModel: SurvivalViewModel) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "ENLACE ALIMENTACIÓN / TELEMETRÍA",
+                        text = "ENLACE ALIMENTACIÓN / TELEMETRÍA 360° OMEGA",
                         style = MaterialTheme.typography.labelLarge,
                         color = CyberGreen
                     )
@@ -290,26 +300,70 @@ fun DashboardScreen(viewModel: SurvivalViewModel) {
                     ) {
                         Column {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text("SATÉLITE ENLACE", style = MaterialTheme.typography.labelSmall, color = GrayText)
-                                TacticalTooltip("Conexión satelital LEO cifrada por hardware AES-Nomad.")
+                                Text("BARÓMETRO / EMF", style = MaterialTheme.typography.labelSmall, color = GrayText)
+                                TacticalTooltip("Presión atmosférica real hPa y campo magnético en microteslas.")
                             }
-                            Text("MONITOREADO ESP - OK", style = MaterialTheme.typography.bodyMedium, color = Color.White)
+                            Text(
+                                "${String.format(Locale.US, "%.1f", barometerHpa)} hPa // ${String.format(Locale.US, "%.0f", magneticUt)} µT",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.White
+                            )
                         }
                         Column {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text("BATERÍA LOCAL", style = MaterialTheme.typography.labelSmall, color = GrayText)
-                                TacticalTooltip("Batería LiFePO4 blindada contra pulsos electromagnéticos (HEMP).")
+                                TacticalTooltip("Nivel energético monitoreado para enrutamiento automático NAIR.")
                             }
-                            Text("94% // CARGA SOLAR", style = MaterialTheme.typography.bodyMedium, color = CyberGreen)
+                            Text("$batteryPct% // ${if (emconActive) "EMCON SILENCIO" else "ACTIVO"}", style = MaterialTheme.typography.bodyMedium, color = CyberGreen)
                         }
                         Column {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text("ESTADO DE ACCESO", style = MaterialTheme.typography.labelSmall, color = GrayText)
-                                TacticalTooltip("Llave de un solo uso (One-Time Pad) pre-cargada físicamente.")
+                                TacticalTooltip("Cifrado autenticado AES-256-GCM + Vigenère + OTP.")
                             }
-                            Text("ENCRIPTADO", style = MaterialTheme.typography.bodyMedium, color = BrightCyan)
+                            Text("AES-256-GCM", style = MaterialTheme.typography.bodyMedium, color = BrightCyan)
                         }
                     }
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Button(
+                            onClick = { viewModel.toggleCprMetronome110Bpm() },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (cprRunning) AlertRed else SurfaceMedium,
+                                contentColor = Color.White
+                            ),
+                            modifier = Modifier.weight(1f).height(40.dp)
+                        ) {
+                            Text(
+                                if (cprRunning) "RCP 110 BPM (#$cprBeat) STOP" else "METRÓNOMO RCP 110 BPM",
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                        Button(
+                            onClick = { viewModel.toggleEmconSilence(!emconActive) },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (emconActive) WarnAmber else SurfaceMedium,
+                                contentColor = if (emconActive) SlateCharcoal else CyberGreen
+                            ),
+                            modifier = Modifier.weight(1f).height(40.dp)
+                        ) {
+                            Text(
+                                if (emconActive) "EMCON: SILENCIO RF ON" else "MODO SIGILO EMCON",
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = "MOTOR IA ACTIVO: $activeRingLabel",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = BrightCyan
+                    )
                 }
             }
         }
@@ -1231,7 +1285,14 @@ fun TransmissionsScreen(viewModel: SurvivalViewModel) {
                             colors = ButtonDefaults.buttonColors(containerColor = CyberGreen, contentColor = SlateCharcoal),
                             modifier = Modifier.weight(1f).height(44.dp)
                         ) {
-                            Text("CIFRAR & EMITIR", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                            Text("CIFRAR & AFSK TX", fontWeight = FontWeight.Bold, fontSize = 11.sp)
+                        }
+                        Button(
+                            onClick = { viewModel.transmitSstvCoordinateBeacon() },
+                            colors = ButtonDefaults.buttonColors(containerColor = BrightCyan, contentColor = SlateCharcoal),
+                            modifier = Modifier.height(44.dp)
+                        ) {
+                            Text("BALIZA SSTV", fontWeight = FontWeight.Bold, fontSize = 11.sp)
                         }
                         Button(
                             onClick = {
@@ -1241,7 +1302,7 @@ fun TransmissionsScreen(viewModel: SurvivalViewModel) {
                             colors = ButtonDefaults.buttonColors(containerColor = SurfaceMedium),
                             modifier = Modifier.height(44.dp)
                         ) {
-                            Text("CLEAR", color = CyberGreen, fontSize = 12.sp)
+                            Text("CLEAR", color = CyberGreen, fontSize = 11.sp)
                         }
                     }
 
@@ -1638,6 +1699,8 @@ fun CrisisCalculatorScreen(viewModel: SurvivalViewModel) {
                 "fallout" to "FALLOUT EXPANSIVO",
                 "shielding" to "BLINDAJE EMP",
                 "dehydration" to "PÉRDIDA HÍDRICA",
+                "medicina" to "TRIAJE & CLORO g/L",
+                "solar_astro" to "SOLAR 12V & ASTRO",
                 "checklists" to "PROTOCOLO ACME"
             )
             subTabs.forEach { (id, label) ->
@@ -1666,7 +1729,247 @@ fun CrisisCalculatorScreen(viewModel: SurvivalViewModel) {
             "fallout" -> NuclearCalculatorsView()
             "shielding" -> EmpShieldingView()
             "dehydration" -> WaterSurvivalView()
+            "medicina" -> MedicalAndChlorinationView(viewModel)
+            "solar_astro" -> SolarAndCelestialView()
             "checklists" -> AdvancedChecklistsView()
+        }
+    }
+}
+
+@Composable
+fun MedicalAndChlorinationView(viewModel: SurvivalViewModel) {
+    var waterLiters by remember { mutableStateOf("20.0") }
+    var bleachConc by remember { mutableStateOf(55) }
+    var isTurbid by remember { mutableStateOf(false) }
+    var burnWeightKg by remember { mutableStateOf("75.0") }
+    var burnTbsa by remember { mutableStateOf("20.0") }
+    var medWeightKg by remember { mutableStateOf("25.0") }
+    var selectedMed by remember { mutableStateOf("Paracetamol") }
+
+    val chlorResult = CrisisCalculators.calculateWaterChlorination(
+        liters = waterLiters.replace(',', '.').toDoubleOrNull() ?: 20.0,
+        bleachConcentrationGramsPerLiter = bleachConc,
+        isTurbidOrCold = isTurbid
+    )
+    val orsResult = CrisisCalculators.calculateWhoOrsFormula(1.0)
+    val parkland = CrisisCalculators.calculateParklandBurns(
+        weightKg = burnWeightKg.replace(',', '.').toDoubleOrNull() ?: 75.0,
+        tbsaPercent = burnTbsa.replace(',', '.').toDoubleOrNull() ?: 20.0
+    )
+    val medDose = CrisisCalculators.calculateEmergencyMedDose(
+        medicationKey = selectedMed,
+        weightKg = medWeightKg.replace(',', '.').toDoubleOrNull() ?: 25.0,
+        isPediatric = (medWeightKg.replace(',', '.').toDoubleOrNull() ?: 25.0) < 40.0
+    )
+
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.fillMaxSize()) {
+        item {
+            Card(
+                colors = CardDefaults.cardColors(containerColor = SurfaceDark),
+                modifier = Modifier.fillMaxWidth().border(1.dp, CyberGreen, RoundedCornerShape(12.dp))
+            ) {
+                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text("POTABILIZACIÓN EXACTA POR CONCENTRACIÓN (g Cl/L)", style = MaterialTheme.typography.titleMedium, color = CyberGreen)
+                    OutlinedTextField(
+                        value = waterLiters,
+                        onValueChange = { waterLiters = it },
+                        label = { Text("Volumen de Agua (Litros)") },
+                        modifier = Modifier.fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                    )
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        listOf(25, 40, 55, 80).forEach { conc ->
+                            Button(
+                                onClick = { bleachConc = conc },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = if (bleachConc == conc) CyberGreen else SurfaceMedium,
+                                    contentColor = if (bleachConc == conc) SlateCharcoal else Color.White
+                                ),
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Text("$conc g/L", fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                            }
+                        }
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+                        Text("Agua Turbia o Muy Fría (Doble Dosis 4 mg/L)", color = Color.White, style = MaterialTheme.typography.bodySmall)
+                        Switch(checked = isTurbid, onCheckedChange = { isTurbid = it })
+                    }
+                    Text(chlorResult.instructions, color = BrightCyan, style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+        }
+        item {
+            Card(
+                colors = CardDefaults.cardColors(containerColor = SurfaceDark),
+                modifier = Modifier.fillMaxWidth().border(1.dp, DarkBorder, RoundedCornerShape(12.dp))
+            ) {
+                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text("SUERO ORAL OMS & QUEMADURAS PARKLAND", style = MaterialTheme.typography.titleMedium, color = WarnAmber)
+                    Text("SRO OMS (por 1 Litro): ${orsResult.saltGrams} g Sal (1/2 cdta rasa) + ${orsResult.sugarGrams} g Azúcar (6 cdtas rasas).", color = Color.White)
+                    Text(orsResult.clinicalWarning, color = AlertRed, style = MaterialTheme.typography.bodySmall)
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        OutlinedTextField(
+                            value = burnWeightKg,
+                            onValueChange = { burnWeightKg = it },
+                            label = { Text("Peso Paciente (kg)") },
+                            modifier = Modifier.weight(1f),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                        )
+                        OutlinedTextField(
+                            value = burnTbsa,
+                            onValueChange = { burnTbsa = it },
+                            label = { Text("% Superficie Quemada") },
+                            modifier = Modifier.weight(1f),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                        )
+                    }
+                    Text(parkland.clinicalNote, color = CyberGreen, style = MaterialTheme.typography.bodySmall)
+                }
+            }
+        }
+        item {
+            Card(
+                colors = CardDefaults.cardColors(containerColor = SurfaceDark),
+                modifier = Modifier.fillMaxWidth().border(1.dp, DarkBorder, RoundedCornerShape(12.dp))
+            ) {
+                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text("DOSIFICACIÓN DE EMERGENCIA POR PESO (mg/kg)", style = MaterialTheme.typography.titleMedium, color = BrightCyan)
+                    OutlinedTextField(
+                        value = medWeightKg,
+                        onValueChange = { medWeightKg = it },
+                        label = { Text("Peso Corporal (kg)") },
+                        modifier = Modifier.fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                    )
+                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        listOf("Paracetamol", "Ibuprofeno", "Amoxicilina", "Doxiciclina").forEach { med ->
+                            Button(
+                                onClick = { selectedMed = med },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = if (selectedMed == med) BrightCyan else SurfaceMedium,
+                                    contentColor = if (selectedMed == med) SlateCharcoal else Color.White
+                                ),
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Text(med.take(6), fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                            }
+                        }
+                    }
+                    Text(medDose.guidanceAndWarnings, color = Color.White, style = MaterialTheme.typography.bodySmall)
+                    Button(
+                        onClick = { viewModel.speakProtocolHandsFree(medDose.guidanceAndWarnings) },
+                        colors = ButtonDefaults.buttonColors(containerColor = CyberGreen, contentColor = SlateCharcoal),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("LEER PROTOCOLO EN VOZ ALTA (MANOS LIBRES)", fontWeight = FontWeight.Bold, fontSize = 11.sp)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun SolarAndCelestialView() {
+    var dailyWhStr by remember { mutableStateOf("600.0") }
+    var autonomyDaysStr by remember { mutableStateOf("2") }
+    var isLiFePO4 by remember { mutableStateOf(true) }
+    var hvlThicknessCm by remember { mutableStateOf("30.0") }
+    var hvlMaterial by remember { mutableStateOf("Tierra") }
+
+    val solar = CrisisCalculators.calculateSolarOffGridSystem(
+        dailyWh = dailyWhStr.replace(',', '.').toDoubleOrNull() ?: 600.0,
+        autonomyDays = autonomyDaysStr.toIntOrNull() ?: 2,
+        systemVoltage = 12,
+        isLiFePO4 = isLiFePO4
+    )
+    val gammaHvl = CrisisCalculators.calculateGammaHvlShielding(
+        initialDoseRate = 100.0,
+        material = hvlMaterial,
+        thicknessCm = hvlThicknessCm.replace(',', '.').toDoubleOrNull() ?: 30.0
+    )
+    val celestial = CrisisCalculators.calculateCelestialNavigation(
+        latitude = -36.2333,
+        longitude = -61.1167,
+        dayOfYear = 190,
+        localSolarHour = 12.0
+    )
+
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.fillMaxSize()) {
+        item {
+            Card(
+                colors = CardDefaults.cardColors(containerColor = SurfaceDark),
+                modifier = Modifier.fillMaxWidth().border(1.dp, CyberGreen, RoundedCornerShape(12.dp))
+            ) {
+                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text("DIMENSIONAMIENTO SOLAR OFF-GRID 12V & CABLEADO", style = MaterialTheme.typography.titleMedium, color = CyberGreen)
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        OutlinedTextField(
+                            value = dailyWhStr,
+                            onValueChange = { dailyWhStr = it },
+                            label = { Text("Consumo Diario (Wh)") },
+                            modifier = Modifier.weight(1f),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                        )
+                        OutlinedTextField(
+                            value = autonomyDaysStr,
+                            onValueChange = { autonomyDaysStr = it },
+                            label = { Text("Días sin Sol") },
+                            modifier = Modifier.weight(1f),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                        )
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+                        Text("Química LiFePO4 (80% DoD) vs Plomo-Ácido (50% DoD)", color = Color.White, style = MaterialTheme.typography.bodySmall)
+                        Switch(checked = isLiFePO4, onCheckedChange = { isLiFePO4 = it })
+                    }
+                    Text("Banco Baterías 12V: ${String.format(Locale.US, "%.0f", solar.batteryBankAh)} Ah | Paneles: ${String.format(Locale.US, "%.0f", solar.solarArrayWattsPeak)} Wp | Regulador: ${String.format(Locale.US, "%.0f", solar.chargeControllerAmps)} A | Cable Mínimo: ${solar.recommendedAwg}", color = BrightCyan)
+                }
+            }
+        }
+        item {
+            Card(
+                colors = CardDefaults.cardColors(containerColor = SurfaceDark),
+                modifier = Modifier.fillMaxWidth().border(1.dp, DarkBorder, RoundedCornerShape(12.dp))
+            ) {
+                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text("BLINDAJE GAMMA (CAPA HEMIRREDUCTORA HVL)", style = MaterialTheme.typography.titleMedium, color = WarnAmber)
+                    OutlinedTextField(
+                        value = hvlThicknessCm,
+                        onValueChange = { hvlThicknessCm = it },
+                        label = { Text("Espesor del Material (cm)") },
+                        modifier = Modifier.fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                    )
+                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        listOf("Plomo", "Acero", "Hormigón", "Tierra", "Agua").forEach { mat ->
+                            Button(
+                                onClick = { hvlMaterial = mat },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = if (hvlMaterial == mat) WarnAmber else SurfaceMedium,
+                                    contentColor = if (hvlMaterial == mat) SlateCharcoal else Color.White
+                                ),
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Text(mat.take(5), fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                            }
+                        }
+                    }
+                    Text("HVL $hvlMaterial = ${gammaHvl.hvlCm} cm | Radiación Bloqueada: ${String.format(Locale.US, "%.1f", gammaHvl.blockedPercent)}%\n${gammaHvl.recommendation}", color = Color.White, style = MaterialTheme.typography.bodySmall)
+                }
+            }
+        }
+        item {
+            Card(
+                colors = CardDefaults.cardColors(containerColor = SurfaceDark),
+                modifier = Modifier.fillMaxWidth().border(1.dp, DarkBorder, RoundedCornerShape(12.dp))
+            ) {
+                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text("NAVEGACIÓN ASTRONÓMICA SIN GPS (CRUZ DEL SUR / SOL)", style = MaterialTheme.typography.titleMedium, color = CyberGreen)
+                    Text(celestial.hemisphereGuide, color = Color.White, style = MaterialTheme.typography.bodySmall)
+                }
+            }
         }
     }
 }

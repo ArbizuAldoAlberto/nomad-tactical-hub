@@ -5,13 +5,26 @@ data class GuideItem(
     val iconName: String,
     val category: String,
     val content: String,
-    val tips: List<String>
+    val tips: List<String>,
+    val arkFolderRoute: String = "00_INDICE_MAESTRO_Y_PROTOCOLOS",
+    val arkPageCitation: String = "Pág. 1-4"
+)
+
+data class PictogramPhrase(
+    val code: String,
+    val iconSymbol: String,
+    val es: String,
+    val en: String,
+    val pt: String,
+    val fr: String,
+    val zh: String,
+    val gn: String // Guaraní / Cono Sur
 )
 
 data class RepoAnalysis(
     val name: String,
-    val level: String, // "Básico (PWA)", "Intermedio (Lector ZIM)", "Avanzado (Servidor Pi)", "Táctico (Físico + OS)"
-    val difficultyColor: String, // "Green", "Orange", "Red", "Cyan"
+    val level: String,
+    val difficultyColor: String,
     val estimatedCost: String,
     val materials: List<String>,
     val tools: List<String>,
@@ -22,6 +35,49 @@ data class RepoAnalysis(
 
 object SurvivalKnowledgeBase {
 
+    val universalMedicalPictograms = listOf(
+        PictogramPhrase(
+            code = "MED-01",
+            iconSymbol = "🩸",
+            es = "¿Dónde tiene dolor o sangrado? Señale con la mano.",
+            en = "Where is the pain or bleeding? Point with your hand.",
+            pt = "Onde está a dor ou sangramento? Aponte com a mão.",
+            fr = "Où avez-vous mal ou saignez-vous ? Montrez avec la main.",
+            zh = "哪里疼痛或流血？请用手指出。",
+            gn = "Moõpa hasy térã huguy? Ehechauka nde pópe."
+        ),
+        PictogramPhrase(
+            code = "MED-02",
+            iconSymbol = "💊",
+            es = "¿Es alérgico a algún medicamento (Penicilina) o padece diabetes/asma?",
+            en = "Are you allergic to any medicine (Penicillin) or have diabetes/asthma?",
+            pt = "Tem alergia a algum remédio (Penicilina) ou tem diabetes/asma?",
+            fr = "Êtes-vous allergique à un médicament (Pénicilline) ou diabétique ?",
+            zh = "您对任何药物（青霉素）过敏或患有糖尿病/哮喘吗？",
+            gn = "Rejapo vai piko pohã (Penicilina) térã reguereko asma/juky rykue?"
+        ),
+        PictogramPhrase(
+            code = "MED-03",
+            iconSymbol = "💧",
+            es = "Agua potable segura y Suero de Rehidratación Oral. Beba despacio.",
+            en = "Safe drinking water and Oral Rehydration Salts. Drink slowly.",
+            pt = "Água potável segura e Soro de Reidratação Oral. Beba devagar.",
+            fr = "Eau potable sûre et sels de réhydratation orale. Buvez lentement.",
+            zh = "安全饮用水和口服补液盐。请慢慢喝。",
+            gn = "Yreipotĩ ha pohã juky/asuka. E'u mbeguekatu."
+        ),
+        PictogramPhrase(
+            code = "MED-04",
+            iconSymbol = "🛡️",
+            es = "Somos socorristas humanitarios. Está a salvo en este refugio.",
+            en = "We are humanitarian responders. You are safe in this shelter.",
+            pt = "Somos socorristas humanitários. Você está seguro neste abrigo.",
+            fr = "Nous sommes des secouristes humanitaires. Vous êtes en sécurité.",
+            zh = "我们是人道主义救援人员。您在这个避难所很安全。",
+            gn = "Ore pytyvõhára. Reime porã ko óga mo'ãhápe."
+        )
+    )
+
     val prepperReposList = listOf(
         RepoAnalysis(
             name = "Project Nomad (Crosstalk Solutions)",
@@ -29,25 +85,25 @@ object SurvivalKnowledgeBase {
             difficultyColor = "Red",
             estimatedCost = "$180 - $450 USD",
             materials = listOf(
-                "Computador de placa reducida (Raspberry Pi 4 4GB or RockPi SBC)",
+                "Computador de placa reducida (Raspberry Pi 4/5 4GB o RockPi SBC)",
                 "Nodo de radio LoRa Meshtastic (Heltec V3 o LILYGO T-Beam)",
                 "Antena para exteriores de 5.8 dBi (sintonizada a 915/868 MHz)",
                 "Gabinete hermético grado militar IP67 / Pelican Case",
                 "Controlador solar de carga robusto de 5V y batería LiFePO4 de 12V 10Ah",
-                "Módulo deGPS USB U-blox de bajo consumo para telemetría autónoma"
+                "Módulo GPS USB U-blox de bajo consumo para telemetría autónoma"
             ),
             tools = listOf(
                 "Soldadora electrónica portátil de estaño",
                 "Software BalenaEtcher de grabado flash de firmware",
-                "Aplicación móvil de sincronización con cifrado AES-256"
+                "Aplicación móvil NOMAD con cifrado AES-256-GCM"
             ),
-            description = "Un ecosistema de comunicaciones y cómputo táctico móvil de mochila diseñado para ofrecer transmisiones de largo alcance y en malla descentralizada sin conexión terrestre.",
-            fieldUtility = "Interconecta terminales móviles con mapas locales fuera de línea de la cuenca, permitiendo el despliegue de balizas de salvamento, geolocalización continua por GPS de pelotones y mensajería encriptada regional por radiofrecuencia.",
+            description = "Ecosistema de comunicaciones y cómputo táctico móvil diseñado para ofrecer transmisiones de largo alcance y en malla descentralizada sin conexión terrestre.",
+            fieldUtility = "Interconecta terminales móviles con mapas locales fuera de línea, permitiendo el despliegue de balizas de salvamento, geolocalización continua por GPS y mensajería encriptada regional por radiofrecuencia.",
             setupSteps = listOf(
-                "1. Flashear el firmware oficial de Meshtastic en el chip de LoRa de tu placa.",
+                "1. Flashear el firmware oficial de Meshtastic en el chip LoRa de tu placa.",
                 "2. Ensamblar e impermeabilizar la Raspberry Pi y el cargador solar en el maletín de campaña.",
-                "3. Conectar el receptor de GPS interno y fijar el cable de extensión hacia la varilla de antena coaxial.",
-                "4. Enlazar este dispositivo Android al punto de acceso local Wi-Fi / Bluetooth del chasis Nomad para iniciar cartografía y rastreo táctico."
+                "3. Conectar el receptor GPS interno y fijar el cable de extensión hacia la varilla de antena coaxial.",
+                "4. Enlazar este dispositivo Android al punto de acceso local Wi-Fi / Bluetooth del chasis Nomad."
             )
         ),
         RepoAnalysis(
@@ -58,312 +114,225 @@ object SurvivalKnowledgeBase {
             materials = listOf(
                 "Módulo de hardware LoRa ESP32 (Heltec V3, T-Echo, o T-Beam v1.2)",
                 "Batería recargable Li-Ion 18650 de alta retención (3200 mAh+)",
-                "Antena dipolar flexible sintonizada a frecuencia nacional regulada"
+                "Antena dipolar flexible sintonizada a frecuencia nacional regulada (915 MHz en América)"
             ),
             tools = listOf(
-                "Navegador Chrome para flash directo desde flasher.meshtastic.org",
-                "Cable USB-C blindado para depuración de firmware"
+                "Instalador offline en 05_SOFTWARE_E_INSTALADORES_OFFLINE",
+                "Cable USB-C OTG blindado para enlace serial directo"
             ),
-            description = "La infraestructura troncal ideal para telecomunicaciones tácticas. Es un protocolo libre descentralizado inalámbrico que opera independientemente de torres celulares.",
-            fieldUtility = "Crea un clúster local de comunicación de emergencia. Enruta de manera inteligente textos y balizas de coordenadas entre nodos distantes formando una malla resiliente impenetrable.",
+            description = "Infraestructura troncal ideal para telecomunicaciones tácticas. Protocolo libre descentralizado inalámbrico que opera independientemente de torres celulares.",
+            fieldUtility = "Crea un clúster local de comunicación de emergencia. Enruta textos y balizas de coordenadas entre nodos distantes formando una malla resiliente.",
             setupSteps = listOf(
-                "1. Conectar tu nodo receptor LoRa por USB e ingresar al flasher de Meshtastic.",
-                "2. Seleccionar firmware e indicar la banda de radiofrecuencia local permitida (ej: 915 MHz para América, 868 MHz para Europa).",
-                "3. Configurar un canal privado con llaves cifradas simétricas de seguridad militar AES-256.",
-                "4. Distribuir nodos en tejados y colinas elevadas para ampliar la cobertura táctica hasta 15+ kilómetros."
+                "1. Conectar el nodo LoRa por USB OTG o Bluetooth LE a NOMAD Tactical Hub.",
+                "2. Seleccionar la banda de radiofrecuencia local (915 MHz en Argentina/América).",
+                "3. Configurar canal con llave simétrica AES-256 y firma Web of Trust.",
+                "4. Ubicar nodos en puntos elevados respetando el despeje de la Zona de Fresnel."
             )
         ),
         RepoAnalysis(
-            name = "Survival_Kit (BEKO2210)",
-            level = "Fácil",
+            name = "NOMAD Ark USB (128GB+ exFAT + PAR2 + Faro Server)",
+            level = "Esencial / Universal",
             difficultyColor = "Green",
-            estimatedCost = "$0 USD (Gratuito)",
-            materials = listOf("Cualquier smartphone táctico o tablet", "Navegador web con soporte PWA"),
-            tools = listOf("Conexión inicial para descarga en caché"),
-            description = "Una Progressive Web App (PWA) enfocada de forma pura en preparación táctica, gestión ágil de inventarios de despensa, checklists de mochilas de emergencia (Bug Out Bag) y protocolos estándar de crisis.",
-            fieldUtility = "Ideal para preppers de ciudad y familias. Sirve como lista de verificación ágil fuera de línea para controlar stock de comida y equipo de emergencia de forma interactiva.",
-            setupSteps = listOf(
-                "1. Acceder al repositorio github.com/BEKO2210/Survival_kit",
-                "2. Ejecutar de forma local o abrir el link de despliegue en el navegador móvil.",
-                "3. Seleccionar 'Añadir a pantalla de inicio' en las opciones del navegador móvil.",
-                "4. La app se guardará en caché y se ejecutará de forma autónoma sin acceso a internet."
-            )
-        ),
-        RepoAnalysis(
-            name = "Kiwix (Offline Reader)",
-            level = "Intermedio",
-            difficultyColor = "Orange",
-            estimatedCost = "$10 - $30 USD (Tarjeta SD)",
-            materials = listOf("Tarjeta MicroSD de alta capacidad (64GB - 512GB)", "Un celular Android o PC de bajo consumo"),
-            tools = listOf("Aplicación cliente Kiwix (Android/Desktop)", "Lector de tarjetas SD"),
-            description = "El pilar central del almacenamiento de conocimiento local. Lector optimizado de archivos comprimidos .ZIM que permite empaquetar sitios web enteros sin pérdida de enlaces.",
-            fieldUtility = "Permite llevar de forma local la Wikipedia entera en español (con o sin imágenes), WikiMed (enciclopedia médica de emergencia completa), manuales militares sobre ingeniería de campo y foros prepper enteros.",
-            setupSteps = listOf(
-                "1. Instalar la app Kiwix para Android desde repositorio confiable o APK directa.",
-                "2. Visitar library.kiwix.org para ver catálogo de archivos compilados .zim.",
-                "3. Descargar archivos masivos esenciales (ej: 'Wikipedia en español', 'WikiMed', 'Wikihow offline').",
-                "4. Mover los archivos .zim a la tarjeta MicroSD y cargarlos localmente desde el lector Kiwix."
-            )
-        ),
-        RepoAnalysis(
-            name = "Internet-in-a-Box (IIAB)",
-            level = "Avanzado",
-            difficultyColor = "Red",
-            estimatedCost = "$45 - $90 USD",
-            materials = listOf("Raspberry Pi 3/4 o mini-PC antiguo", "Tarjeta MicroSD Extreme (64GB - 128GB)", "Fuente de alimentación portátil de 5V/3A"),
-            tools = listOf("Software BalenaEtcher", "Script instalador Ansible de IIAB"),
-            description = "Crea un portal cautivo WiFi portátil autónomo ('La Biblioteca de Alejandría' de bolsillo). Cualquier dispositivo móvil cercano puede conectarse por señal inalámbrica sin usar internet tradicional.",
-            fieldUtility = "Establece un repetidor local de información en búnkeres o refugios rurales compartidos. Suministra mapas locales de OpenStreetMap, videos didácticos de Khan Academy y libros en PDF en tiempo récord de forma cooperativa.",
-            setupSteps = listOf(
-                "1. Descargar la imagen de sistema operativo recomendada (Ubuntu/Raspbian) para la Raspberry Pi.",
-                "2. Seguir las guías en github.com/iiab/iiab para iniciar el configurador de red.",
-                "3. Utilizar el instalador interactivo vía terminal para desplegar el portal interactivo y módulos Kiwix.",
-                "4. Configurar el hardware para emitir una red WiFi abierta de auxilio llamada 'REDE_DE_EMERGENCIA_INFO'."
-            )
-        ),
-        RepoAnalysis(
-            name = "refugiOS (Ganso)",
-            level = "Táctico / Avanzado",
-            difficultyColor = "Cyan",
-            estimatedCost = "$5 - $15 USD (Pendrive)",
-            materials = listOf("Pendrive USB 3.0 / 3.1 ultra-resistente de 32GB+", "Cualquier laptop x86 antigua o moderna de campo"),
-            tools = listOf("Ventoy o Rufus (Software de quemado)"),
-            description = "Un sistema operativo portátil completo Live-USB construido bajo Linux para la resiliencia digital extrema, comunicaciones en red local segura inalámbrica, anonimato y lectura de archivos de contingencia.",
-            fieldUtility = "Permite revivir cualquier laptop o PC ajena en situaciones de redes derribadas o hackeadas. Ofrece un entorno seguro sin malware que preserva tus manuales tácticos y notas encriptadas.",
-            setupSteps = listOf(
-                "1. Descargar la imagen ISO compilada de refugiOS desde el enlace del repositorio del creador.",
-                "2. Preparar el pendrive usando Ventoy o Rufus para garantizar la persistencia de datos.",
-                "3. Conectar el pendrive en la PC táctica de campaña.",
-                "4. Reiniciar la máquina e ingresar a la BIOS para arrancar desde la interfaz USB."
-            )
-        ),
-        RepoAnalysis(
-            name = "Doomsday Cyberdeck (EzioDEVio)",
-            level = "Muy Avanzado / Táctico",
-            difficultyColor = "Magenta",
-            estimatedCost = "$250 - $600 USD",
+            estimatedCost = "$12 - $25 USD (Pendrive Dual USB-C/A)",
             materials = listOf(
-                "Maletín táctico estanco pelícano (Pelican Case 1150/1200)",
-                "Raspberry Pi 4/5 con disipador de aluminio pasivo",
-                "Pantalla LCD IPS táctil rugerizada HDMI de 7 pulgadas",
-                "Receptor de Radio SDR (Soft Defined Radio) RTL-SDR V3/V4",
-                "Antena telescópica de banda ancha (HF/VHF/UHF)",
-                "Batería externa PowerBank LiFePO4 de alta durabilidad (PD30W+)",
-                "Teclado mecánico ultra-compacto integrado al chasis"
+                "Pendrive Dual USB-C + USB-A de 128 GB o 256 GB formateado en exFAT",
+                "Bolsa estanca con gel de sílice + triple capa de papel aluminio en lata metálica (Faraday)"
             ),
-            tools = listOf("Impresora 3D para fabricación de soportes", "Soldador de estaño de precisión", "Herramientas de bricolaje táctico"),
-            description = "Documentación física y de software para ensamblar un 'Cyberdeck' rugerizado, a prueba de golpes, agua y polvo. Incluye monitoreo de radioaficionados en tiempo real, inteligencia artificial offline local (Ollama) y navegación GPS autónoma.",
-            fieldUtility = "La estación de campo de supervivencia definitiva. Escucha transmisiones VHF/UHF de emergencia de servicios médicos, rastrea aviones cercanos, almacena gigabytes de guías de reanimación médica y opera un ayudante IA con modelos ligeros sin internet.",
+            tools = listOf(
+                "Script constructor tools/nomad-ark-builder/build_nomad_ark.py",
+                "Cualquier teléfono Android con OTG, lector Kindle/Kobo o PC/Laptop"
+            ),
+            description = "El Arca de Conocimiento y Supervivencia Universal de 8 niveles (carpetas 00 a 07) con conversión automática a PDF, EPUB para Kindle, HTML OLED/E-Ink, TXT, paridad auto-reparable PAR2 e IA local GGUF.",
+            fieldUtility = "Garantiza acceso instantáneo en menos de 60 segundos a medicina de trauma, potabilización, radio Baofeng, huerta INTA, mapas offline, Wikipedia médica .zim y servidor Wi-Fi Faro para abastecer a 50+ vecinos.",
             setupSteps = listOf(
-                "1. Diseñar e imprimir las placas o soportes 3D para anclar la pantalla de 7\" y la Raspberry Pi al chasis del maletín.",
-                "2. Instalar el receptor RTL-SDR en un puerto USB blindado para mitigar ruido térmico.",
-                "3. Instalar un sistema Linux optimizado y desplegar el servicio de IA local Ollama con modelos 'TinyLlama' de 1.1 mil millones de parámetros.",
-                "4. Integrar utilidades de cartografía terrestre como Marble u OpenCPN con un receptor USB GPS activo."
+                "1. Formatear la unidad USB de 128GB+ en sistema de archivos exFAT.",
+                "2. Ejecutar python tools/nomad-ark-builder/build_nomad_ark.py para compilar la estructura 00 a 07.",
+                "3. Abrir START_NOMAD_ARK.html en cualquier navegador o ejecutar START_COMMUNITY_BEACON para compartir por Wi-Fi.",
+                "4. Ejecutar VERIFY_AND_REPAIR_ARK periódicamente para validar firmas SHA-256 y reparar sectores con PAR2."
+            )
+        ),
+        RepoAnalysis(
+            name = "Kiwix & Internet-in-a-Box (IIAB)",
+            level = "Intermedio / Comunitario",
+            difficultyColor = "Orange",
+            estimatedCost = "$10 - $60 USD",
+            materials = listOf("Unidad NOMAD Ark USB o Raspberry Pi", "Archivos .zim (wikipedia_es_all_nopic.zim, mdwiki_en_all_maxi.zim)"),
+            tools = listOf("Kiwix APK / Kiwix Portable incluidos en carpeta 05_SOFTWARE_E_INSTALADORES_OFFLINE"),
+            description = "Lector y servidor de enciclopedias comprimidas .ZIM que permite alojar toda la Wikipedia en español y la Enciclopedia Médica Offline sin internet.",
+            fieldUtility = "Convierte cualquier teléfono o laptop en la Biblioteca de Alejandría médica y técnica de un refugio comunitario.",
+            setupSteps = listOf(
+                "1. Instalar Kiwix.apk o abrir Kiwix-Portable desde la carpeta 05 del pendrive NOMAD Ark.",
+                "2. Cargar los archivos .zim ubicados en 04_ENCICLOPEDIAS_Y_MAPAS_OFFLINE/01_WIKIPEDIA_ZIM/.",
+                "3. Activar la opción 'Servidor Local' en Kiwix o usar START_COMMUNITY_BEACON para que todo el refugio consulte desde sus celulares."
             )
         )
     )
 
     val survivalGuidesList = listOf(
         GuideItem(
-            title = "Purificación de Agua de Emergencia",
-            iconName = "water_drop",
-            category = "Agua",
+            title = "00. PROTOCOLO DE LOS PRIMEROS 60 SEGUNDOS (TRIAJE INMEDIATO)",
+            iconName = "warning",
+            category = "Inmediato 60s",
+            arkFolderRoute = "00_INDICE_MAESTRO_Y_PROTOCOLOS/00_INDICE_MAESTRO_EMERGENCIAS",
+            arkPageCitation = "Sección A, Pág. 1-2",
             content = """
-                El agua es la prioridad número uno en cualquier escenario de supervivencia. Consumir agua sin tratar puede causar deshidratación severa por infecciones bacterianas (cólera, giardia).
+                CUANDO CADA SEGUNDO DECIDE LA VIDA, NO BUSQUE EN LIBROS LARGOS. EJECUTE EN ORDEN MARCH:
                 
-                MÉTODOS EFECTIVOS:
-                1. EBULLICIÓN: El método más seguro. Lleva el agua a un punto de ebullición vigorosa durante un mínimo de 1 minuto continuo (3 minutos a altitudes de montaña superiores a 2000m). Mata bacterias, virus y protozoos.
+                1. M — HEMORRAGIA MASIVA (Massive Bleeding):
+                   - Presione directamente la herida con gasa o tela limpia usando todo su peso.
+                   - Si la sangre brota a chorros (arterial) en brazo o pierna: coloque TORNIQUETE TÁCTICO de 5 a 7 cm arriba de la herida (NUNCA sobre codo o rodilla). Gire el molinete hasta que cese el pulso distal y el sangrado.
+                   - Anote la HORA EXACTA en la frente del herido (T = HH:MM) y active el Temporizador de Torniquete en la pestaña CÁLCULOS.
                 
-                2. CLORO / YODO: Utiliza cloro común sin aroma. Agrega 4 gotas de cloro por cada litro de agua clara (8 gotas si está turbia). Agita y deja reposar estrictamente por 30 minutos antes de consumir.
+                2. A — VÍA AÉREA Y ASFIXIA (Airway):
+                   - Si está inconsciente: maniobra frente-mentón (o tracción mandibular si sospecha trauma cervical). Limpie sangre o vómito de la boca. Coloque en Posición Lateral de Seguridad.
                 
-                3. FILTRACIÓN DE MEMBRANA: Filtros de tamaño de poro de 0.1 a 0.2 micras (como Lifestraw o filtros Sawyer) eliminan al 99.9% bacterias y parásitos, pero no detienen virus a menos que sea un purificador de grado militar.
+                3. R — RESPIRACIÓN Y PARO CARDÍACO (Respiration & CPR):
+                   - Si no respira normalmente: active el METRÓNOMO RCP 110 BPM en esta app y comprima fuerte y rápido en el centro del esternón (5-6 cm de profundidad, 100 a 120 compresiones por minuto).
                 
-                4. FILTRACIÓN SOLAR (SODIS): Llena botellas plásticas PET transparentes y colócalas tumbadas bajo el sol directo continuo sobre metal caliente durante un mínimo de 6 horas estables (o 2 días si el cielo está nublado).
+                4. C — CIRCULACIÓN Y SHOCK (Circulation):
+                   - Eleve piernas si no hay fractura, controle sangrados menores con vendaje compresivo.
+                
+                5. H — HIPOTERMIA Y QUEMADURAS (Hypothermia / Head):
+                   - Un herido que se enfría no coagula y muere.Envuelva inmediatamente en manta Mylar aislándolo del suelo frío.
             """.trimIndent(),
             tips = listOf(
-                "Evita colectar agua estancada si dispone de escorrentía activa.",
-                "Siempre decanta o filtra previamente los lodos usando tela o algodón de playera.",
-                "Conserva el agua filtrada limpia en pocillos sellados para evitar re-contaminación."
+                "Palabra clave en Lupa NOMAD Ark: TORNIQUETE, BLEEDING, RCP, MARCH, SHOCK.",
+                "Use el botón de VOZ MANOS LIBRES si tiene ambas manos ocupadas conteniendo una hemorragia."
             )
         ),
         GuideItem(
-            title = "Construcción de Refugios y Fuego de Campaña",
-            iconName = "fireplace",
-            category = "Shelter",
-            content = """
-                La hipotermia es un asesino silencioso y letal rápido en climas hostiles fríos o lluviosos extremos.
-                
-                REFUGIO DE HOJARASCA (Debris Hut):
-                1. Busca un tronco caído o una rama gruesa y apóyala en un tocón o bifurcación de árbol de forma estable en un ángulo de unos 30-45 grados.
-                2. Coloca ramas secundarias a ambos lados de la viga central simulando una jaula en 'A' cerrada.
-                3. Cubre toda la estructura exterior con una capa masiva de hojas secas, ramas, musgo y barro de al menos 60 cm de espesor continuo.
-                4. Rellena el interior habitable con hojas suaves y secas de la misma altura para crear un colchón de aire aislante del suelo helado.
-                
-                CONSTRUCCIÓN DE FUEGO SEGURO:
-                - Asegura tres tipos de materiales combustibles:
-                  a) Yesca (paja fina, nido de aves secos, resina de pino, corteza de abedul de raspado).
-                  b) Astillas medianas de ignición del grosor de un lápiz.
-                  c) Troncos de madera seca densa para combustión prolongada.
-                - Organiza un contrafuerte plano de piedras o tierra removida para resguardar la base del viento dominante.
-            """.trimIndent(),
-            tips = listOf(
-                "Never duermas directamente en el suelo húmedo; aislarte de la tierra es tan vital como el refugio mismo.",
-                "Coloca reflectores de piedras detrás de la fogata para redirigir el calor radiante de frente a tu refugio táctico."
-            )
-        ),
-        GuideItem(
-            title = "Primeros Auxilios de Campaña",
+            title = "01. Primeros Auxilios, Trauma, Suero Oral OMS y Dosificación",
             iconName = "medical_services",
             category = "Medicina",
+            arkFolderRoute = "01_INMEDIATO_PRIMERAS_HORAS/01_MEDICINA_TRAUMA_Y_TRIAJE",
+            arkPageCitation = "Donde no hay doctor / OMS, Pág. 14-88",
             content = """
-                En una situación de aislamiento hostil, controlar hemorragias externas extremas masivas y estabilizar traumatismos es la diferencia entre la vida y la muerte.
+                SUERO DE REHIDRATACIÓN ORAL CASERO EXACTO (ESTÁNDAR OMS):
+                - En 1 LITRO de agua previamente hervida o clorada:
+                  * SAL FINA: 1/2 cucharadita rasa (2.6 gramos). ¡NUNCA exceder! El exceso de sal causa hipernatremia letal en niños.
+                  * AZÚCAR COMÚN: 6 cucharaditas rasas (13.5 a 18 gramos).
+                - Administrar a sorbos pequeños cada 5 minutos en diarrea aguda, cólera, vómitos o quemaduras extensas.
                 
-                CONTROL DE HEMORRAGIAS (Protocolo MARCH):
-                1. PRESIÓN DIRECTA: Presiona firmemente el punto de sangrado con una gasa esterilizada o venda limpia usando el peso de tu propio cuerpo.
-                2. TORNIQUETE TÁCTICO: Para sangrado masivo incontrolable en extremidades. Colócalo de 5 a 10 cm arriba de la herida abierta (nunca sobre una articulación como rodillas o codos). Ajusta el molinete firmemente hasta detener el sangrado por completo. Anota estrictamente la hora de colocación en el chasis del torniquete.
-                3. EMPAQUETADO DE HERIDAS: Rellena cavidades sangrantes (ingle, axilas) usando vendaje de gasa hemostática y aplica presión directa pesada ininterrumpida por al menos 3 minutos estables de reloj.
+                QUEMADURAS GRAVES (REGLA DE WALLACE Y FÓRMULA DE PARKLAND):
+                - Enfríe con agua limpia a temperatura ambiente por 15-20 min (NUNCA hielo directo).
+                - Reposición hídrica en 24h = 4 mL × Peso (kg) × % Superficie Corporal Quemada (50% en las primeras 8h desde el accidente, 50% en las siguientes 16h).
                 
-                TRATAMIENTO DE FRACTURAS:
-                - Inmoviliza el hueso fracturado utilizando férulas improvisadas con ramas robustas, cartón o mantas enrolladas.
-                - Asegura que la férula abarque la articulación superior e inferior a la lesión para evitar desplazamientos catastróficos.
+                VADEMÉCUM DE EMERGENCIA (VERIFICAR ALERGIAS SIEMPRE):
+                - Paracetamol (Dolor/Fiebre): Adultos 500-1000 mg c/6-8h (Máx 4000 mg/día). Niños: 15 mg/kg/dosis.
+                - Ibuprofeno (Inflamación): Adultos 400 mg c/8h. Niños: 10 mg/kg/dosis. PROHIBIDO en sospecha de Dengue o sangrado digestivo.
+                - Amoxicilina (Infección respiratoria/dental/herida): Adultos 500 mg c/8h por 7-10 días. Niños: 45 mg/kg/día dividido c/8h.
+                - Doxiciclina (Profilaxis agua contaminada/Leptospirosis): Adultos 100 mg c/12h con abundante agua.
             """.trimIndent(),
             tips = listOf(
-                "Un torniquete colocado correctamente genera gran dolor; nunca lo aflojes una vez asegurado o liberarás coágulos letales.",
-                "Mantén caliente por encima de todo al paciente herido; la hipotermia extrema interrumpe los factores naturales de coagulación sanguínea."
+                "Nunca afloje un torniquete una vez colocado en campo sin soporte quirúrgico.",
+                "Use la Calculadora Médica en la pestaña CÁLCULOS para obtener la dosis exacta por kilogramo de peso."
             )
         ),
         GuideItem(
-            title = "Comunicaciones y Señalización de Auxilio",
+            title = "02. Potabilización Exacta de Agua (Tablas por g/L de Lavandina)",
+            iconName = "water_drop",
+            category = "Agua",
+            arkFolderRoute = "02_CORTO_PLAZO_DIAS_Y_SEMANAS/01_AGUA_POTABILIZACION_Y_ACOPIO",
+            arkPageCitation = "Manual OMS Potabilización, Pág. 5-19",
+            content = """
+                ERROR CRÍTICO A EVITAR: No todas las lavandinas tienen la misma concentración. Verifique en el envase los gramos de cloro activo por litro (g Cl/L) y use lavandina común SIN lavanda ni detergentes.
+                
+                TABLA EXACTA PARA 1 LITRO DE AGUA CLARA (2 mg/L) — Duplicar si es agua turbia (4 mg/L):
+                - Lavandina de 25 g/L (2.5%): 2 gotas por litro (4 gotas si es turbia). Para 20 L = 1.6 mL (32 gotas).
+                - Lavandina de 40 g/L (4.0%): 1 a 2 gotas por litro. Para 20 L = 1.0 mL (20 gotas).
+                - Lavandina de 55 g/L (5.5% común en Argentina): 1 gota por litro (2 gotas si es turbia). Para 20 L = 0.73 mL (15 gotas).
+                - Lavandina de 80 g/L (Concentrada): 1 gota cada 2 litros. Para 20 L = 0.50 mL (10 gotas).
+                * REPOSO OBLIGATORIO: Agitar y dejar reposar 30 minutos a la sombra (60 min si el agua está muy fría o turbia).
+                
+                EBULLICIÓN SEGÚN ALTITUD BAROMÉTRICA:
+                - Nivel del mar a 1500 msnm: Hervor vigoroso continuo durante 1 minuto.
+                - Más de 2000 msnm (Cordillera/Puna): Hervor continuo durante 3 minutos (el agua hierve a menor temperatura por menor presión atmosférica).
+            """.trimIndent(),
+            tips = listOf(
+                "Siempre filtre primero el agua turbia con tela de algodón doblada o filtro de arena/carbón antes de clorar.",
+                "El método solar SODIS requiere botellas PET transparentes al sol directo durante 6 horas (o 48h si está nublado)."
+            )
+        ),
+        GuideItem(
+            title = "03. Radio Baofeng UV-5R por Teclado, Frecuencias y Antenas",
             iconName = "wifi_tethering",
             category = "Comunicaciones",
+            arkFolderRoute = "02_CORTO_PLAZO_DIAS_Y_SEMANAS/06_COMUNICACIONES_RADIO_Y_ANTENAS",
+            arkPageCitation = "Manual Radio de Emergencia, Pág. 10-42",
             content = """
-                Ser detectado y rescatado depende de tu capacidad de transmitir señales legibles nacionales e internacionales de emergencia.
+                PROGRAMACIÓN MANUAL DE BAOFENG UV-5R SIN PC (MODO VFO):
+                1. Presione el botón naranja [VFO/MR] para entrar en modo Frecuencia (VFO).
+                2. Presione [A/B] para elegir la línea superior (A).
+                3. Digite en el teclado numérico los 6 dígitos de la frecuencia (ej: 1 4 6 5 2 0 para 146.520 MHz).
+                4. Para ahorrar batería y lograr máximo alcance directo sin repetidora: pulse [MENU] -> digite [2][5] (SFT-D) -> [MENU] -> elija OFF -> [MENU] -> [EXIT].
+                5. Para ajustar potencia Alta (5W) o Baja (1W): [MENU] -> [2] (TXP) -> [MENU] -> HIGH/LOW -> [MENU].
+                6. Para transmitir paquetes acústicos AFSK o imágenes SSTV desde NOMAD Tactical Hub sin cable: active VOX en [MENU] -> [4] (VOX) -> nivel 2 o 3, y acerque el altavoz del teléfono al micrófono del Baofeng.
                 
-                SEÑALES VISUALES TÁCTICAS:
-                1. REGLA DE TRES: Tres fuegos colocados en una perfecta línea exacta de separación (o triángulo amplio de 25m) representa la señal internacional inequívoca de auxilio.
-                2. ESPEJO DE SEÑALES (Heliógrafo): Apunta el flash de reflexión solar a aeronaves o barcos lejanos. Coloca un dedo en el horizonte frente a la aeronave de mira, asoma el espejo cerca de tu ojo para dirigir el haz centrado de luz intermitente.
+                FRECUENCIAS VITALES DE EMERGENCIA (SUDAMÉRICA E INTERNACIONAL):
+                - VHF Llamada Internacional / Socorro Terrestre: 146.520 MHz (FM Simplex).
+                - VHF Socorro Marítimo / Prefectura Naval: 156.800 MHz (Canal 16 Marino).
+                - VHF Emergencia Aeronáutica Civil: 121.500 MHz (AM).
+                - UHF PMR446 (Walkie-Talkies sin licencia): Canal 3 = 446.03125 MHz (Subtono CTCSS 14 / 107.2 Hz) y Canal 8 = 446.09375 MHz.
+                - UHF FRS/GMRS (América): Canal 1 = 462.5625 MHz / Canal 3 = 462.6125 MHz / Canal 20 = 462.6750 MHz.
+                - Banda Ciudadana CB (camioneros y rutas): Canal 9 Emergencia = 27.065 MHz (AM) / Canal 19 Rutero = 27.185 MHz.
+                - LoRa Meshtastic (Región ANZ/América): 915.0 MHz (Canal LongFast por defecto).
                 
-                COMUNICACIONES DE RADIO (SDR / VHF):
-                - Frecuencia internacional satelital de socorro civil de aviación: 121.500 MHz (Banda militar de rescate: 243.000 MHz).
-                - En banda terrestre VHF de emergencia de aficionados (GMRS/PMR): Sintoniza Canal 3 PMR446 (446.031 MHz) o Canal 9 de banda ciudadana CB en 27.065 MHz (Modulación AM).
-                - Transmite mensajes de voz mediante el protocolo estándar de emergencia: 'MAYDAY, MAYDAY, MAYDAY' seguido de tus coordenadas exactas actuales, naturaleza de la crisis e inventario de heridos.
+                REGLA 3-3-3 DE ESCUCHA DE EMERGENCIA (AHORRO DE BATERÍA):
+                - Encienda su radio cada 3 horas exactas (00:00, 03:00, 06:00, 09:00, 12:00, 15:00, 18:00, 21:00) durante los primeros 3 minutos para escuchar boletines sin agotar la batería.
             """.trimIndent(),
             tips = listOf(
-                "Transmite mensajes cortos para conservar la valiosa energía de las baterías de tu radio.",
-                "Si la señal analógica es muy ruidosa, pulsa el botón PTT en intervalos cortos formando código morse SOS estándar (... --- ...)."
+                "Nunca presione el botón PTT de una radio sin tener la antena conectada; quemará el transistor final de salida.",
+                "Use la pestaña COMMS para emitir y decodificar tramas NEPP AFSK, Morse 800Hz e imágenes SSTV."
             )
         ),
         GuideItem(
-            title = "Tormentas Solares y Blindaje EMP (CME)",
+            title = "04. Defensa Nuclear, Radiológica (Regla 7-10), Química y EMP",
             iconName = "wb_sunny",
-            category = "Electromagnetismo",
+            category = "Nuclear / NRBQ",
+            arkFolderRoute = "01_INMEDIATO_PRIMERAS_HORAS/02_DEFENSA_CIVIL_GUERRA_Y_NUCLEAR",
+            arkPageCitation = "Nuclear War Survival Skills & Suecia MSB, Pág. 22-65",
             content = """
-                Una gran Eyección de Masa Coronal (CME) o un ataque de Pulso Electromagnético (EMP) puede freír la red eléctrica de alta tensión, subestaciones y procesadores de silicio desprotegidos.
+                REGLA DEL 7-10 DE DECAIMIENTO RADIACTIVO (GEIGER):
+                - Por cada incremento de 7 veces en el tiempo tras la detonación, la tasa de radiación cae a la décima parte (1/10):
+                  * 1 hora = 100% (ej: 1000 R/h letal).
+                  * 7 horas = 10% (100 R/h).
+                  * 49 horas (~2 días) = 1% (10 R/h).
+                  * 343 horas (~14 días) = 0.1% (1 R/h).
                 
-                PROTOCOLOS ANTE ALERTA NOAA G5:
-                1. CONSTRUCCIÓN DE JAULAS DE FARADAY: Utiliza contenedores metálicos (como botes de munición, latas de aluminio para galletas o botes de pintura metálica limpia). Envuelve tus equipos críticos (transistores, radio VHF, cargador solar, linternas) individualmente en capas gruesas de plástico aislante (o bolsas ziploc) antes de ponerlos dentro de la lata. Ningún plástico protector debe tener roturas; el metal no debe tocar los circuitos electrónicos directement.
+                ESPESORES DE CAPA HEMIRREDUCTORA GAMMA (HVL — Reduce radiación al 50% por cada capa):
+                - Plomo: 1.2 cm | Acero: 2.5 cm | Hormigón: 6.1 cm | Tierra compactada: 9.1 cm | Agua: 18.0 cm | Madera: 29.0 cm.
+                - Con 60 cm de tierra compactada sobre el techo de una trinchera o sótano se bloquea más del 98.5% de los rayos Gamma.
                 
-                2. SISTEMAS FOTOVOLTAICOS OFF-GRID: Desconecta físicamente tus paneles solares de los controladores de carga durante la cresta geomagnética. El cableado expuesto largo actúa como antena inductora que colecta voltajes masivos fatales.
-                
-                3. VEHÍCULOS ANTIGUOS: Protege o prioriza los motores de combustión mecánica carburada puramente analógica (anteriores a 1980, sin ECUs electrónicas). Serán los únicos transportes móviles funcionales en el colapso absoluto de chips informáticos.
+                JAULA DE FARADAY CASERA PARA PROTEGER EL PENDRIVE NOMAD ARK Y RADIOS:
+                - Envuelva el pendrive NOMAD Ark, un celular viejo con los APKs instalados y la radio Baofeng (con batería desconectada) en plástico aislante o cartón con sílice, y luego rodéelos con 3 capas independientes de papel de aluminio grueso bien plegado dentro de una lata metálica cerrada.
             """.trimIndent(),
             tips = listOf(
-                "Utiliza papel de aluminio multicapa (mínimo 3 capas continuas) frotando perfectamente las juntas si no dispones de botes metálicos rígidos.",
-                "Los cables de antenas exteriores y líneas telefónicas de cobre representan el mayor vector de introducción de corriente transitoria."
+                "El Yoduro de Potasio (KI 130 mg adultos) solo protege la tiroides contra Yodo-131; el blindaje físico es insustituible.",
+                "En caso de caída de polvo radiactivo, retire la ropa externa fuera del refugio (elimina el 90% de la contaminación) y lave piel con agua y jabón sin raspar."
             )
         ),
         GuideItem(
-            title = "Inundaciones Extremas e Hidrodinámica",
-            iconName = "beach_access",
-            category = "Inundaciones",
+            title = "05. Huerta Calórica INTA, Autosuficiencia, Energía 12V y Jabón",
+            iconName = "fireplace",
+            category = "Autosuficiencia",
+            arkFolderRoute = "03_LARGO_PLAZO_MESES_Y_ANIOS/01_AGRICULTURA_HUERTA_Y_SEMILLAS_INTA",
+            arkPageCitation = "Manual ProHuerta INTA & Con nuestros propios esfuerzos, Pág. 8-120",
             content = """
-                Las inundaciones masivas por colapso de presas, huracanes climáticos extremos o lluvias excepcionales causan el 90% de las fatalidades naturales inmediatas de campo.
+                CULTIVOS DE MÁXIMA DENSIDAD CALÓRICA POR METRO CUADRADO (PRIORIDAD DE SIEMBRA):
+                1. Papa y Batata (Camote): Mayor rendimiento calórico por m² y almacenamiento subterráneo natural.
+                2. Maíz + Poroto + Zapallo (Asociación 'Las Tres Hermanas'): El maíz da soporte, el poroto fija nitrógeno en el suelo y el zapallo cubre la tierra reteniendo humedad y aportando calorías y semillas grasas.
+                3. Amaranto, Quinoa, Lenteja y Girasol: Proteína completa y extracción de aceite.
                 
-                TÁCTICAS DEFENSIVAS DE EVACUACIÓN:
-                1. ESCAPE HACIA TIERRAS ALTAS: No esperes la orden de retirada. Un aumento veloz de 15 cm de agua arrastra un calzado adulto resistente. 50 cm de agua movilizan y voltean camiones pesados y vehículos 4x4.
+                CONSERVACIÓN DE ALIMENTOS SIN ELECTRICIDAD:
+                - Charqui / Salazón: Cortar carne magra en láminas finas (<5 mm), cubrir en sal gruesa (24-48h) y secar al sol/viento protegida con malla mosquitera.
+                - Olla Bruja (Cocción Térmica sin Gasto de Leña): Hervir la olla con legumbres/arroz durante 10 minutos y meterla inmediatamente dentro de una caja o pozo aislado con lana, frazadas, aserrín o telgopor; se termina de cocinar sola en 3 horas ahorrando el 80% del combustible.
                 
-                2. SOGA DE ARRASTRE SEGURO: Si debes cruzar una corriente activa inevitable, ancla la soga en un punto alto del tronco río arriba para deslizarte transversalmente en ángulo oblicuo de 45 grados (método del péndulo).
-                
-                3. BALSAS DE EMERGENCIA TÁCTICAS: Puedes crear una balsa improvisada envolviendo una lona impermeable lona pesada alrededor de un lecho denso de ramas verdes, follaje de bajo peso molecular aislante y botellas plásticas vacías unidas por cuerda paracord.
-                
-                4. DESINFECCIÓN HIDROLÓGICA INTENSA: El agua de inundación contiene lodos cloacales y químicos industriales letales. Nunca la bebas directa incluso hervida sin antes decantarla, pasarla por filtros de arcilla/carbón activado denso y desinfectarla con doble cloro.
+                QUÍMICA ESENCIAL DE SUPERVIVENCIA (JABÓN Y DESINFECTANTE):
+                - Lejía de Ceniza (Potasa KOH): Llenar un balde perforado en su base (con filtro de paja y grava) con ceniza blanca de madera dura y verter agua hirviendo lentamente. El líquido jabonoso resultante está listo cuando un huevo fresco o una papa pequeña flota en él. Hervir a fuego lento con grasa animal derretida hasta saponificar.
             """.trimIndent(),
             tips = listOf(
-                "En inundaciones urbanas, evita sótanos, túneles de metro e intersecciones llanas; la acumulación de dióxido de carbono y descarga de transformadores rotos es letal.",
-                "Ten siempre un silbato acoplado a tu camisa táctica para señalizar tu posición en el agua."
-            )
-        ),
-        GuideItem(
-            title = "Sequías y Extracción Extrema de Humedad",
-            iconName = "wb_cloudy",
-            category = "Sequías",
-            content = """
-                Bajo condiciones de sequías agudas de larga duración o desiertos extremos, el cuerpo humano colapsa rápidamente dentro de las 72 horas sin hidratamiento activo.
-                
-                TÉCNICAS DE COLECTA DE HUMEDAD DE SUPERVIVENCIA:
-                1. DESTILADOR SOLAR DE SUBSUELO (Solar Still): Extrae agua del suelo mediante evaporación. Cava un pozo de 1 metro de diámetro por 60 cm de profundidad. Coloca un vaso o pocillo cilíndrico en el centro geométrico. Cubre el foso con una lámina de lona de polietileno plástico transparente. Asegura los bordes del plástico perfectamente con tierra húmeda. Coloca una pequeña piedra en el centro exacto del film plástico, justo arriba del vaso de colecta, para forzar un cono de caída. El calor solar evaporará la humedad freática, condensándola en el plástico, dirigiendo las gotas hacia tu vaso receptor.
-                
-                2. COLECTORES DE CONDENSACIÓN Y ROCÍO EXTRAÑO: Envuelve bolsas plásticas cerradas alrededor de ramas frondosas de árboles vivos no venenosos. La transpiración de las hojas liberará vapor de agua potable pura dentro de la bolsa durante el día.
-                
-                3. CONSERVACIÓN DE HUMEDAD: Quédate a la sombra en el subsuelo durante el pico del mediodía. Tapa tu boca y cabeza con un paño húmedo para mitigar pérdidas mucosas por respiración activa rápida.
-            """.trimIndent(),
-            tips = listOf(
-                "Nunca bebas orina deshidratada de color ámbar oscuro; es altamente concentrada en sodio y sales nitrogenadas que dañan tus riñones.",
-                "Ecarva en el lecho seco de un río de curva exterior; a menudo encontrarás humedad filtrada a menos de un metro bajo la grava."
-            )
-        ),
-        GuideItem(
-            title = "Física de Guerra Nuclear y Fallout Radiactivo",
-            iconName = "warning",
-            category = "Nuclear",
-            content = """
-                La amenaza de una detonación nuclear exige una comprensión matemática profunda de la radiación ionizante (Gama, Beta, Alfa) para planificar la preservación celular.
-                
-                LA REGLA DEL 7-10 DE DESINTEGRACIÓN (FÍSICA DE FALLOUT):
-                - La intensidad de la radiación residual de los productos de fisión disminuye en un factor de 10 por cada aumento de 7 veces en el tiempo transcurrido desde la explosión.
-                - Ejemplo: Si el fallout mide una tasa letal de 1000 Roentgens/hora (R/h) a la Hora 1:
-                  * A las 7 horas, la tasa decae a 100 R/h (90% menos).
-                  * A las 49 horas (~2 días), decae a 10 R/h (99% menos).
-                  * A las 343 horas (~2 semanas), retrocede a 1 R/h (Zonas transitables bajo control de dosis).
-                
-                LOS TRES PILARES INMUTABLES DE DEFENSA RAD:
-                1. BLINDAJE (Shielding): El poder de protección depende de la masa. La distancia media de reducción a la mitad (Half-Value Layer, HVL) para frenar radiación Gamma de alta energía es de:
-                   * Plomo: 1.5 cm.
-                   * Acero grueso: 2.5 cm.
-                   * Hormigón denso: 6.0 cm.
-                   * Tierra compactada o arena arcillosa: 10.0 cm.
-                   * Agua limpia quieta: 18.0 cm.
-                2. DISTANCIA (Distance): Ley de la inversa del cuadrado. Duplicar la distancia al foco radiactivo disminuye la dosis de intensidad a un cuarto (1/4).
-                3. TIEMPO (Time): Minimiza el tiempo de exposición exterior acumulado. Mantente adentro de tu bunker improvisado al menos 14 días ininterrumpidos para proteger la médula ósea.
-                
-                POTASIO IODURO (KI):
-                - Satura la glándula tiroides para evitar la absorción celular del nefasto Isótopo radiactivo Iodo-131 presente en el fallout de fisión reciente. Dosificación civil recomendada de 130mg diarios para adultos estables ante confirmación oficial.
-            """.trimIndent(),
-            tips = listOf(
-                "Improvisa un detector casero o mantén sellado herméticamente tu dosímetro electrónico dentro de una caja blindadora metálica para evitar que sea dañado por el pulso electromagnético.",
-                "Duchas continuas de descontaminación de lodo deben hacerse sin frotar con fuerza la dermis; evita acondicionadores de cabello que adsorben isótopos radiactivos en las fibras."
-            )
-        ),
-        GuideItem(
-            title = "Ataques Biológicos y Pandemias",
-            iconName = "favorite",
-            category = "Biológico",
-            content = """
-                Los patógenos armados (Ántrax, Peste, Viruela, ébola o toxina botulínica recombinante) son letales, inoloros, silenciosos e invisibles en escala micrométrica.
-                
-                SISTEMA CIVIL DE CONFINAMIENTO DE CRISIS:
-                1. CUARENTENA Y SELLADO DE REFUGIOS: Configura una esclusa de aire doble en la puerta del refugio usando plástico de polietileno resistente (de 6 milésimas de espesor) y cinta americana industrial. Sella todas las ventanas, rejillas y grietas de aire exteriores usando la misma membrana estanca.
-                
-                2. EQUIPAMIENTO DE PROTECCIÓN PERSONAL (EPP):
-                   - Máscara antigás militar de rostro completo con cartucho CBRN aprobado (filtro HEPA clasificación P100 absorbe esporas y patógenos en aerosol al 99.97%).
-                   - Trajes impermeables de Tyvek sellables con cinta en puños y tobillos. Guantes de nitrilo triple capa.
-                
-                3. DESCONTAMINACIÓN CON CLORO COMPLETO:
-                   - Para desinfectar herramientas expuestas y calzado: Usa una mezcla fresca de 1 parte de cloro concentrado por cada 9 partes de agua limpia (concentración del 0.5% activa). El hipoclorito de sodio degrada la membrana lipídica de los virus más rudos y el core proteico de las esporas de Bacillus anthracis en 10 minutos estables de remojo completo.
-            """.trimIndent(),
-            tips = listOf(
-                "La esclusa de aire en la puerta del refugio debe tener un área de desvestido donde dejes la ropa contaminada antes de ingresar a la zona estéril interna.",
-                "Asegura filtros HEPA para entrada de aire con ventilación forzada manual a fin de evitar presiones negativas que succionen microbios por las grietas."
+                "Guarde siempre el 15% de las mejores plantas de polinización abierta (no híbridas F1) para producir semilla propia.",
+                "Use la Calculadora Solar 12V/24V en la pestaña CÁLCULOS para dimensionar baterías de auto y cables sin riesgo de sobrecalentamiento."
             )
         )
     )
