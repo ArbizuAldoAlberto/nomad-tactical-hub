@@ -78,6 +78,18 @@ CORE_DOCUMENTS = [
         ]
     },
     {
+        "folder": "00_INDICE_MAESTRO_Y_PROTOCOLOS",
+        "stem": "03_Protocolo_Grabacion_Pendrive_128GB_ZIM_Mapas",
+        "title": "03. PROTOCOLO MAESTRO DE GRABACION Y APROVISIONAMIENTO PENDRIVE 128GB (EXFAT + ZIM + MAPAS + IA + KINDLE)",
+        "body": [
+            "PASO 1 (FORMATEO EXFAT): Formatee el pendrive dual USB-C/USB-A de 128GB+ en sistema de archivos exFAT (Etiqueta: NOMAD_ARK) para admitir archivos mayores a 4 GB como Wikipedia .zim (13GB a 37GB).",
+            "PASO 2 (DESPLIEGUE NUCLEO 00 A 07): Descomprima NOMAD_ARK_USB_v2.0.0_OMEGA.zip en la raiz del pendrive o ejecute DEPLOY_TO_USB_DRIVE.ps1 -DriveLetter E:.",
+            "PASO 3 (DESCARGA REANUDABLE DE ACTIVOS PESADOS): Ejecute FETCH_ASSETS.bat --profile=all (o use el script AUTOBUILD_NOMAD_USB_128GB descargado desde nomadhub.aldoarbizu.com) para poblar: (a) Manuales INTA/OMS/MSB/Kearny en 01-03, (b) Wikipedia y WikiMed .zim en 04_01, (c) Mapas OsmAnd Argentina .obf.zip + Reticula GIS Bolivar en 04_02, y (d) Motor IA Local Qwen2.5-1.5B GGUF en 05_04.",
+            "PASO 4 (SINCRONIZACION KINDLE / E-INK): Conecte su lector Kindle o Kobo por USB y copie todos los archivos .epub de 05_SOFTWARE_E_INSTALADORES_OFFLINE/03_FORMATOS_EPUB_PARA_KINDLE/ hacia la carpeta documents/ del lector.",
+            "PASO 5 (BLINDAJE SHA-256 + PAR2 Y JAULA DE FARADAY): Ejecute VERIFY_AND_REPAIR_ARK.bat para verificar las firmas SHA-256 y la paridad Reed-Solomon PAR2. Guarde el pendrive de respaldo con gel de silice, aislante plastico y triple capa de aluminio en contenedor metalico."
+        ]
+    },
+    {
         "folder": "01_INMEDIATO_PRIMERAS_HORAS/01_MEDICINA_TRAUMA_Y_TRIAJE",
         "stem": "Manual_Trauma_MARCH_SRO_y_Quemaduras_Parkland",
         "title": "PROTOCOLO CLINICO MARCH, SUERO ORAL OMS, PARKLAND Y DOSIFICACION",
