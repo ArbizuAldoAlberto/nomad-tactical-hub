@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://nomadhub.aldoarbizu.com/sitemap.xml
