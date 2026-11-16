@@ -129,6 +129,17 @@ CORE_DOCUMENTS = [
         ]
     },
     {
+        "folder": "02_CORTO_PLAZO_DIAS_Y_SEMANAS/06_COMUNICACIONES_RADIO_Y_ANTENAS",
+        "stem": "02_Guia_Visual_Conexion_Baofeng_UV5R_AFSK_SSTV",
+        "title": "02. GUIA VISUAL E INTERACTIVA DE CONEXION CELULAR A RADIO BAOFENG UV-5R (VOX, SQL, CABLE K1 Y FRECUENCIAS)",
+        "body": [
+            "MODO A (ACOPLAMIENTO ACUSTICO INALAMBRICO SIN CABLES): 1) Ajuste el volumen del celular o PC al 75% (evita saturacion de audio). 2) En el Baofeng UV-5R active VOX en [MENU] -> [4] -> Nivel 2. 3) Ajuste el silenciador Squelch en [MENU] -> [0] (SQL) -> Nivel 1 para no recortar paquetes entrantes. 4) Coloque el parlante del telefono a 2-5 cm del microfono de la radio para transmitir (TX) Morse 800Hz, tramas NEPP AFSK 1200/2200Hz o mapas SSTV Robot36.",
+            "MODO B (CONEXION POR CABLE K1 KENWOOD 2-PIN A TRRS 3.5MM DEL CELULAR): El conector lateral K1 de radios Baofeng/Kenwood consta de dos espigas: (a) Pin superior de 3.5 mm = Entrada de Microfono (Punta/Anillo) + activacion PTT; (b) Pin inferior de 2.5 mm = Salida de Audio de Recepcion (Speaker RX) + Masa comun (GND). Use un adaptador K1-a-TRRS con atenuador para inyectar y decodificar audio sin ruido ambiental.",
+            "SECUENCIA RAPIDA DE TECLADO BAOFENG UV-5R (60 SEGUNDOS): [VFO/MR] (Modo Frecuencia) -> [A/B] (Banda A superior) -> [1][4][6][5][2][0] (146.520 MHz Socorro VHF) -> [MENU][2][5] SFT-D = OFF (Simplex directo) -> [MENU][2] TXP = HIGH (5W) o LOW (1W ahorro de bateria).",
+            "REGLA INTERNACIONAL 3-3-3 DE SUPERVIVENCIA RADIAL: Encienda la radio cada 3 horas exactas (00:00, 03:00, 06:00, 09:00, 12:00, 15:00, 18:00, 21:00) durante los primeros 3 minutos en 146.520 MHz (VHF), Canal 3 PMR446 (446.03125 MHz) o Canal 9 CB (27.065 MHz AM)."
+        ]
+    },
+    {
         "folder": "03_LARGO_PLAZO_MESES_Y_ANIOS/01_AGRICULTURA_HUERTA_Y_SEMILLAS_INTA",
         "stem": "Manual_Huerta_Calorica_INTA_Autosuficiencia_y_Quimica",
         "title": "HUERTA CALORICA PROHUERTA INTA, OLLA BRUJA, ENERGIA 12V Y JABON",
