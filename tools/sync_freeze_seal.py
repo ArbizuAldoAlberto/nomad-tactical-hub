@@ -1,0 +1,126 @@
+# -*- coding: utf-8 -*-
+"""
+Sync the final Phase 12 (OMEGA v2.3) SHA-256 seal across all files and repos.
+"""
+import re
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+
+SEALS = {
+    "apk": {
+        "name": "nomad-tactical-hub.apk",
+        "size": 8313427,
+        "size_str": "8,313,427 bytes",
+        "size_mb": "7.93 MB",
+        "sha": "2485ec097303b673fdf720da1cdc3c9e87e203542b899358556571d1f1755c2c"
+    },
+    "usb": {
+        "name": "NOMAD_ARK_USB_v2.0.0_OMEGA.zip",
+        "size": 16144766,
+        "size_str": "16,144,766 bytes",
+        "size_mb": "15.39 MB",
+        "sha": "92fe9be2ac29e9865fdca357079d404d5432da362f23f50e507fda04d0b4a90e"
+    },
+    "epub": {
+        "name": "NOMAD_KINDLE_EPUB_PACK_v2.0.0.zip",
+        "size": 30410,
+        "size_str": "30,410 bytes",
+        "size_mb": "29.70 KB",
+        "sha": "b35baa37561b6a22cf53453e36db1d80126cbc07e6bef7751e5f5281a1119948"
+    },
+    "web": {
+        "name": "nomadhub-aldoarbizu-web-dist.zip",
+        "size": 83384,
+        "size_str": "83,384 bytes",
+        "size_mb": "81.43 KB",
+        "sha": "7619c1aba2aec3619652bf52ffcc6c23b9efd7db3b96baf26b7d72a50ec5ba39"
+    }
+}
+
+# 1. Update web-ark/START_NOMAD_ARK.html & index.html
+start_html = ROOT / "web-ark" / "START_NOMAD_ARK.html"
+text = start_html.read_text(encoding="utf-8")
+text = re.sub(
+    r'<div class="sha-tag" id="shaApkTag">.*?</div> <!-- safe-bypass -->',
+    f'<div class="sha-tag" id="shaApkTag">SHA-256 ({SEALS["apk"]["size"]:,} B): {SEALS["apk"]["sha"]}</div> <!-- safe-bypass -->',
+    text
+)
+text = re.sub(
+    r'<div class="sha-tag" id="shaZipTag">.*?</div> <!-- safe-bypass -->',
+    f'<div class="sha-tag" id="shaZipTag">SHA-256 ({SEALS["usb"]["size"]:,} B): {SEALS["usb"]["sha"]}</div> <!-- safe-bypass -->',
+    text
+)
+text = re.sub(
+    r'<div class="sha-tag" id="shaEpubTag">.*?</div> <!-- safe-bypass -->',
+    f'<div class="sha-tag" id="shaEpubTag">SHA-256 ({SEALS["epub"]["size"]:,} B): {SEALS["epub"]["sha"]}</div> <!-- safe-bypass -->',
+    text
+)
+text = re.sub(
+    r'<div class="sha-tag" id="shaWebTag".*?>.*?</div> <!-- safe-bypass -->',
+    f'<div class="sha-tag" id="shaWebTag" style="margin-top:4px;">PWA Web Dist ({SEALS["web"]["size"]:,} B): {SEALS["web"]["sha"]}</div> <!-- safe-bypass -->',
+    text
+)
+js_seals = f"""const OFFICIAL_SEALS = {{
+  apk: {{ name: "nomad-tactical-hub.apk ({SEALS['apk']['size']:,} B)", sha: "{SEALS['apk']['sha']}" }},
+  usb: {{ name: "NOMAD_ARK_USB_v2.0.0_OMEGA.zip ({SEALS['usb']['size']:,} B)", sha: "{SEALS['usb']['sha']}" }},
+  epub: {{ name: "NOMAD_KINDLE_EPUB_PACK_v2.0.0.zip ({SEALS['epub']['size']:,} B)", sha: "{SEALS['epub']['sha']}" }}
+}};"""
+text = re.sub(r'const OFFICIAL_SEALS = \{[\s\S]*?\};', js_seals, text)
+start_html.write_text(text, encoding="utf-8")
+(ROOT / "web-ark" / "index.html").write_text(text, encoding="utf-8")
+print("[OK] START_NOMAD_ARK.html and index.html updated.")
+
+# 2. Update README.md
+readme = ROOT / "README.md"
+r_text = readme.read_text(encoding="utf-8")
+r_table = f"""| Production Artifact | Official Package | Exact Size | Frozen `SHA-256` Checksum |
+| :--- | :--- | :---: | :--- |
+| **Android Release APK** | `nomad-tactical-hub.apk` | `{SEALS['apk']['size_str']}` (`{SEALS['apk']['size_mb']}`) | `{SEALS['apk']['sha']}` <!-- safe-bypass --> |
+| **USB Ark 128GB Core Suite** | `NOMAD_ARK_USB_v2.0.0_OMEGA.zip` | `{SEALS['usb']['size_str']}` (`{SEALS['usb']['size_mb']}`) | `{SEALS['usb']['sha']}` <!-- safe-bypass --> |
+| **Kindle / Kobo E-Ink Pack (12 EPUBs)** | `NOMAD_KINDLE_EPUB_PACK_v2.0.0.zip` | `{SEALS['epub']['size_str']}` (`{SEALS['epub']['size_mb']}`) | `{SEALS['epub']['sha']}` <!-- safe-bypass --> |
+| **Portal PWA (`nomadhub.aldoarbizu.com`)** | `nomadhub-aldoarbizu-web-dist.zip` | `{SEALS['web']['size_str']}` (`{SEALS['web']['size_mb']}`) | `{SEALS['web']['sha']}` <!-- safe-bypass --> |"""
+r_text = re.sub(r'\| Production Artifact \| Official Package \| Exact Size \| Frozen `SHA-256` Checksum \|[\s\S]*?\| \*\*Portal PWA \(`nomadhub\.aldoarbizu\.com`\)[\s\S]*?\|', r_table, r_text)
+readme.write_text(r_text, encoding="utf-8")
+print("[OK] README.md updated.")
+
+# 3. Update .nexus_memory.md
+nexus_mem = ROOT / ".nexus_memory.md"
+if nexus_mem.exists():
+    n_text = nexus_mem.read_text(encoding="utf-8")
+    n_table = f"""| Artefacto Público | Ruta / Paquete | Tamaño Exacto | Hash `SHA-256` |
+| :--- | :--- | :---: | :--- |
+| **Android Release APK** | `nomad-tactical-hub.apk` (`app-release.apk`) | `{SEALS['apk']['size_str']}` (`{SEALS['apk']['size_mb']}`) | `{SEALS['apk']['sha']}` <!-- safe-bypass --> |
+| **Suite Completa USB Ark** | `NOMAD_ARK_USB_v2.0.0_OMEGA.zip` | `{SEALS['usb']['size_str']}` (`{SEALS['usb']['size_mb']}`) | `{SEALS['usb']['sha']}` <!-- safe-bypass --> |
+| **Pack Libros Kindle EPUB (12 EPUBs)** | `NOMAD_KINDLE_EPUB_PACK_v2.0.0.zip` | `{SEALS['epub']['size_str']}` (`{SEALS['epub']['size_mb']}`) | `{SEALS['epub']['sha']}` <!-- safe-bypass --> |
+| **Portal PWA (`nomadhub.aldoarbizu.com`)** | `nomadhub-aldoarbizu-web-dist.zip` | `{SEALS['web']['size_str']}` (`{SEALS['web']['size_mb']}`) | `{SEALS['web']['sha']}` <!-- safe-bypass --> |"""
+    n_text = re.sub(r'\| Artefacto Público \| Ruta / Paquete \| Tamaño Exacto \| Hash `SHA-256` \|[\s\S]*?\| \*\*Portal PWA \(`nomadhub\.aldoarbizu\.com`\)[\s\S]*?\|', n_table, n_text)
+    nexus_mem.write_text(n_text, encoding="utf-8")
+    print("[OK] .nexus_memory.md updated.")
+
+# 4. Update arbizu-labs case study
+case_mdx = Path(r"E:\01_DESARROLLO\2026\01_ACTIVE\portfolio\arbizu-labs\src\data\cases\nomad-tactical-hub.mdx")
+if case_mdx.exists():
+    c_text = case_mdx.read_text(encoding="utf-8")
+    c_hashes = f"""- **Hashes `SHA-256` Oficiales Congelados (Paridad 100%):**
+  - `nomad-tactical-hub.apk` (`{SEALS['apk']['size_str']}` / `{SEALS['apk']['size_mb']}`): `{SEALS['apk']['sha']}` {{/* safe-bypass */}}
+  - `NOMAD_ARK_USB_v2.0.0_OMEGA.zip` (`{SEALS['usb']['size_str']}` / `{SEALS['usb']['size_mb']}`): `{SEALS['usb']['sha']}` {{/* safe-bypass */}}
+  - `NOMAD_KINDLE_EPUB_PACK_v2.0.0.zip` (`{SEALS['epub']['size_str']}` / `{SEALS['epub']['size_mb']}` — 12 EPUBs): `{SEALS['epub']['sha']}` {{/* safe-bypass */}}
+  - `nomadhub-aldoarbizu-web-dist.zip` (`{SEALS['web']['size_str']}` / `{SEALS['web']['size_mb']}`): `{SEALS['web']['sha']}` {{/* safe-bypass */}}"""
+    c_text = re.sub(r'- \*\*Hashes `SHA-256` Oficiales Congelados \(Paridad 100%\):\*\*[\s\S]*?nomadhub-aldoarbizu-web-dist\.zip`[^\n]*', c_hashes, c_text)
+    case_mdx.write_text(c_text, encoding="utf-8")
+    print("[OK] arbizu-labs case study updated.")
+
+# 5. Update Antigravity-Vault
+vault_doc = Path(r"E:\01_DESARROLLO\2026\05_BRAIN\Antigravity-Vault\Antigravity-Vault\NOMAD_TACTICAL_HUB_OMEGA_v2.0.0.md")
+if vault_doc.exists():
+    v_text = vault_doc.read_text(encoding="utf-8")
+    v_table = f"""| Artefacto de Producción | Tamaño Exacto | Hash `SHA-256` Certificado |
+| :--- | :---: | :--- |
+| **`nomad-tactical-hub.apk`** | `{SEALS['apk']['size_str']}` (`{SEALS['apk']['size_mb']}`) | `{SEALS['apk']['sha']}` |
+| **`NOMAD_ARK_USB_v2.0.0_OMEGA.zip`** | `{SEALS['usb']['size_str']}` (`{SEALS['usb']['size_mb']}`) | `{SEALS['usb']['sha']}` |
+| **`NOMAD_KINDLE_EPUB_PACK_v2.0.0.zip` (`12 EPUBs`)** | `{SEALS['epub']['size_str']}` (`{SEALS['epub']['size_mb']}`) | `{SEALS['epub']['sha']}` |
+| **`nomadhub-aldoarbizu-web-dist.zip`** | `{SEALS['web']['size_str']}` (`{SEALS['web']['size_mb']}`) | `{SEALS['web']['sha']}` |"""
+    v_text = re.sub(r'\| Artefacto de Producción \| Tamaño Exacto \| Hash `SHA-256` Certificado \|[\s\S]*?\| \*\*`nomadhub-aldoarbizu-web-dist\.zip`\*\* \|[^\n]*', v_table, v_text)
+    vault_doc.write_text(v_text, encoding="utf-8")
+    print("[OK] Antigravity-Vault updated.")
