@@ -13,28 +13,28 @@ SEALS = {
         "size": 8313427,
         "size_str": "8,313,427 bytes",
         "size_mb": "7.93 MB",
-        "sha": "2485ec097303b673fdf720da1cdc3c9e87e203542b899358556571d1f1755c2c"
+        "sha": "a7315c5c06008da589d1c5ebe8ea73374683c92ff2c7145fb326b87e16edd0f0"
     },
     "usb": {
         "name": "NOMAD_ARK_USB_v2.0.0_OMEGA.zip",
-        "size": 16144766,
-        "size_str": "16,144,766 bytes",
-        "size_mb": "15.39 MB",
-        "sha": "92fe9be2ac29e9865fdca357079d404d5432da362f23f50e507fda04d0b4a90e"
+        "size": 16147337,
+        "size_str": "16,147,337 bytes",
+        "size_mb": "15.40 MB",
+        "sha": "ea5f7c82c8f220e7e08f06741e74f594c5592960d86ecfb9b142588d40165097"
     },
     "epub": {
         "name": "NOMAD_KINDLE_EPUB_PACK_v2.0.0.zip",
-        "size": 30410,
-        "size_str": "30,410 bytes",
-        "size_mb": "29.70 KB",
-        "sha": "b35baa37561b6a22cf53453e36db1d80126cbc07e6bef7751e5f5281a1119948"
+        "size": 30529,
+        "size_str": "30,529 bytes",
+        "size_mb": "29.81 KB",
+        "sha": "d8d9aa6a66e7ef2ec52eb82809d53e75d62b7a2e373fe8bb3d4c300addd23ca9"
     },
     "web": {
         "name": "nomadhub-aldoarbizu-web-dist.zip",
-        "size": 83384,
-        "size_str": "83,384 bytes",
-        "size_mb": "81.43 KB",
-        "sha": "7619c1aba2aec3619652bf52ffcc6c23b9efd7db3b96baf26b7d72a50ec5ba39"
+        "size": 83634,
+        "size_str": "83,634 bytes",
+        "size_mb": "81.67 KB",
+        "sha": "6f23bf169321591f903a81df2349710034195690e6684246ed87e07d9dc84674"
     }
 }
 

@@ -99,7 +99,7 @@ fun SurvivalHubScreen(
                                 color = CyberGreen
                             )
                             Text(
-                                text = "OMEGA v2.3 // ALDO ARBIZU · ARBIZU LABS",
+                                text = "OMEGA v2.4 GOLD MASTER // ALDO ARBIZU · ARBIZU LABS",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = GrayText
                             )
@@ -671,7 +671,7 @@ fun DashboardScreen(viewModel: SurvivalViewModel) {
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
-                        text = "🤝 Mecenazgo Humanitario Voluntario (Cero Paywalls):\n• Alias Mercado Pago: aldoarbizu\n• Alias Banco Galicia: ALDO.ARBIZU.GALICIA\n• CBU Galicia: 0070149130004016919618\n• EVM Base L2 / Polygon: 0xb73ca1C37e9aA57F3051A0E8381Ca9CBA772A718",
+                        text = "🤝 Mecenazgo Humanitario Voluntario (Cero Paywalls):\n• Alias Mercado Pago: aldoarbizu\n• Alias Banco Galicia: ALDO.ARBIZU.GALICIA\n• CBU Galicia: 0070149130004016919618\n• EVM Multi-Cadena (Base L2 / Polygon / BSC): 0xb73ca1C37e9aA57F3051A0E8381Ca9CBA772A718",
                         style = MaterialTheme.typography.labelSmall,
                         color = Color.White
                     )

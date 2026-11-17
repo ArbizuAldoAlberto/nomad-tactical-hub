@@ -399,7 +399,7 @@ def build_ark() -> None:
         "Mecenazgo Humanitario Voluntario (Cero Paywalls):",
         "- Alias Mercado Pago: aldoarbizu",
         "- Alias Banco Galicia: ALDO.ARBIZU.GALICIA (CBU: 0070149130004016919618)",
-        "- Web3 EVM (Base L2 / Polygon): 0xb73ca1C37e9aA57F3051A0E8381Ca9CBA772A718",
+        "- Web3 Multi-Cadena (Base L2 / Polygon / BSC): 0xb73ca1C37e9aA57F3051A0E8381Ca9CBA772A718",
         "- GitHub Sponsors: https://github.com/ArbizuAldoAlberto"
     ]
 
